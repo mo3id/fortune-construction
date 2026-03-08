@@ -11,7 +11,7 @@ export function ImpactCTA() {
             </div>
             <Button
                 onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
-                className="h-12 px-8 rounded-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold whitespace-nowrap"
+                className="h-12 px-8 rounded-sm bg-teal-500 hover:bg-teal-600 text-white font-semibold whitespace-nowrap"
             >
                 Discuss Your Project
             </Button>

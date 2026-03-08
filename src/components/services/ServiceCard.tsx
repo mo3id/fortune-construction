@@ -29,14 +29,14 @@ export function ServiceCard({ service, index }: ServiceCardProps) {
 
             {/* Content */}
             <div className={cn("flex-1 p-8 border-l-4", service.accentColor)}>
-                <p className="text-orange-500 text-xs font-semibold tracking-widest uppercase mb-2">{service.tagline}</p>
-                <h3 className="font-display text-2xl font-bold text-navy-700 mb-4">{service.title}</h3>
+                <p className="text-teal-500 text-xs font-semibold tracking-widest uppercase mb-2">{service.tagline}</p>
+                <h3 className="font-display text-2xl font-bold text-navy-800 mb-4">{service.title}</h3>
                 <p className="text-gray-500 text-sm leading-relaxed mb-6">{service.description}</p>
 
                 <ul className="space-y-2 mb-6">
                     {service.features.map((feat) => (
                         <li key={feat} className="flex items-center gap-2 text-sm text-gray-600">
-                            <span className="w-1.5 h-1.5 bg-orange-500 rounded-full flex-shrink-0" />
+                            <span className="w-1.5 h-1.5 bg-teal-500 rounded-full flex-shrink-0" />
                             {feat}
                         </li>
                     ))}
@@ -44,7 +44,7 @@ export function ServiceCard({ service, index }: ServiceCardProps) {
 
                 <button
                     onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
-                    className="inline-flex items-center gap-2 text-orange-500 font-semibold text-sm hover:gap-3 transition-all duration-200"
+                    className="inline-flex items-center gap-2 text-teal-500 font-semibold text-sm hover:gap-3 transition-all duration-200"
                 >
                     Enquire Now <ArrowRight className="w-4 h-4" />
                 </button>

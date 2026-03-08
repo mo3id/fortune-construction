@@ -39,23 +39,31 @@ export default function Hero() {
             />
 
             {/* Content */}
-            <div className="relative z-20 max-w-4xl mx-auto px-6 text-center">
-                <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-[1.1] mb-6">
-                    Building <span className="text-orange-400 italic">Malawi&apos;s</span>
+            <div className="relative z-20 max-w-5xl mx-auto px-6 text-center">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-400 text-xs font-bold uppercase tracking-[0.2em] mb-8 animate-fade-up">
+                    <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-teal-500"></span>
+                    </span>
+                    20 Years of Construction Excellence
+                </div>
+
+                <h1 className="font-display text-7xl md:text-9xl font-bold text-white leading-[0.85] mb-8 animate-fade-up tracking-tighter">
+                    Crafting <span className="text-gradient">Visionary</span>
                     <br />
-                    Future.
+                    Infrastructure.
                 </h1>
 
-                <p className="text-white/80 text-lg md:text-xl max-w-xl mx-auto mb-10 font-light leading-relaxed">
-                    Two decades of excellence in civil engineering and landmark construction projects across the nation.
+                <p className="text-white/70 text-lg md:text-2xl max-w-2xl mx-auto mb-12 font-light leading-relaxed animate-fade-up [animation-delay:200ms]">
+                    Fortune Construction Limited delivers world-class civil engineering across Malawi, building the bedrock of national progress.
                 </p>
 
-                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <div className="flex flex-col sm:flex-row gap-5 justify-center items-center animate-fade-up [animation-delay:400ms]">
                     <Button
                         onClick={() => scrollTo('#contact')}
-                        className="h-12 px-8 rounded-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold text-base"
+                        className="h-14 px-10 rounded-sm bg-teal-500 hover:bg-teal-400 text-navy-900 font-bold text-lg shadow-[0_0_20px_rgba(0,195,182,0.3)] transition-all duration-300 transform hover:scale-105"
                     >
-                        Start Your Project
+                        Get Started
                     </Button>
                     <Button
                         variant="outline"
@@ -76,7 +84,7 @@ export default function Hero() {
             {/* Scroll indicator */}
             <button
                 onClick={() => scrollTo('#impact')}
-                className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 text-white/40 hover:text-orange-400 transition-colors animate-bounce"
+                className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 text-white/40 hover:text-teal-400 transition-colors animate-bounce"
                 aria-label="Scroll down"
             >
                 <ArrowDown className="w-6 h-6" />

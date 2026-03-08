@@ -48,7 +48,7 @@ const TIMELINE_EVENTS: TimelineEvent[] = [
 
 export default function Timeline() {
     return (
-        <section id="timeline" className="section-padding bg-navy-800">
+        <section id="timeline" className="section-padding bg-gradient-to-b from-navy-800 to-navy-900">
             <Container className="max-w-5xl">
                 <SectionHeader
                     subtitle="Our Story"
@@ -59,7 +59,7 @@ export default function Timeline() {
 
                 <div className="relative">
                     {/* Vertical line */}
-                    <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-white/10 md:-translate-x-1/2" />
+                    <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-[2px] bg-gradient-to-b from-teal-500/50 via-teal-500 to-teal-500/20 md:-translate-x-1/2" />
 
                     <div className="space-y-12">
                         {TIMELINE_EVENTS.map((event, i) => (

@@ -15,8 +15,8 @@ export function ProjectFilter({
                     className={cn(
                         'px-6 py-2.5 text-sm font-semibold tracking-wide rounded-sm border transition-all duration-200',
                         activeCategory === cat
-                            ? 'bg-orange-500 border-orange-500 text-white'
-                            : 'bg-white border-gray-200 text-gray-600 hover:border-orange-500 hover:text-orange-500'
+                            ? 'bg-teal-500 border-teal-500 text-white'
+                            : 'bg-white border-gray-200 text-gray-600 hover:border-teal-500 hover:text-teal-500'
                     )}
                 >
                     {cat}

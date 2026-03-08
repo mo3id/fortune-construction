@@ -13,7 +13,7 @@ const SERVICES: Service[] = [
         description:
             "From rural feeder roads to major national highways, we engineer and construct road infrastructure that withstands Malawi's diverse terrain and climate. Our civil engineering team applies international standards to every kilometre.",
         features: ['Highway Construction', 'Drainage Systems', 'Bridges & Culverts', 'Road Rehabilitation'],
-        accentColor: 'border-orange-500',
+        accentColor: 'border-teal-500',
         bgImage: 'https://images.unsplash.com/photo-1545558014-8692077e9b5c?w=800&q=80',
     },
     {
@@ -23,7 +23,7 @@ const SERVICES: Service[] = [
         description:
             'We deliver commercial offices, government facilities, schools, hospitals, and residential estates. Our building teams combine technical precision with local material expertise to produce enduring structures on schedule.',
         features: ['Commercial Offices', 'Government Facilities', 'Residential Estates', 'Educational Institutions'],
-        accentColor: 'border-navy-500',
+        accentColor: 'border-navy-800',
         bgImage: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80',
     },
     {
@@ -33,7 +33,7 @@ const SERVICES: Service[] = [
         description:
             'Complex structural projects demand exceptional engineering. Our experienced teams plan, design, and construct bridges, retaining walls, and structural works that meet the highest safety and durability standards across Malawi.',
         features: ['RC Bridge Construction', 'Steel Structures', 'Retaining Walls', 'Structural Rehabilitation'],
-        accentColor: 'border-gold',
+        accentColor: 'border-teal-400',
         bgImage: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80',
     },
 ]

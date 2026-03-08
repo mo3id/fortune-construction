@@ -39,11 +39,11 @@ export function ContactInfo() {
                 <div className="space-y-6">
                     {CONTACT_INFO.map((item) => (
                         <div key={item.label} className="flex items-start gap-4">
-                            <div className="text-orange-400 mt-0.5 flex-shrink-0">{item.icon}</div>
+                            <div className="text-teal-400 mt-0.5 flex-shrink-0">{item.icon}</div>
                             <div>
                                 <p className="text-white/40 text-xs uppercase tracking-widest mb-0.5">{item.label}</p>
                                 {item.href ? (
-                                    <a href={item.href} className="text-white text-sm hover:text-orange-400 transition-colors">
+                                    <a href={item.href} className="text-white text-sm hover:text-teal-400 transition-colors">
                                         {item.value}
                                     </a>
                                 ) : (
@@ -55,12 +55,12 @@ export function ContactInfo() {
                 </div>
             </div>
 
-            <div className="bg-orange-500 rounded-sm p-6 text-white text-center md:text-left">
+            <div className="bg-teal-500 rounded-sm p-6 text-white text-center md:text-left">
                 <p className="font-display text-lg font-bold mb-2">Need a Quote Fast?</p>
                 <p className="text-white/80 text-sm mb-4">Call us directly for urgent project enquiries.</p>
                 <Button
                     asChild
-                    className="bg-white text-orange-500 hover:bg-white/90 font-semibold rounded-sm h-10 px-5"
+                    className="bg-white text-teal-500 hover:bg-white/90 font-semibold rounded-sm h-10 px-5"
                 >
                     <a href={SITE.phoneHref}>
                         <Phone className="w-4 h-4" />

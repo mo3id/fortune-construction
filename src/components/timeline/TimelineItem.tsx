@@ -17,7 +17,7 @@ export function TimelineItem({ event, index }: TimelineItemProps) {
                 className={cn(
                     "absolute left-6 md:left-1/2 -translate-x-1/2 w-12 h-12 rounded-sm flex items-center justify-center z-10 transition-all",
                     event.highlight
-                        ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/30'
+                        ? 'bg-teal-500 text-white shadow-lg shadow-teal-500/30'
                         : 'bg-navy-600 text-white/60 border border-white/10'
                 )}
             >
@@ -31,7 +31,7 @@ export function TimelineItem({ event, index }: TimelineItemProps) {
             )}>
                 <span className={cn(
                     "font-display text-5xl font-bold",
-                    event.highlight ? 'text-orange-400' : 'text-white/20'
+                    event.highlight ? 'text-teal-400' : 'text-white/20'
                 )}>
                     {event.year}
                 </span>
@@ -43,7 +43,7 @@ export function TimelineItem({ event, index }: TimelineItemProps) {
                 isEven ? 'md:pl-16' : 'md:pr-16'
             )}>
                 <div className="bg-white/5 border border-white/10 rounded-sm p-6 hover:bg-white/[0.08] transition-colors">
-                    <span className="md:hidden font-display text-3xl font-bold text-orange-400 block mb-2">{event.year}</span>
+                    <span className="md:hidden font-display text-3xl font-bold text-teal-400 block mb-2">{event.year}</span>
                     <h3 className="font-display text-xl font-bold text-white mb-3">{event.title}</h3>
                     <p className="text-white/50 text-sm leading-relaxed">{event.description}</p>
                 </div>

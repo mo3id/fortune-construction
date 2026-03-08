@@ -11,9 +11,9 @@ export function WhyUs() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {WHY_US.map((item) => (
                 <div key={item.title} className="reveal flex items-start gap-4 p-6 bg-gray-50 rounded-sm">
-                    <div className="text-orange-500 mt-0.5 flex-shrink-0">{item.icon}</div>
+                    <div className="text-teal-500 mt-0.5 flex-shrink-0">{item.icon}</div>
                     <div>
-                        <p className="font-semibold text-navy-700 mb-1">{item.title}</p>
+                        <p className="font-semibold text-navy-800 mb-1">{item.title}</p>
                         <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
                     </div>
                 </div>

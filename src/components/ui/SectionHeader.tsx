@@ -20,7 +20,7 @@ export function SectionHeader({
             {subtitle && (
                 <p className={cn(
                     "section-subtitle",
-                    dark ? "text-orange-400" : "text-orange-500"
+                    dark ? "text-teal-400" : "text-teal-500"
                 )}>
                     {subtitle}
                 </p>
@@ -28,7 +28,7 @@ export function SectionHeader({
             <h2 className={cn(
                 "section-title mx-auto",
                 centered && "max-w-2xl",
-                dark ? "text-white" : "text-navy-700"
+                dark ? "text-white" : "text-navy-800"
             )}>
                 {title}
             </h2>

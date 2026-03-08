@@ -29,7 +29,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                     </Button>
                     <div className="absolute inset-0 bg-gradient-to-t from-navy-900/80 to-transparent" />
                     <div className="absolute bottom-4 left-6">
-                        <span className="text-orange-400 text-xs font-semibold tracking-widest uppercase">
+                        <span className="text-teal-400 text-xs font-semibold tracking-widest uppercase">
                             {project.category}
                         </span>
                         <h3 className="font-display text-2xl font-bold text-white mt-1">{project.title}</h3>
@@ -38,18 +38,18 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                 <div className="p-8">
                     <div className="flex items-center gap-6 text-gray-400 text-sm mb-6">
                         <span className="flex items-center gap-1.5">
-                            <MapPin className="w-4 h-4 text-orange-500" />
+                            <MapPin className="w-4 h-4 text-teal-500" />
                             {project.location}
                         </span>
                         <span className="flex items-center gap-1.5">
-                            <Calendar className="w-4 h-4 text-orange-500" />
+                            <Calendar className="w-4 h-4 text-teal-500" />
                             {project.year}
                         </span>
                     </div>
                     <p className="text-gray-600 leading-relaxed mb-8">{project.description}</p>
                     <Button
                         onClick={handleEnquire}
-                        className="w-full h-11 rounded-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold"
+                        className="w-full h-11 rounded-sm bg-teal-500 hover:bg-teal-600 text-white font-semibold"
                     >
                         Enquire About Similar Projects
                     </Button>

@@ -16,23 +16,23 @@ export function FooterMap() {
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
                 />
-                <div className="absolute inset-0 pointer-events-none border-b-4 border-orange-500" />
+                <div className="absolute inset-0 pointer-events-none border-b-4 border-teal-500" />
             </div>
 
             {/* Contact quick info */}
             <div className="bg-navy-800 p-10 flex flex-col justify-center">
                 <h3 className="font-display text-2xl font-bold mb-6">Find Us in Lilongwe</h3>
                 <div className="space-y-4">
-                    <a href={SITE.mapsUrl} className="flex items-start gap-3 text-white/60 hover:text-orange-400 transition-colors">
-                        <MapPin className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" />
+                    <a href={SITE.mapsUrl} className="flex items-start gap-3 text-white/60 hover:text-teal-400 transition-colors">
+                        <MapPin className="w-5 h-5 text-teal-500 flex-shrink-0 mt-0.5" />
                         <span className="text-sm">{SITE.address}</span>
                     </a>
-                    <a href={SITE.phoneHref} className="flex items-center gap-3 text-white/60 hover:text-orange-400 transition-colors">
-                        <Phone className="w-5 h-5 text-orange-500 flex-shrink-0" />
+                    <a href={SITE.phoneHref} className="flex items-center gap-3 text-white/60 hover:text-teal-400 transition-colors">
+                        <Phone className="w-5 h-5 text-teal-500 flex-shrink-0" />
                         <span className="text-sm">{SITE.phone}</span>
                     </a>
-                    <a href={SITE.emailHref} className="flex items-center gap-3 text-white/60 hover:text-orange-400 transition-colors">
-                        <Mail className="w-5 h-5 text-orange-500 flex-shrink-0" />
+                    <a href={SITE.emailHref} className="flex items-center gap-3 text-white/60 hover:text-teal-400 transition-colors">
+                        <Mail className="w-5 h-5 text-teal-500 flex-shrink-0" />
                         <span className="text-sm">{SITE.email}</span>
                     </a>
                 </div>

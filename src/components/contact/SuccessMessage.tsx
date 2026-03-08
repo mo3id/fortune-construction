@@ -10,14 +10,14 @@ export function SuccessMessage() {
             <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mb-6">
                 <CheckCircle2 className="w-10 h-10 text-green-500" />
             </div>
-            <h3 className="font-display text-2xl font-bold text-navy-700 mb-3">Message Sent!</h3>
+            <h3 className="font-display text-2xl font-bold text-navy-800 mb-3">Message Sent!</h3>
             <p className="text-gray-500 text-base max-w-sm leading-relaxed mb-8">
                 Thank you for reaching out. Our team will review your enquiry and respond within 24 hours.
             </p>
             <Button
                 onClick={resetForm}
                 variant="outline"
-                className="rounded-sm border-orange-500 text-orange-500 hover:bg-orange-50 font-semibold"
+                className="rounded-sm border-teal-500 text-teal-500 hover:bg-teal-50 font-semibold"
             >
                 Send Another Message
             </Button>

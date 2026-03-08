@@ -13,7 +13,7 @@ export function MetricCard({ metric, index, isVisible }: MetricCardProps) {
             <div className={cn("w-16 h-16 rounded-sm flex items-center justify-center text-white mx-auto mb-6", metric.color)}>
                 {metric.icon}
             </div>
-            <p className="font-display text-5xl font-bold text-navy-700 mb-2">
+            <p className="font-display text-5xl font-bold text-navy-800 mb-2">
                 <AnimatedCounter target={metric.target} suffix={metric.suffix} isVisible={isVisible} />
             </p>
             <p className="font-semibold text-gray-900 mb-3 text-sm tracking-wide uppercase">{metric.label}</p>

@@ -32,7 +32,7 @@ export function ProjectCard({
                     isHovered ? 'opacity-[0.85]' : 'opacity-0'
                 )}
             >
-                <span className="text-orange-400 text-xs font-semibold tracking-widest uppercase mb-2">
+                <span className="text-teal-400 text-xs font-semibold tracking-widest uppercase mb-2">
                     {project.category}
                 </span>
                 <h3 className="font-display text-xl font-bold text-white mb-2">{project.title}</h3>
@@ -47,7 +47,7 @@ export function ProjectCard({
             <div
                 className={cn(
                     'absolute top-4 left-4 px-3 py-1 rounded-sm text-xs font-semibold tracking-wide transition-opacity duration-300',
-                    project.category === 'Roads' ? 'bg-orange-500 text-white' :
+                    project.category === 'Roads' ? 'bg-teal-500 text-white' :
                         project.category === 'Bridges' ? 'bg-gold text-white' :
                             'bg-navy-600 text-white',
                     isHovered ? 'opacity-0' : 'opacity-100'

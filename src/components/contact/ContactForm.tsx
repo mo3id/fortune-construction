@@ -14,7 +14,7 @@ import { FormFieldProps, ContactFormData } from '@/types'
 function FormField({ label, error, children, className }: FormFieldProps) {
     return (
         <div className={cn('flex flex-col gap-1.5', className)}>
-            <Label className="text-navy-700 font-medium">{label}</Label>
+            <Label className="text-navy-800 font-medium">{label}</Label>
             {children}
             {error && <p className="text-xs text-red-500">{error}</p>}
         </div>
@@ -49,7 +49,7 @@ export function ContactForm() {
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
             <div>
-                <h3 className="font-display text-2xl font-bold text-navy-700 mb-1">Project Enquiry</h3>
+                <h3 className="font-display text-2xl font-bold text-navy-800 mb-1">Project Enquiry</h3>
                 <p className="text-gray-400 text-sm">All fields are required. We&apos;ll respond within 24 hours.</p>
             </div>
 
@@ -58,7 +58,7 @@ export function ContactForm() {
                     <Input
                         placeholder="Your full name"
                         aria-invalid={!!errors.name}
-                        className="h-10 rounded-sm border-gray-200 focus-visible:border-orange-500 focus-visible:ring-orange-500/20"
+                        className="h-10 rounded-sm border-gray-200 focus-visible:border-teal-500 focus-visible:ring-teal-500/20"
                         {...register('name')}
                     />
                 </FormField>
@@ -67,7 +67,7 @@ export function ContactForm() {
                         type="email"
                         placeholder="your@email.com"
                         aria-invalid={!!errors.email}
-                        className="h-10 rounded-sm border-gray-200 focus-visible:border-orange-500 focus-visible:ring-orange-500/20"
+                        className="h-10 rounded-sm border-gray-200 focus-visible:border-teal-500 focus-visible:ring-teal-500/20"
                         {...register('email')}
                     />
                 </FormField>
@@ -78,7 +78,7 @@ export function ContactForm() {
                     type="tel"
                     placeholder="+265 999 123 456"
                     aria-invalid={!!errors.phone}
-                    className="h-10 rounded-sm border-gray-200 focus-visible:border-orange-500 focus-visible:ring-orange-500/20"
+                    className="h-10 rounded-sm border-gray-200 focus-visible:border-teal-500 focus-visible:ring-teal-500/20"
                     {...register('phone')}
                 />
             </FormField>
@@ -88,7 +88,7 @@ export function ContactForm() {
                     rows={5}
                     placeholder="Describe your project — type, location, scope, timeline, and any specific requirements..."
                     aria-invalid={!!errors.message}
-                    className="rounded-sm border-gray-200 focus-visible:border-orange-500 focus-visible:ring-orange-500/20 resize-none"
+                    className="rounded-sm border-gray-200 focus-visible:border-teal-500 focus-visible:ring-teal-500/20 resize-none"
                     {...register('message')}
                 />
             </FormField>
@@ -96,7 +96,7 @@ export function ContactForm() {
             <Button
                 type="submit"
                 disabled={isFormSubmitting}
-                className="w-full h-11 rounded-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold gap-2"
+                className="w-full h-11 rounded-sm bg-teal-500 hover:bg-teal-600 text-white font-semibold gap-2"
             >
                 {isFormSubmitting ? (
                     <>

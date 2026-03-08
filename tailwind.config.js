@@ -5,21 +5,68 @@ export default {
   theme: {
     extend: {
       colors: {
+        background: 'var(--background)',
+        foreground: 'var(--foreground)',
+        card: {
+          DEFAULT: 'var(--card)',
+          foreground: 'var(--card-foreground)',
+        },
+        popover: {
+          DEFAULT: 'var(--popover)',
+          foreground: 'var(--popover-foreground)',
+        },
+        primary: {
+          DEFAULT: 'var(--primary)',
+          foreground: 'var(--primary-foreground)',
+        },
+        secondary: {
+          DEFAULT: 'var(--secondary)',
+          foreground: 'var(--secondary-foreground)',
+        },
+        muted: {
+          DEFAULT: 'var(--muted)',
+          foreground: 'var(--muted-foreground)',
+        },
+        accent: {
+          DEFAULT: 'var(--accent)',
+          foreground: 'var(--accent-foreground)',
+        },
+        destructive: {
+          DEFAULT: 'var(--destructive)',
+          foreground: 'var(--destructive-foreground)',
+        },
+        border: 'var(--border)',
+        input: 'var(--input)',
+        ring: 'var(--ring)',
+        brand: {
+          navy: '#06162d',    // Deep navy from logo
+          teal: '#00c3b6',    // Vibrant teal from logo
+          light: '#e6f7f6',   // Soft teal tint
+        },
         navy: {
-          50: '#eef2ff',
-          100: '#e0e7ff',
-          500: '#1e3a5f',
-          600: '#162d4d',
-          700: '#0f2038',
-          800: '#0a1628',
-          900: '#060e1a',
+          50: '#f4f7fa',
+          100: '#e9eff4',
+          200: '#d3dfe9',
+          300: '#a6bfd4',
+          400: '#7094b8',
+          500: '#4a739d',
+          600: '#385b7f',
+          700: '#2d4967',
+          800: '#06162d', // Logo Navy
+          900: '#030b16',
         },
-        orange: {
-          400: '#fb923c',
-          500: '#f97316',
-          600: '#ea6c0a',
+        teal: {
+          50: '#f0fdfc',
+          100: '#ccfbf1',
+          200: '#99f6e4',
+          300: '#5eead4',
+          400: '#2dd4bf',
+          500: '#00c3b6', // Logo Teal
+          600: '#0d9488',
+          700: '#0f766e',
+          800: '#115e59',
+          900: '#134e4a',
         },
-        gold: '#c9a227',
       },
       fontFamily: {
         display: ['"Playfair Display"', 'Georgia', 'serif'],

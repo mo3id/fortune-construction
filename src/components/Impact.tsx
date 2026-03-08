@@ -12,7 +12,7 @@ const METRICS = [
         suffix: '+',
         label: 'KM of Roads Paved',
         description: 'Connecting communities across all regions of Malawi with durable, engineered roads.',
-        color: 'bg-orange-500',
+        color: 'bg-teal-500',
     },
     {
         icon: <Home className="w-8 h-8" />,
@@ -20,7 +20,7 @@ const METRICS = [
         suffix: '+',
         label: 'Families Housed',
         description: 'Quality residential and social housing projects delivered on time and on budget.',
-        color: 'bg-navy-600',
+        color: 'bg-navy-800',
     },
     {
         icon: <Clock className="w-8 h-8" />,
@@ -28,7 +28,7 @@ const METRICS = [
         suffix: '+',
         label: 'Years of Experience',
         description: 'Two decades of expertise in civil, structural, and commercial construction.',
-        color: 'bg-orange-500',
+        color: 'bg-teal-500',
     },
     {
         icon: <CheckCircle className="w-8 h-8" />,
@@ -36,7 +36,7 @@ const METRICS = [
         suffix: '+',
         label: 'Successful Projects',
         description: 'A proven track record of successful delivery for government and private clients.',
-        color: 'bg-navy-600',
+        color: 'bg-navy-800',
     },
 ]
 
