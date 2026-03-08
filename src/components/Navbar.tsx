@@ -1,5 +1,5 @@
 import { useEffect, useCallback } from 'react'
-import { Menu, X, HardHat } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import { useUIStore } from '@/store/useUIStore'
 import { cn } from '@/lib/utils'
 
@@ -40,14 +40,12 @@ export default function Navbar() {
         >
             <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
                 {/* Logo */}
-                <button onClick={() => scrollTo('#hero')} className="flex items-center gap-3">
-                    <div className="w-9 h-9 bg-orange-500 rounded-sm flex items-center justify-center">
-                        <HardHat className="w-5 h-5 text-white" strokeWidth={1.5} />
-                    </div>
-                    <div className="text-left">
-                        <p className="font-display text-white font-bold text-base leading-none">Fortune</p>
-                        <p className="text-orange-400 text-[9px] tracking-[0.2em] uppercase font-semibold">Construction</p>
-                    </div>
+                <button onClick={() => scrollTo('#hero')} className="flex items-center">
+                    <img
+                        src="/Logo-new-01.png"
+                        alt="Fortune Construction Logo"
+                        className="h-10 md:h-12 w-auto object-contain"
+                    />
                 </button>
 
                 {/* Desktop nav */}
