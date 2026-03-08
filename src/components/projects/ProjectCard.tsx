@@ -1,24 +1,6 @@
 import { MapPin, Calendar } from 'lucide-react'
 import { cn } from '@/lib/utils'
-
-interface Project {
-    id: string
-    title: string
-    location: string
-    year: string
-    category: string
-    image: string
-    size: 'normal' | 'tall' | 'wide'
-    description: string
-}
-
-interface ProjectCardProps {
-    project: Project
-    isHovered: boolean
-    onMouseEnter: () => void
-    onMouseLeave: () => void
-    onClick: () => void
-}
+import { ProjectCardProps } from '@/types'
 
 export function ProjectCard({
     project,

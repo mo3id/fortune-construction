@@ -1,20 +1,6 @@
 import { AnimatedCounter } from './AnimatedCounter'
 import { cn } from '@/lib/utils'
-
-interface MetricItem {
-    icon: React.ReactNode
-    target: number
-    suffix: string
-    label: string
-    description: string
-    color: string
-}
-
-interface MetricCardProps {
-    metric: MetricItem
-    index: number
-    isVisible: boolean
-}
+import { MetricCardProps } from '@/types'
 
 export function MetricCard({ metric, index, isVisible }: MetricCardProps) {
     return (

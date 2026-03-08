@@ -1,10 +1,5 @@
 import { useEffect, useState } from 'react'
-
-interface AnimatedCounterProps {
-    target: number
-    suffix: string
-    isVisible: boolean
-}
+import { AnimatedCounterProps } from '@/types'
 
 export function AnimatedCounter({ target, suffix, isVisible }: AnimatedCounterProps) {
     const [count, setCount] = useState(0)

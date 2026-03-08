@@ -1,20 +1,6 @@
 import { ArrowRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
-
-interface Service {
-    icon: React.ReactNode
-    title: string
-    tagline: string
-    description: string
-    features: string[]
-    accentColor: string
-    bgImage: string
-}
-
-interface ServiceCardProps {
-    service: Service
-    index: number
-}
+import { ServiceCardProps } from '@/types'
 
 export function ServiceCard({ service, index }: ServiceCardProps) {
     return (

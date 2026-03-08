@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Send, Loader2 } from 'lucide-react'
-import { contactSchema, type ContactFormData } from '@/lib/validation'
+import { contactSchema } from '@/lib/validation'
 import { useUIStore } from '@/store/useUIStore'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
@@ -9,13 +9,7 @@ import { Textarea } from '@/components/ui/Textarea'
 import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/utils'
 import { SuccessMessage } from './SuccessMessage'
-
-interface FormFieldProps {
-    label: string
-    error?: string
-    children: React.ReactNode
-    className?: string
-}
+import { FormFieldProps, ContactFormData } from '@/types'
 
 function FormField({ label, error, children, className }: FormFieldProps) {
     return (

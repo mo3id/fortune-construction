@@ -1,13 +1,4 @@
-interface Testimonial {
-    quote: string
-    author: string
-    org: string
-    initials: string
-}
-
-interface TestimonialCardProps {
-    testimonial: Testimonial
-}
+import { TestimonialCardProps } from '@/types'
 
 export function TestimonialCard({ testimonial }: TestimonialCardProps) {
     return (

@@ -1,11 +1,5 @@
-import { ProjectCategory } from '@/store/useUIStore'
 import { cn } from '@/lib/utils'
-
-interface ProjectFilterProps {
-    categories: ProjectCategory[]
-    activeCategory: ProjectCategory
-    onCategoryChange: (category: ProjectCategory) => void
-}
+import { ProjectFilterProps } from '@/types'
 
 export function ProjectFilter({
     categories,

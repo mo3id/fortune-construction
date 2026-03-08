@@ -1,20 +1,6 @@
 import { X, MapPin, Calendar } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
-
-interface Project {
-    id: string
-    title: string
-    location: string
-    year: string
-    category: string
-    image: string
-    description: string
-}
-
-interface ProjectModalProps {
-    project: Project
-    onClose: () => void
-}
+import { ProjectModalProps } from '@/types'
 
 export function ProjectModal({ project, onClose }: ProjectModalProps) {
     const handleEnquire = () => {

@@ -17,5 +17,3 @@ export const contactSchema = z.object({
         .min(20, 'Message must be at least 20 characters')
         .max(1000, 'Message must be under 1000 characters'),
 })
-
-export type ContactFormData = z.infer<typeof contactSchema>

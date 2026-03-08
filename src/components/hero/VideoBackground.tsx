@@ -1,9 +1,6 @@
 import { cn } from '@/lib/utils'
 import { HERO_VIDEOS } from '@/lib/constants'
-
-interface VideoBackgroundProps {
-    currentIndex: number
-}
+import { VideoBackgroundProps } from '@/types'
 
 export function VideoBackground({ currentIndex }: VideoBackgroundProps) {
     return (

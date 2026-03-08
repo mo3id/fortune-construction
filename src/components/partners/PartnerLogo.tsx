@@ -1,15 +1,5 @@
 import { cn } from '@/lib/utils'
-
-interface Partner {
-    name: string
-    abbr: string
-    color: string
-}
-
-interface PartnerLogoProps {
-    partner: Partner
-    index: number
-}
+import { PartnerLogoProps } from '@/types'
 
 export function PartnerLogo({ partner, index }: PartnerLogoProps) {
     return (

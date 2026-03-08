@@ -1,30 +1,5 @@
 import { create } from 'zustand'
-
-export type ProjectCategory = 'All' | 'Roads' | 'Buildings' | 'Bridges'
-
-interface UIState {
-    // Navbar
-    isNavScrolled: boolean
-    isMobileMenuOpen: boolean
-    setNavScrolled: (scrolled: boolean) => void
-    setMobileMenuOpen: (open: boolean) => void
-
-    // Gallery
-    activeCategory: ProjectCategory
-    setActiveCategory: (category: ProjectCategory) => void
-
-    // Modal
-    modalProjectId: string | null
-    openModal: (id: string) => void
-    closeModal: () => void
-
-    // Contact form
-    isFormSubmitted: boolean
-    isFormSubmitting: boolean
-    setFormSubmitting: (submitting: boolean) => void
-    setFormSubmitted: (submitted: boolean) => void
-    resetForm: () => void
-}
+import { UIState } from '@/types'
 
 export const useUIStore = create<UIState>((set) => ({
     // Navbar

@@ -2,14 +2,7 @@ import { Flag, Award, TrendingUp, Globe, Zap, Star } from 'lucide-react'
 import { Container } from './ui/Container'
 import { SectionHeader } from './ui/SectionHeader'
 import { TimelineItem } from './timeline/TimelineItem'
-
-interface TimelineEvent {
-    year: string
-    title: string
-    description: string
-    icon: React.ReactNode
-    highlight?: boolean
-}
+import { TimelineEvent } from '@/types'
 
 const TIMELINE_EVENTS: TimelineEvent[] = [
     {

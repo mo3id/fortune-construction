@@ -1,21 +1,11 @@
 import { useState } from 'react'
-import { useUIStore, type ProjectCategory } from '@/store/useUIStore'
+import { useUIStore } from '@/store/useUIStore'
 import { SectionHeader } from './ui/SectionHeader'
 import { Container } from './ui/Container'
 import { ProjectCard } from './projects/ProjectCard'
 import { ProjectFilter } from './projects/ProjectFilter'
 import { ProjectModal } from './projects/ProjectModal'
-
-interface Project {
-    id: string
-    title: string
-    location: string
-    year: string
-    category: Exclude<ProjectCategory, 'All'>
-    image: string
-    size: 'normal' | 'tall' | 'wide'
-    description: string
-}
+import { Project, ProjectCategory } from '@/types'
 
 const PROJECTS: Project[] = [
     {

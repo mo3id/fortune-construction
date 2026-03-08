@@ -3,16 +3,7 @@ import { SectionHeader } from './ui/SectionHeader'
 import { Container } from './ui/Container'
 import { ServiceCard } from './services/ServiceCard'
 import { WhyUs } from './services/WhyUs'
-
-interface Service {
-    icon: React.ReactNode
-    title: string
-    tagline: string
-    description: string
-    features: string[]
-    accentColor: string
-    bgImage: string
-}
+import { Service } from '@/types'
 
 const SERVICES: Service[] = [
     {

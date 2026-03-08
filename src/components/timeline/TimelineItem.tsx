@@ -1,17 +1,5 @@
 import { cn } from '@/lib/utils'
-
-interface TimelineEvent {
-    year: string
-    title: string
-    description: string
-    icon: React.ReactNode
-    highlight?: boolean
-}
-
-interface TimelineItemProps {
-    event: TimelineEvent
-    index: number
-}
+import { TimelineItemProps } from '@/types'
 
 export function TimelineItem({ event, index }: TimelineItemProps) {
     const isEven = index % 2 === 0
