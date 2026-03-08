@@ -1,4 +1,8 @@
-import { Route, Building2, Layers, ArrowRight, Wrench, BarChart3, ShieldCheck } from 'lucide-react'
+import { Route, Building2, Layers } from 'lucide-react'
+import { SectionHeader } from './ui/SectionHeader'
+import { Container } from './ui/Container'
+import { ServiceCard } from './services/ServiceCard'
+import { WhyUs } from './services/WhyUs'
 
 interface Service {
     icon: React.ReactNode
@@ -43,85 +47,24 @@ const SERVICES: Service[] = [
     },
 ]
 
-const WHY_US = [
-    { icon: <Wrench className="w-5 h-5" />, title: 'Certified Engineering Teams', desc: 'Licensed engineers and qualified technicians on every project.' },
-    { icon: <BarChart3 className="w-5 h-5" />, title: 'On-Time Delivery', desc: 'Industry-leading project management ensuring schedule adherence.' },
-    { icon: <ShieldCheck className="w-5 h-5" />, title: 'Quality Assurance', desc: 'Rigorous QA processes at every stage from foundation to finish.' },
-]
-
 export default function Services() {
     return (
         <section id="services" className="section-padding bg-white">
-            <div className="max-w-7xl mx-auto">
-                <div className="text-center mb-16 reveal">
-                    <p className="section-subtitle">What We Build</p>
-                    <h2 className="section-title max-w-2xl mx-auto">
-                        Comprehensive Construction Services
-                    </h2>
-                    <p className="text-gray-500 mt-4 max-w-xl mx-auto text-lg leading-relaxed">
-                        From groundbreaking to handover, Fortune Construction delivers full-scope construction across Malawi&apos;s most critical sectors.
-                    </p>
-                </div>
+            <Container>
+                <SectionHeader
+                    subtitle="What We Build"
+                    title="Comprehensive Construction Services"
+                    description="From groundbreaking to handover, Fortune Construction delivers full-scope construction across Malawi's most critical sectors."
+                />
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
                     {SERVICES.map((service, i) => (
-                        <div
-                            key={service.title}
-                            className={`reveal reveal-delay-${i + 1} group bg-white border border-gray-100 rounded-sm shadow-sm card-hover overflow-hidden flex flex-col`}
-                        >
-                            {/* Image */}
-                            <div className="relative h-48 overflow-hidden">
-                                <img
-                                    src={service.bgImage}
-                                    alt={service.title}
-                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                                />
-                                <div className="absolute inset-0 bg-navy-900/50" />
-                                <div className={`absolute top-4 left-4 w-1 h-12 ${service.accentColor.replace('border-', 'bg-')}`} />
-                                <div className="absolute bottom-4 left-6 text-white">
-                                    {service.icon}
-                                </div>
-                            </div>
-
-                            {/* Content */}
-                            <div className={`flex-1 p-8 border-l-4 ${service.accentColor}`}>
-                                <p className="text-orange-500 text-xs font-semibold tracking-widest uppercase mb-2">{service.tagline}</p>
-                                <h3 className="font-display text-2xl font-bold text-navy-700 mb-4">{service.title}</h3>
-                                <p className="text-gray-500 text-sm leading-relaxed mb-6">{service.description}</p>
-
-                                <ul className="space-y-2 mb-6">
-                                    {service.features.map((feat) => (
-                                        <li key={feat} className="flex items-center gap-2 text-sm text-gray-600">
-                                            <span className="w-1.5 h-1.5 bg-orange-500 rounded-full flex-shrink-0" />
-                                            {feat}
-                                        </li>
-                                    ))}
-                                </ul>
-
-                                <button
-                                    onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
-                                    className="inline-flex items-center gap-2 text-orange-500 font-semibold text-sm hover:gap-3 transition-all duration-200"
-                                >
-                                    Enquire Now <ArrowRight className="w-4 h-4" />
-                                </button>
-                            </div>
-                        </div>
+                        <ServiceCard key={service.title} service={service} index={i} />
                     ))}
                 </div>
 
-                {/* Why us strip */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {WHY_US.map((item) => (
-                        <div key={item.title} className="reveal flex items-start gap-4 p-6 bg-gray-50 rounded-sm">
-                            <div className="text-orange-500 mt-0.5 flex-shrink-0">{item.icon}</div>
-                            <div>
-                                <p className="font-semibold text-navy-700 mb-1">{item.title}</p>
-                                <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
+                <WhyUs />
+            </Container>
         </section>
     )
 }

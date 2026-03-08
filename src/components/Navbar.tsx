@@ -2,6 +2,8 @@ import { useEffect, useCallback } from 'react'
 import { Menu, X } from 'lucide-react'
 import { useUIStore } from '@/store/useUIStore'
 import { cn } from '@/lib/utils'
+import { Button } from './ui/Button'
+import { Container } from './ui/Container'
 
 const NAV_LINKS = [
     { label: 'About', href: '#impact' },
@@ -38,7 +40,7 @@ export default function Navbar() {
                     : 'bg-transparent py-5'
             )}
         >
-            <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
+            <Container className="flex items-center justify-between">
                 {/* Logo */}
                 <button onClick={() => scrollTo('#hero')} className="flex items-center">
                     <img
@@ -59,12 +61,13 @@ export default function Navbar() {
                             {link.label}
                         </button>
                     ))}
-                    <button
+                    <Button
                         onClick={() => scrollTo('#contact')}
-                        className="btn-primary text-sm px-6 py-3"
+                        size="sm"
+                        className="px-6 py-3"
                     >
                         Get a Quote
-                    </button>
+                    </Button>
                 </nav>
 
                 {/* Mobile toggle */}
@@ -75,7 +78,7 @@ export default function Navbar() {
                 >
                     {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                 </button>
-            </div>
+            </Container>
 
             {/* Mobile menu */}
             {isMobileMenuOpen && (
@@ -89,12 +92,13 @@ export default function Navbar() {
                             {link.label}
                         </button>
                     ))}
-                    <button
+                    <Button
                         onClick={() => scrollTo('#contact')}
-                        className="btn-primary text-sm mt-2"
+                        size="sm"
+                        className="mt-2"
                     >
                         Get a Quote
-                    </button>
+                    </Button>
                 </div>
             )}
         </header>

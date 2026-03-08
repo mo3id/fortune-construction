@@ -1,6 +1,10 @@
 import { useState } from 'react'
-import { X, MapPin, Calendar } from 'lucide-react'
 import { useUIStore, type ProjectCategory } from '@/store/useUIStore'
+import { SectionHeader } from './ui/SectionHeader'
+import { Container } from './ui/Container'
+import { ProjectCard } from './projects/ProjectCard'
+import { ProjectFilter } from './projects/ProjectFilter'
+import { ProjectModal } from './projects/ProjectModal'
 
 interface Project {
     id: string
@@ -90,116 +94,35 @@ export default function Projects() {
 
     return (
         <section id="projects" className="section-padding bg-gray-50">
-            <div className="max-w-7xl mx-auto">
-                <div className="text-center mb-12 reveal">
-                    <p className="section-subtitle">Our Portfolio</p>
-                    <h2 className="section-title max-w-2xl mx-auto">Landmark Projects Across Malawi</h2>
-                    <p className="text-gray-500 mt-4 max-w-xl mx-auto text-lg leading-relaxed">
-                        Each project represents a commitment to quality, safety, and the communities we serve.
-                    </p>
-                </div>
+            <Container>
+                <SectionHeader
+                    subtitle="Our Portfolio"
+                    title="Landmark Projects Across Malawi"
+                    description="Each project represents a commitment to quality, safety, and the communities we serve."
+                />
 
-                {/* Filter tabs */}
-                <div className="flex items-center justify-center gap-2 mb-10 flex-wrap">
-                    {CATEGORIES.map((cat) => (
-                        <button
-                            key={cat}
-                            onClick={() => setActiveCategory(cat)}
-                            className={`px-6 py-2.5 text-sm font-semibold tracking-wide rounded-sm border transition-all duration-200 ${activeCategory === cat
-                                    ? 'bg-orange-500 border-orange-500 text-white'
-                                    : 'bg-white border-gray-200 text-gray-600 hover:border-orange-500 hover:text-orange-500'
-                                }`}
-                        >
-                            {cat}
-                        </button>
-                    ))}
-                </div>
+                <ProjectFilter
+                    categories={CATEGORIES}
+                    activeCategory={activeCategory}
+                    onCategoryChange={setActiveCategory}
+                />
 
-                {/* Masonry Grid */}
                 <div className="masonry-grid">
                     {filtered.map((project) => (
-                        <div
+                        <ProjectCard
                             key={project.id}
-                            className={`relative overflow-hidden rounded-sm cursor-pointer group ${project.size}`}
+                            project={project}
+                            isHovered={hoveredId === project.id}
                             onMouseEnter={() => setHoveredId(project.id)}
                             onMouseLeave={() => setHoveredId(null)}
                             onClick={() => openModal(project.id)}
-                        >
-                            <img
-                                src={project.image}
-                                alt={project.title}
-                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                            />
-
-                            {/* Overlay */}
-                            <div
-                                className={`absolute inset-0 bg-navy-900 transition-opacity duration-300 flex flex-col justify-end p-6 ${hoveredId === project.id ? 'opacity-[0.85]' : 'opacity-0'
-                                    }`}
-                            >
-                                <span className="text-orange-400 text-xs font-semibold tracking-widest uppercase mb-2">
-                                    {project.category}
-                                </span>
-                                <h3 className="font-display text-xl font-bold text-white mb-2">{project.title}</h3>
-                                <div className="flex items-center gap-4 text-white/60 text-xs mb-3">
-                                    <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{project.location}</span>
-                                    <span className="flex items-center gap-1"><Calendar className="w-3 h-3" />{project.year}</span>
-                                </div>
-                                <p className="text-white/70 text-sm leading-relaxed">{project.description}</p>
-                            </div>
-
-                            {/* Category badge */}
-                            <div
-                                className={`absolute top-4 left-4 px-3 py-1 rounded-sm text-xs font-semibold tracking-wide transition-opacity duration-300 ${project.category === 'Roads' ? 'bg-orange-500 text-white' :
-                                        project.category === 'Bridges' ? 'bg-gold text-white' :
-                                            'bg-navy-600 text-white'
-                                    } ${hoveredId === project.id ? 'opacity-0' : 'opacity-100'}`}
-                            >
-                                {project.category}
-                            </div>
-                        </div>
+                        />
                     ))}
                 </div>
-            </div>
+            </Container>
 
-            {/* Modal */}
             {modalProject && (
-                <div
-                    className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
-                    onClick={closeModal}
-                >
-                    <div
-                        className="bg-white rounded-sm max-w-2xl w-full overflow-hidden shadow-2xl"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <div className="relative h-72">
-                            <img src={modalProject.image} alt={modalProject.title} className="w-full h-full object-cover" />
-                            <button
-                                onClick={closeModal}
-                                className="absolute top-4 right-4 bg-white/20 hover:bg-white/40 backdrop-blur-sm text-white rounded-sm p-2 transition-colors"
-                            >
-                                <X className="w-5 h-5" />
-                            </button>
-                            <div className="absolute inset-0 bg-gradient-to-t from-navy-900/80 to-transparent" />
-                            <div className="absolute bottom-4 left-6">
-                                <span className="text-orange-400 text-xs font-semibold tracking-widest uppercase">{modalProject.category}</span>
-                                <h3 className="font-display text-2xl font-bold text-white mt-1">{modalProject.title}</h3>
-                            </div>
-                        </div>
-                        <div className="p-8">
-                            <div className="flex items-center gap-6 text-gray-400 text-sm mb-6">
-                                <span className="flex items-center gap-1.5"><MapPin className="w-4 h-4 text-orange-500" />{modalProject.location}</span>
-                                <span className="flex items-center gap-1.5"><Calendar className="w-4 h-4 text-orange-500" />{modalProject.year}</span>
-                            </div>
-                            <p className="text-gray-600 leading-relaxed mb-8">{modalProject.description}</p>
-                            <button
-                                onClick={() => { closeModal(); document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' }) }}
-                                className="btn-primary w-full justify-center"
-                            >
-                                Enquire About Similar Projects
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                <ProjectModal project={modalProject} onClose={closeModal} />
             )}
         </section>
     )
