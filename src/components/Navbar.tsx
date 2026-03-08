@@ -64,7 +64,7 @@ export default function Navbar() {
                     <Button
                         onClick={() => scrollTo('#contact')}
                         size="sm"
-                        className="px-6 py-3"
+                        className="px-6 py-2.5 h-auto rounded-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold"
                     >
                         Get a Quote
                     </Button>
@@ -95,7 +95,7 @@ export default function Navbar() {
                     <Button
                         onClick={() => scrollTo('#contact')}
                         size="sm"
-                        className="mt-2"
+                        className="mt-2 h-10 rounded-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold w-full"
                     >
                         Get a Quote
                     </Button>

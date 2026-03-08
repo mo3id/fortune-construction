@@ -16,6 +16,8 @@ export function SuccessMessage() {
             </p>
             <Button
                 onClick={resetForm}
+                variant="outline"
+                className="rounded-sm border-orange-500 text-orange-500 hover:bg-orange-50 font-semibold"
             >
                 Send Another Message
             </Button>

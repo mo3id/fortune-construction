@@ -33,12 +33,14 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
             >
                 <div className="relative h-72">
                     <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
-                    <button
+                    <Button
+                        variant="ghost"
+                        size="icon-sm"
                         onClick={onClose}
-                        className="absolute top-4 right-4 bg-white/20 hover:bg-white/40 backdrop-blur-sm text-white rounded-sm p-2 transition-colors"
+                        className="absolute top-4 right-4 bg-white/20 hover:bg-white/40 backdrop-blur-sm text-white rounded-sm"
                     >
                         <X className="w-5 h-5" />
-                    </button>
+                    </Button>
                     <div className="absolute inset-0 bg-gradient-to-t from-navy-900/80 to-transparent" />
                     <div className="absolute bottom-4 left-6">
                         <span className="text-orange-400 text-xs font-semibold tracking-widest uppercase">
@@ -49,11 +51,11 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                 </div>
                 <div className="p-8">
                     <div className="flex items-center gap-6 text-gray-400 text-sm mb-6">
-                        <span className="flex items-center gap-1.5 trasnition-colors">
+                        <span className="flex items-center gap-1.5">
                             <MapPin className="w-4 h-4 text-orange-500" />
                             {project.location}
                         </span>
-                        <span className="flex items-center gap-1.5 transition-colors">
+                        <span className="flex items-center gap-1.5">
                             <Calendar className="w-4 h-4 text-orange-500" />
                             {project.year}
                         </span>
@@ -61,7 +63,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                     <p className="text-gray-600 leading-relaxed mb-8">{project.description}</p>
                     <Button
                         onClick={handleEnquire}
-                        className="w-full justify-center"
+                        className="w-full h-11 rounded-sm bg-orange-500 hover:bg-orange-600 text-white font-semibold"
                     >
                         Enquire About Similar Projects
                     </Button>
