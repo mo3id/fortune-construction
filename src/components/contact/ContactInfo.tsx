@@ -1,28 +1,30 @@
 import { Phone, Mail, MapPin, Clock } from 'lucide-react'
+import { Button } from '@/components/ui/Button'
+import { SITE } from '@/lib/constants'
 
 const CONTACT_INFO = [
     {
         icon: <Phone className="w-5 h-5" />,
         label: 'Phone',
-        value: '+265 1 234 5678',
-        href: 'tel:+26512345678',
+        value: SITE.phone,
+        href: SITE.phoneHref,
     },
     {
         icon: <Mail className="w-5 h-5" />,
         label: 'Email',
-        value: 'info@fortuneconstruction.mw',
-        href: 'mailto:info@fortuneconstruction.mw',
+        value: SITE.email,
+        href: SITE.emailHref,
     },
     {
         icon: <MapPin className="w-5 h-5" />,
         label: 'Address',
-        value: 'Area 4, Lilongwe, Malawi',
-        href: 'https://maps.google.com',
+        value: SITE.address,
+        href: SITE.mapsUrl,
     },
     {
         icon: <Clock className="w-5 h-5" />,
         label: 'Working Hours',
-        value: 'Mon – Fri: 7:30am – 5:00pm',
+        value: SITE.workingHours,
         href: null,
     },
 ]
@@ -31,8 +33,8 @@ export function ContactInfo() {
     return (
         <div className="lg:col-span-2 space-y-6 reveal">
             <div className="bg-navy-800 rounded-sm p-8 text-white">
-                <h3 className="font-display text-2xl font-bold mb-2">Fortune Construction</h3>
-                <p className="text-white/50 text-sm mb-8">Malawi&apos;s premier construction company since 2004.</p>
+                <h3 className="font-display text-2xl font-bold mb-2">{SITE.name}</h3>
+                <p className="text-white/50 text-sm mb-8">{SITE.tagline}</p>
 
                 <div className="space-y-6">
                     {CONTACT_INFO.map((item) => (
@@ -56,9 +58,15 @@ export function ContactInfo() {
             <div className="bg-orange-500 rounded-sm p-6 text-white text-center md:text-left">
                 <p className="font-display text-lg font-bold mb-2">Need a Quote Fast?</p>
                 <p className="text-white/80 text-sm mb-4">Call us directly for urgent project enquiries.</p>
-                <a href="tel:+26512345678" className="inline-flex items-center gap-2 bg-white text-orange-500 font-semibold text-sm px-5 py-2.5 rounded-sm hover:bg-white/90 transition-colors">
-                    <Phone className="w-4 h-4" /> Call Now
-                </a>
+                <Button
+                    asChild
+                    className="bg-white text-orange-500 hover:bg-white/90 font-semibold rounded-sm h-10 px-5"
+                >
+                    <a href={SITE.phoneHref}>
+                        <Phone className="w-4 h-4" />
+                        Call Now
+                    </a>
+                </Button>
             </div>
         </div>
     )

@@ -4,18 +4,12 @@ import { useUIStore } from '@/store/useUIStore'
 import { cn } from '@/lib/utils'
 import { Button } from './ui/Button'
 import { Container } from './ui/Container'
-
-const NAV_LINKS = [
-    { label: 'About', href: '#impact' },
-    { label: 'Services', href: '#services' },
-    { label: 'Projects', href: '#projects' },
-    { label: 'Timeline', href: '#timeline' },
-    { label: 'Partners', href: '#partners' },
-    { label: 'Contact', href: '#contact' },
-]
+import { NAV_LINKS } from '@/lib/constants'
+import { useScrollTo } from '@/hooks/useScrollTo'
 
 export default function Navbar() {
     const { isNavScrolled, isMobileMenuOpen, setNavScrolled, setMobileMenuOpen } = useUIStore()
+    const _scrollTo = useScrollTo()
 
     const handleScroll = useCallback(() => {
         setNavScrolled(window.scrollY > 50)
@@ -27,7 +21,7 @@ export default function Navbar() {
     }, [handleScroll])
 
     const scrollTo = (href: string) => {
-        document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' })
+        _scrollTo(href)
         setMobileMenuOpen(false)
     }
 

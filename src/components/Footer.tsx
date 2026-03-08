@@ -3,6 +3,7 @@ import { Container } from './ui/Container'
 import { FooterMap } from './footer/FooterMap'
 import { FooterLinks } from './footer/FooterLinks'
 import { Newsletter } from './footer/Newsletter'
+import { SITE } from '@/lib/constants'
 
 const SOCIAL = [
     { icon: <Facebook className="w-4 h-4" />, href: '#', label: 'Facebook' },
@@ -10,6 +11,8 @@ const SOCIAL = [
     { icon: <Linkedin className="w-4 h-4" />, href: '#', label: 'LinkedIn' },
     { icon: <Youtube className="w-4 h-4" />, href: '#', label: 'YouTube' },
 ]
+
+const LEGAL_LINKS = ['Privacy Policy', 'Terms of Service', 'Sitemap']
 
 export default function Footer() {
     return (
@@ -25,12 +28,12 @@ export default function Footer() {
                             <div className="flex items-center mb-6">
                                 <img
                                     src="/Logo-new-01.png"
-                                    alt="Fortune Construction Logo"
+                                    alt={`${SITE.name} Logo`}
                                     className="h-10 w-auto object-contain"
                                 />
                             </div>
                             <p className="text-white/40 text-sm leading-relaxed mb-6">
-                                Building Malawi&apos;s future with integrity, expertise, and commitment to excellence since 2004.
+                                Building Malawi&apos;s future with integrity, expertise, and commitment to excellence since {SITE.foundedYear}.
                             </p>
 
                             {/* Social */}
@@ -58,10 +61,10 @@ export default function Footer() {
                     {/* Bottom bar */}
                     <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
                         <p className="text-white/30 text-xs">
-                            &copy; {new Date().getFullYear()} Fortune Construction Limited. All rights reserved. Registered in Malawi.
+                            &copy; {new Date().getFullYear()} {SITE.name} Limited. All rights reserved. Registered in Malawi.
                         </p>
                         <div className="flex gap-6">
-                            {['Privacy Policy', 'Terms of Service', 'Sitemap'].map((link) => (
+                            {LEGAL_LINKS.map((link) => (
                                 <button key={link} className="text-white/30 hover:text-white/60 text-xs transition-colors">
                                     {link}
                                 </button>

@@ -1,0 +1,30 @@
+import { cn } from '@/lib/utils'
+import { HERO_VIDEOS } from '@/lib/constants'
+
+interface VideoBackgroundProps {
+    currentIndex: number
+}
+
+export function VideoBackground({ currentIndex }: VideoBackgroundProps) {
+    return (
+        <div className="absolute inset-0 z-0">
+            {HERO_VIDEOS.map((src, index) => (
+                <video
+                    key={src}
+                    className={cn(
+                        'absolute inset-0 w-full h-full object-cover transition-opacity duration-1000',
+                        index === currentIndex ? 'opacity-100' : 'opacity-0'
+                    )}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                >
+                    <source src={src} type="video/mp4" />
+                </video>
+            ))}
+            {/* Overlay to ensure readability while videos load */}
+            <div className="absolute inset-0 z-10 bg-navy-900/40" />
+        </div>
+    )
+}
