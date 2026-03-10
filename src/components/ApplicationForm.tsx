@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { motion, AnimatePresence } from 'framer-motion'
-import { CheckCircle2, UploadCloud, FileText, X } from 'lucide-react'
+import { CheckCircle2, UploadCloud, FileText, X, ChevronDown, Briefcase } from 'lucide-react'
 
 const MAX_FILE_SIZE = 5000000; // 5MB
 const ACCEPTED_FILE_TYPES = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
@@ -18,20 +18,45 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>
 
+const POSITIONS = [
+    { value: 'civil-engineer', label: 'Senior Civil Engineer' },
+    { value: 'project-manager', label: 'Project Manager' },
+    { value: 'safety-officer', label: 'HSE Officer' },
+    { value: 'quantity-surveyor', label: 'Quantity Surveyor' },
+    { value: 'general-application', label: 'General Application' },
+]
+
 export default function ApplicationForm() {
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [isSuccess, setIsSuccess] = useState(false)
     const [file, setFile] = useState<File | null>(null)
     const [fileError, setFileError] = useState<string | null>(null)
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+    const dropdownRef = useRef<HTMLDivElement>(null)
 
     const {
         register,
         handleSubmit,
         reset,
+        setValue,
+        watch,
         formState: { errors },
     } = useForm<FormData>({
         resolver: zodResolver(formSchema),
     })
+
+    const selectedPosition = watch('position')
+
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setIsDropdownOpen(false)
+            }
+        }
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => document.removeEventListener('mousedown', handleClickOutside)
+    }, [])
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFile = e.target.files?.[0]
@@ -132,20 +157,66 @@ export default function ApplicationForm() {
                     />
                     {errors.phone && <span className="text-destructive text-sm mt-1">{errors.phone.message}</span>}
                 </div>
-                <div>
+                <div className="relative" ref={dropdownRef}>
                     <label className="block text-sm font-bold text-navy-700 mb-2">Position Applying For *</label>
-                    <select
-                        {...register('position')}
-                        className="w-full px-4 py-3 bg-navy-50 border border-navy-100 rounded-sm focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-colors"
+                    
+                    {/* Hidden input to register with form */}
+                    <input type="hidden" {...register('position')} />
+                    
+                    <div 
+                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                        className={`w-full px-4 py-3 bg-navy-50 border rounded-sm flex items-center justify-between cursor-pointer transition-all duration-300 ${
+                            isDropdownOpen ? 'border-teal-500 ring-1 ring-teal-500 shadow-sm' : 'border-navy-100 hover:border-teal-400'
+                        } ${errors.position ? 'border-destructive ring-destructive/20' : ''}`}
                     >
-                        <option value="">Select a position...</option>
-                        <option value="civil-engineer">Senior Civil Engineer</option>
-                        <option value="project-manager">Project Manager</option>
-                        <option value="safety-officer">HSE Officer</option>
-                        <option value="quantity-surveyor">Quantity Surveyor</option>
-                        <option value="general-application">General Application</option>
-                    </select>
-                    {errors.position && <span className="text-destructive text-sm mt-1">{errors.position.message}</span>}
+                        <span className={`flex items-center ${selectedPosition ? 'text-navy-900 font-medium' : 'text-navy-400'}`}>
+                            {selectedPosition && <Briefcase className="w-4 h-4 mr-2 text-teal-500" />}
+                            {selectedPosition 
+                                ? POSITIONS.find(p => p.value === selectedPosition)?.label 
+                                : 'Select a position...'}
+                        </span>
+                        <ChevronDown className={`w-5 h-5 text-navy-400 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180 text-teal-500' : ''}`} />
+                    </div>
+
+                    <AnimatePresence>
+                        {isDropdownOpen && (
+                            <motion.div
+                                initial={{ opacity: 0, y: -10, scaleY: 0.95 }}
+                                animate={{ opacity: 1, y: 0, scaleY: 1 }}
+                                exit={{ opacity: 0, y: -10, scaleY: 0.95 }}
+                                transition={{ duration: 0.2, ease: "easeOut" }}
+                                className="absolute z-50 w-full mt-2 bg-white border border-navy-100 rounded-sm shadow-2xl overflow-hidden origin-top"
+                            >
+                                <div className="max-h-60 overflow-y-auto py-2 custom-scrollbar">
+                                    {POSITIONS.map((pos, idx) => (
+                                        <motion.div
+                                            key={pos.value}
+                                            initial={{ opacity: 0, x: -10 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            transition={{ delay: idx * 0.05 }}
+                                            onClick={() => {
+                                                setValue('position', pos.value, { shouldValidate: true })
+                                                setIsDropdownOpen(false)
+                                            }}
+                                            className={`px-5 py-3.5 flex items-center cursor-pointer transition-all duration-200 ${
+                                                selectedPosition === pos.value 
+                                                    ? 'bg-teal-50/50 text-teal-600 font-bold border-l-4 border-teal-500' 
+                                                    : 'text-navy-700 hover:bg-navy-50 hover:text-teal-600 border-l-4 border-transparent hover:border-teal-200'
+                                            }`}
+                                        >
+                                            <div className={`w-8 h-8 rounded-full flex items-center justify-center mr-3 transition-colors ${
+                                                selectedPosition === pos.value ? 'bg-teal-100 text-teal-600' : 'bg-navy-50 text-navy-400'
+                                            }`}>
+                                                <Briefcase className="w-4 h-4" />
+                                            </div>
+                                            {pos.label}
+                                        </motion.div>
+                                    ))}
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                    {errors.position && <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-destructive text-sm mt-1.5 flex items-center"><X className="w-3 h-3 mr-1" />{errors.position.message}</motion.span>}
                 </div>
             </div>
 
