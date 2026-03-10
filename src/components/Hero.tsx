@@ -1,13 +1,26 @@
 import { useState, useEffect } from 'react'
 import { ArrowDown, PlayCircle } from 'lucide-react'
+import { useQuery } from '@tanstack/react-query'
 import { Button } from '@/components/ui/Button'
 import { VideoBackground } from './hero/VideoBackground'
 import { HeroStats } from './hero/HeroStats'
 import { HERO_VIDEOS } from '@/lib/constants'
 import { cn } from '@/lib/utils'
+import { apiFetch } from '@/lib/apiClient'
+
+interface SiteSettings {
+    heroTitle: string; heroBadge: string; heroSubtitle: string;
+    companyName: string; tagline: string; phone: string; email: string; address: string;
+}
 
 export default function Hero() {
     const [currentVideo, setCurrentVideo] = useState(0)
+
+    const { data: settings } = useQuery<SiteSettings>({
+        queryKey: ['settings'],
+        queryFn: () => apiFetch<SiteSettings>('/settings'),
+        staleTime: 60_000,
+    })
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -18,6 +31,12 @@ export default function Hero() {
 
     const scrollTo = (selector: string) =>
         document.querySelector(selector)?.scrollIntoView({ behavior: 'smooth' })
+
+    const heroBadge = settings?.heroBadge || '20 Years of Construction Excellence'
+    const heroSubtitle = settings?.heroSubtitle || 'Fortune Construction Limited delivers world-class civil engineering across Malawi, building the bedrock of national progress.'
+
+    const heroTitleRaw = settings?.heroTitle || 'Crafting Visionary Infrastructure.'
+    const visIdx = heroTitleRaw.indexOf('Visionary')
 
     return (
         <section
@@ -45,17 +64,21 @@ export default function Hero() {
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
                         <span className="relative inline-flex rounded-full h-2 w-2 bg-teal-500"></span>
                     </span>
-                    20 Years of Construction Excellence
+                    {heroBadge}
                 </div>
 
                 <h1 className="font-display text-7xl md:text-9xl font-bold text-white leading-[0.85] mb-8 animate-fade-up tracking-tighter">
-                    Crafting <span className="text-gradient">Visionary</span>
-                    <br />
-                    Infrastructure.
+                    {visIdx >= 0 ? (
+                        <>
+                            {heroTitleRaw.slice(0, visIdx)}
+                            <span className="text-gradient">{heroTitleRaw.slice(visIdx, visIdx + 9)}</span>
+                            {heroTitleRaw.slice(visIdx + 9)}
+                        </>
+                    ) : heroTitleRaw}
                 </h1>
 
                 <p className="text-white/70 text-lg md:text-2xl max-w-2xl mx-auto mb-12 font-light leading-relaxed animate-fade-up [animation-delay:200ms]">
-                    Fortune Construction Limited delivers world-class civil engineering across Malawi, building the bedrock of national progress.
+                    {heroSubtitle}
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-5 justify-center items-center animate-fade-up [animation-delay:400ms]">

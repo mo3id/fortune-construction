@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useQuery } from '@tanstack/react-query'
 import { Container } from '@/components/ui/Container'
 import { Briefcase, Building2, HardHat, TrendingUp, MapPin, Clock } from 'lucide-react'
 import {
@@ -9,6 +10,12 @@ import {
 } from "@/components/ui/accordion"
 import { PageHero } from '@/components/ui/PageHero'
 import ApplicationForm from '@/components/ApplicationForm'
+import { apiFetch } from '@/lib/apiClient'
+
+interface ApiJob {
+    _id: string; title: string; location: string; type: string;
+    description: string; requirements: string[]; isActive: boolean;
+}
 
 const BENEFITS = [
     { icon: <TrendingUp />, title: 'Career Growth', desc: 'Clear progression paths and continuous professional development programs.' },
@@ -17,42 +24,21 @@ const BENEFITS = [
     { icon: <HardHat />, title: 'Safety First Culture', desc: 'A work environment where your health and wellbeing are the top priority.' },
 ]
 
-const JOBS = [
-    {
-        id: "civil-engineer",
-        title: "Senior Civil Engineer",
-        location: "Lilongwe Head Office",
-        type: "Full-time",
-        desc: "Lead complex infrastructure projects from design to execution.",
-        reqs: ["BSc in Civil Engineering", "10+ years experience", "Registered with Malawi Board of Engineers", "Strong proficiency in AutoCAD and Civil 3D"]
-    },
-    {
-        id: "project-manager",
-        title: "Construction Project Manager",
-        location: "Various Sites, Malawi",
-        type: "Full-time",
-        desc: "Oversee large-scale commercial and infrastructure projects.",
-        reqs: ["Degree in Construction Management or equivalent", "PMP Certification preferred", "Experience managing budgets >$10M", "Excellent leadership skills"]
-    },
-    {
-        id: "safety-officer",
-        title: "HSE Officer",
-        location: "Blantyre",
-        type: "Full-time",
-        desc: "Ensure strict compliance with health, safety, and environmental standards on site.",
-        reqs: ["Diploma in Occupational Health & Safety", "NEBOSH Certification", "5+ years site experience", "Strong incident investigation skills"]
-    },
-    {
-        id: "quantity-surveyor",
-        title: "Quantity Surveyor",
-        location: "Mzuzu",
-        type: "Full-time",
-        desc: "Manage project costs, contracts, and procurement processes.",
-        reqs: ["BSc in Quantity Surveying", "7+ years commercial experience", "Expert in cost estimation software", "Strong negotiation skills"]
-    }
+const FALLBACK_JOBS = [
+    { _id: 'civil-engineer', title: 'Senior Civil Engineer', location: 'Lilongwe Head Office', type: 'Full-time', description: 'Lead complex infrastructure projects from design to execution.', requirements: ['BSc in Civil Engineering', '10+ years experience', 'Registered with Malawi Board of Engineers', 'Strong proficiency in AutoCAD and Civil 3D'], isActive: true },
+    { _id: 'project-manager', title: 'Construction Project Manager', location: 'Various Sites, Malawi', type: 'Full-time', description: 'Oversee large-scale commercial and infrastructure projects.', requirements: ['Degree in Construction Management or equivalent', 'PMP Certification preferred', 'Experience managing budgets >$10M', 'Excellent leadership skills'], isActive: true },
+    { _id: 'safety-officer', title: 'HSE Officer', location: 'Blantyre', type: 'Full-time', description: 'Ensure strict compliance with health, safety, and environmental standards on site.', requirements: ['Diploma in Occupational Health & Safety', 'NEBOSH Certification', '5+ years site experience', 'Strong incident investigation skills'], isActive: true },
+    { _id: 'quantity-surveyor', title: 'Quantity Surveyor', location: 'Mzuzu', type: 'Full-time', description: 'Manage project costs, contracts, and procurement processes.', requirements: ['BSc in Quantity Surveying', '7+ years commercial experience', 'Expert in cost estimation software', 'Strong negotiation skills'], isActive: true },
 ]
 
 export default function CareersPage() {
+    const { data: apiJobs } = useQuery<ApiJob[]>({
+        queryKey: ['jobs'],
+        queryFn: () => apiFetch<ApiJob[]>('/jobs'),
+        staleTime: 60_000,
+    })
+
+    const jobs = (apiJobs?.length ? apiJobs : FALLBACK_JOBS).filter(j => j.isActive)
     return (
         <div className="flex flex-col w-full bg-background min-h-screen">
             <PageHero 
@@ -104,8 +90,8 @@ export default function CareersPage() {
                             </div>
                             
                             <Accordion type="single" collapsible className="w-full space-y-4">
-                                {JOBS.map((job) => (
-                                    <AccordionItem key={job.id} value={job.id} className="border border-navy-100 rounded-sm overflow-hidden data-[state=open]:border-teal-500 data-[state=open]:shadow-md transition-all duration-300 bg-white">
+                                {jobs.map((job: ApiJob) => (
+                                    <AccordionItem key={job._id} value={job._id} className="border border-navy-100 rounded-sm overflow-hidden data-[state=open]:border-teal-500 data-[state=open]:shadow-md transition-all duration-300 bg-white">
                                         <AccordionTrigger className="px-6 py-5 hover:no-underline hover:bg-navy-50/50 group">
                                             <div className="flex flex-col md:flex-row md:items-center justify-between w-full text-left pr-4">
                                                 <h3 className="text-xl font-bold text-navy-800 group-hover:text-teal-600 transition-colors">{job.title}</h3>
@@ -117,13 +103,13 @@ export default function CareersPage() {
                                         </AccordionTrigger>
                                         <AccordionContent className="px-6 pb-8 pt-4 bg-navy-50/30">
                                             <div className="pt-6 border-t border-navy-100">
-                                                <p className="text-navy-700 mb-8 leading-relaxed font-light text-lg">{job.desc}</p>
+                                                <p className="text-navy-700 mb-8 leading-relaxed font-light text-lg">{job.description}</p>
                                                 <h4 className="font-bold text-navy-800 mb-4 text-sm uppercase tracking-widest flex items-center">
                                                     <span className="w-2 h-2 bg-teal-500 rounded-full mr-3" />
                                                     Requirements
                                                 </h4>
                                                 <ul className="grid md:grid-cols-2 gap-4 text-navy-600 font-light">
-                                                    {job.reqs.map((req, idx) => (
+                                                    {job.requirements.map((req: string, idx: number) => (
                                                         <li key={idx} className="flex items-start bg-white p-3 rounded-sm border border-navy-50">
                                                             <div className="w-1.5 h-1.5 rounded-full bg-teal-500 mt-2 mr-3 flex-shrink-0" />
                                                             {req}

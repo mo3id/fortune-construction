@@ -1,18 +1,22 @@
+import { useQuery } from '@tanstack/react-query'
 import { Container } from './ui/Container'
 import { SectionHeader } from './ui/SectionHeader'
 import { PartnerLogo } from './partners/PartnerLogo'
 import { TestimonialCard } from './partners/TestimonialCard'
+import { apiFetch } from '@/lib/apiClient'
 
-const PARTNERS = [
+interface ApiPartner { _id: string; name: string; abbr: string; logo?: string; order: number }
+
+const FALLBACK_PARTNERS = [
     { name: 'Ministry of Public Works', abbr: 'MPW', color: '#1e3a5f' },
     { name: 'African Development Bank', abbr: 'AfDB', color: '#c9a227' },
     { name: 'World Bank Group', abbr: 'WBG', color: '#1e3a5f' },
     { name: 'JICA Malawi', abbr: 'JICA', color: '#c9a227' },
     { name: 'EU Development', abbr: 'EU', color: '#1e3a5f' },
     { name: 'ROADS Authority', abbr: 'RA', color: '#c9a227' },
-    { name: 'National Construction', abbr: 'NCI', color: '#1e3a5f' },
-    { name: 'Malawi Housing Corp', abbr: 'MHC', color: '#c9a227' },
 ]
+
+const COLORS = ['#1e3a5f', '#c9a227']
 
 const TESTIMONIALS = [
     {
@@ -30,6 +34,16 @@ const TESTIMONIALS = [
 ]
 
 export default function Partners() {
+    const { data: apiPartners } = useQuery<ApiPartner[]>({
+        queryKey: ['partners'],
+        queryFn: () => apiFetch<ApiPartner[]>('/partners'),
+        staleTime: 60_000,
+    })
+
+    const partners = apiPartners?.length
+        ? apiPartners.map((p, i) => ({ name: p.name, abbr: p.abbr, color: COLORS[i % COLORS.length] }))
+        : FALLBACK_PARTNERS
+
     return (
         <section id="partners" className="section-padding bg-white">
             <Container>
@@ -41,7 +55,7 @@ export default function Partners() {
 
                 {/* Partners grid */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20">
-                    {PARTNERS.map((partner, i) => (
+                    {partners.map((partner, i) => (
                         <PartnerLogo key={partner.name} partner={partner} index={i} />
                     ))}
                 </div>

@@ -2,13 +2,27 @@ import { Image } from '@/components/ui/Image';
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { ArrowRight, HardHat, Construction, MapPin } from 'lucide-react'
+import { useQuery } from '@tanstack/react-query'
 import Hero from '@/components/Hero'
 import Impact from '@/components/Impact'
 import Services from '@/components/Services'
 import Partners from '@/components/Partners'
+import { apiFetch } from '@/lib/apiClient'
 import { projectsData } from '@/data/projects'
 
+interface ApiProject { _id: string; title: string; category: string; location: string; coverImage: string }
+
 function App() {
+    const { data: apiProjects } = useQuery<ApiProject[]>({
+        queryKey: ['projects'],
+        queryFn: () => apiFetch<ApiProject[]>('/projects'),
+        staleTime: 60_000,
+    })
+
+    const featuredProjects = apiProjects?.length
+        ? apiProjects.slice(0, 3)
+        : projectsData.slice(0, 3).map(p => ({ _id: p.id, title: p.title, category: p.category, location: p.location, coverImage: p.coverImage }))
+
     return (
         <div className="flex flex-col w-full bg-background">
             <Hero />
@@ -71,9 +85,9 @@ function App() {
                     </div>
 
                     <div className="grid md:grid-cols-3 gap-8 mb-8">
-                        {projectsData.slice(0, 3).map((project, i) => (
+                        {featuredProjects.map((project, i) => (
                             <motion.div 
-                                key={project.id} 
+                                key={project._id} 
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
@@ -87,7 +101,7 @@ function App() {
                                         alt={project.title}
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-navy-900/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-                                        <Link to={`/projects/${project.id}`} className="text-white font-bold flex items-center tracking-wide uppercase text-sm">
+                                        <Link to={`/projects/${project._id}`} className="text-white font-bold flex items-center tracking-wide uppercase text-sm">
                                             View Details <ArrowRight className="w-4 h-4 ml-2" />
                                         </Link>
                                     </div>

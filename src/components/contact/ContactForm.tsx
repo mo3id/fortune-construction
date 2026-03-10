@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/utils'
 import { SuccessMessage } from './SuccessMessage'
 import { FormFieldProps, ContactFormData } from '@/types'
+import { API } from '@/lib/apiClient'
 
 function FormField({ label, error, children, className }: FormFieldProps) {
     return (
@@ -35,11 +36,21 @@ export function ContactForm() {
 
     const onSubmit = async (data: ContactFormData) => {
         setFormSubmitting(true)
-        await new Promise((resolve) => setTimeout(resolve, 1800))
-        console.log('Form data:', data)
-        setFormSubmitting(false)
-        setFormSubmitted(true)
-        reset()
+        try {
+            const res = await fetch(`${API}/messages/submit`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            })
+            if (!res.ok) throw new Error('Failed to send')
+            setFormSubmitted(true)
+            reset()
+        } catch {
+            // fall through — show generic error via console; form stays open
+            console.error('Contact form submission failed')
+        } finally {
+            setFormSubmitting(false)
+        }
     }
 
     if (isFormSubmitted) {

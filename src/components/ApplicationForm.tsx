@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { motion, AnimatePresence } from 'framer-motion'
 import { CheckCircle2, UploadCloud, FileText, X, ChevronDown, Briefcase } from 'lucide-react'
+import { API } from '@/lib/apiClient'
 
 const MAX_FILE_SIZE = 5000000; // 5MB
 const ACCEPTED_FILE_TYPES = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
@@ -87,22 +88,26 @@ export default function ApplicationForm() {
         }
 
         setIsSubmitting(true)
-        
-        // Simulate API call
-        await new Promise((resolve) => setTimeout(resolve, 1500))
-        
-        console.log('Form data:', data)
-        console.log('File:', file)
-        
-        setIsSubmitting(false)
-        setIsSuccess(true)
-        reset()
-        setFile(null)
+        try {
+            const fd = new FormData()
+            fd.append('fullName', data.fullName)
+            fd.append('email', data.email)
+            fd.append('phone', data.phone)
+            fd.append('position', data.position)
+            fd.append('coverLetter', data.coverLetter)
+            fd.append('cvFile', file)
 
-        // Reset success state after 5 seconds
-        setTimeout(() => {
-            setIsSuccess(false)
-        }, 5000)
+            const res = await fetch(`${API}/applications/submit`, { method: 'POST', body: fd })
+            if (!res.ok) throw new Error('Submission failed')
+            setIsSuccess(true)
+            reset()
+            setFile(null)
+            setTimeout(() => setIsSuccess(false), 5000)
+        } catch {
+            setFileError('Submission failed. Please try again.')
+        } finally {
+            setIsSubmitting(false)
+        }
     }
 
     if (isSuccess) {

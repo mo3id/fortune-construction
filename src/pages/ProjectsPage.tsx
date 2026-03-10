@@ -2,10 +2,26 @@ import { Image } from '@/components/ui/Image';
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { ArrowRight, MapPin } from 'lucide-react'
-import { projectsData } from '@/data/projects'
+import { useQuery } from '@tanstack/react-query'
 import { PageHero } from '@/components/ui/PageHero'
+import { apiFetch } from '@/lib/apiClient'
+import { projectsData } from '@/data/projects'
+
+interface ApiProject {
+    _id: string; title: string; category: string; location: string; coverImage: string;
+}
 
 export default function ProjectsPage() {
+    const { data: apiProjects, isLoading } = useQuery<ApiProject[]>({
+        queryKey: ['projects'],
+        queryFn: () => apiFetch<ApiProject[]>('/projects'),
+        staleTime: 60_000,
+    })
+
+    const projects: ApiProject[] = apiProjects?.length
+        ? apiProjects
+        : projectsData.map(p => ({ _id: p.id, title: p.title, category: p.category, location: p.location, coverImage: p.coverImage }))
+
     return (
         <div className="flex flex-col w-full bg-background min-h-screen">
             <PageHero 
@@ -18,10 +34,15 @@ export default function ProjectsPage() {
             {/* Projects Grid */}
             <section className="section-padding bg-navy-50">
                 <div className="max-w-7xl mx-auto">
+                    {isLoading && (
+                        <div className="flex justify-center py-20">
+                            <div className="w-10 h-10 border-2 border-teal-500 border-t-transparent rounded-full animate-spin" />
+                        </div>
+                    )}
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
-                        {projectsData.map((project, index) => (
+                        {projects.map((project, index) => (
                             <motion.div 
-                                key={project.id}
+                                key={project._id}
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.6, delay: index * 0.1 }}
@@ -48,7 +69,7 @@ export default function ProjectsPage() {
                                     </div>
                                     <div className="mt-auto pt-4 border-t border-navy-50">
                                         <Link 
-                                            to={`/projects/${project.id}`}
+                                            to={`/projects/${project._id}`}
                                             className="inline-flex items-center text-teal-600 font-bold hover:text-navy-900 transition-colors uppercase tracking-wide text-sm"
                                         >
                                             View Case Study <ArrowRight className="w-4 h-4 ml-2" />

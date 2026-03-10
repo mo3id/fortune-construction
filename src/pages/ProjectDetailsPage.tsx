@@ -2,19 +2,37 @@ import { Image } from '@/components/ui/Image';
 import { motion } from 'framer-motion'
 import { useParams, Link } from 'react-router-dom'
 import { ArrowLeft, Calendar, DollarSign, MapPin, Construction, CheckCircle2 } from 'lucide-react'
-import { projectsData } from '@/data/projects'
+import { useQuery } from '@tanstack/react-query'
 import { PageHero } from '@/components/ui/PageHero'
+import { apiFetch } from '@/lib/apiClient'
 import { useState } from 'react'
 import Lightbox from 'react-18-image-lightbox'
 import 'react-18-image-lightbox/style.css'
 
+interface ApiProjectFull {
+    _id: string; title: string; category: string; location: string; duration: string;
+    budget: string; challenge: string; solution: string; result: string;
+    coverImage: string; galleryImages: string[]; completionDate: string;
+}
+
 export default function ProjectDetailsPage() {
     const { id } = useParams<{ id: string }>()
-    const project = projectsData.find(p => p.id === id)
     const [isOpen, setIsOpen] = useState(false)
     const [photoIndex, setPhotoIndex] = useState(0)
 
-    if (!project) {
+    const { data: project, isLoading, isError } = useQuery<ApiProjectFull>({
+        queryKey: ['project', id],
+        queryFn: () => apiFetch<ApiProjectFull>(`/projects/${id}`),
+        enabled: !!id,
+    })
+
+    if (isLoading) return (
+        <div className="min-h-[60vh] flex items-center justify-center bg-navy-50">
+            <div className="w-10 h-10 border-2 border-teal-500 border-t-transparent rounded-full animate-spin" />
+        </div>
+    )
+
+    if (isError || !project) {
         return (
             <div className="min-h-[60vh] flex flex-col items-center justify-center bg-navy-50">
                 <h1 className="text-3xl font-display font-bold text-navy-800 mb-4">Project Not Found</h1>
