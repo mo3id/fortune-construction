@@ -1,3 +1,4 @@
+import { Image } from '@/components/ui/Image';
 import { MapPin, Calendar } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { ProjectCardProps } from '@/types'
@@ -19,7 +20,7 @@ export function ProjectCard({
             onMouseLeave={onMouseLeave}
             onClick={onClick}
         >
-            <img
+            <Image
                 src={project.image}
                 alt={project.title}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"

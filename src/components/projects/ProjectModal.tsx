@@ -1,3 +1,4 @@
+import { Image } from '@/components/ui/Image';
 import { X, MapPin, Calendar } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { ProjectModalProps } from '@/types'
@@ -18,7 +19,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="relative h-72">
-                    <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
+                    <Image src={project.image} alt={project.title} className="w-full h-full object-cover" />
                     <Button
                         variant="ghost"
                         size="icon-sm"

@@ -77,8 +77,6 @@ export default function Hero() {
                         View Our Work
                     </Button>
                 </div>
-
-                <HeroStats />
             </div>
 
             {/* Scroll indicator */}

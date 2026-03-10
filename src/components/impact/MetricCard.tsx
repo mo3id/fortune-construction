@@ -7,10 +7,14 @@ export function MetricCard({ metric, index, isVisible }: MetricCardProps) {
         <div
             className={cn(
                 `reveal reveal-delay-${index + 1}`,
-                "bg-white rounded-sm border border-gray-100 p-8 card-hover text-center shadow-sm"
+                "bg-white rounded-sm border border-gray-100 p-8 card-hover text-center shadow-sm group"
             )}
         >
-            <div className={cn("w-16 h-16 rounded-sm flex items-center justify-center text-white mx-auto mb-6", metric.color)}>
+            <div className={cn(
+                "w-16 h-16 rounded-sm flex items-center justify-center text-white mx-auto mb-6 transition-all duration-500",
+                "group-hover:scale-110 group-hover:rotate-6 group-hover:shadow-lg",
+                metric.color
+            )}>
                 {metric.icon}
             </div>
             <p className="font-display text-5xl font-bold text-navy-800 mb-2">

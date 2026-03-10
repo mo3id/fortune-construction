@@ -1,3 +1,4 @@
+import { Image } from '@/components/ui/Image';
 import { ArrowRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { ServiceCardProps } from '@/types'
@@ -12,7 +13,7 @@ export function ServiceCard({ service, index }: ServiceCardProps) {
         >
             {/* Image */}
             <div className="relative h-48 overflow-hidden">
-                <img
+                <Image
                     src={service.bgImage}
                     alt={service.title}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"

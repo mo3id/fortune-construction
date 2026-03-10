@@ -13,12 +13,12 @@ export const SITE = {
 }
 
 export const NAV_LINKS = [
-    { label: 'About', href: '#impact' },
-    { label: 'Services', href: '#services' },
-    { label: 'Projects', href: '#projects' },
-    { label: 'Timeline', href: '#timeline' },
-    { label: 'Partners', href: '#partners' },
-    { label: 'Contact', href: '#contact' },
+    { label: 'Home', href: '/' },
+    { label: 'About', href: '/about' },
+    { label: 'Projects', href: '/projects' },
+    { label: 'HSE & Quality', href: '/hse' },
+    { label: 'Careers', href: '/careers' },
+    { label: 'Contact', href: '/contact' },
 ]
 
 export const HERO_STATS = [

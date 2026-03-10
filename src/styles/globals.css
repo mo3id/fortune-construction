@@ -98,11 +98,19 @@
   }
 
   .card-hover {
-    @apply transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-navy-900/10;
+    @apply transition-all duration-500 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/5 border border-transparent hover:border-navy-100;
   }
 
   .glass {
-    @apply bg-white/10 backdrop-blur-md border border-white/20;
+    @apply bg-white/70 backdrop-blur-md border border-white/40 shadow-sm shadow-black/5;
+  }
+  
+  .glass-dark {
+    @apply bg-navy-900/80 backdrop-blur-lg border border-white/10 shadow-lg shadow-black/20;
+  }
+  
+  .glass-teal {
+    @apply bg-teal-500/10 backdrop-blur-md border border-teal-500/20;
   }
 
   .text-gradient {
