@@ -1,5 +1,5 @@
 import { CheckCircle2 } from 'lucide-react'
-import { Button } from '@/components/ui/Button'
+import { Button } from '@fortune/shared-ui'
 import { useUIStore } from '@/store/useUIStore'
 
 export function SuccessMessage() {

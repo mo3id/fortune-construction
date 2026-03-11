@@ -30,7 +30,9 @@ async function startServer() {
     await autoSeed();
   }
 
-  app.use(helmet());
+  app.use(helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" }
+  }));
   app.use(cors({
     origin: (origin, cb) => cb(null, true),
     credentials: true,

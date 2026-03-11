@@ -1,7 +1,6 @@
-import { Image } from '@/components/ui/Image';
+import { Image, PageHero } from '@fortune/shared-ui'
 import { motion } from 'framer-motion'
 import { CheckCircle, Shield, Target, Users, HardHat } from 'lucide-react'
-import { PageHero } from '@/components/ui/PageHero'
 
 export default function AboutPage() {
     return (

@@ -2,12 +2,13 @@ import { useQuery } from '@tanstack/react-query'
 import { api } from '../lib/api'
 import { FolderKanban, MessageSquare, Briefcase, HardHat, Mail, Clock } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import { Card, Button } from '@fortune/shared-ui'
 
 function StatCard({ label, value, icon: Icon, color, badge, onClick }: {
   label: string; value: number; icon: React.ElementType; color: string; badge?: string; onClick?: () => void
 }) {
   return (
-    <div onClick={onClick} className={`card p-6 flex items-center gap-4 ${onClick ? 'cursor-pointer hover:shadow-md transition-shadow' : ''}`}>
+    <Card onClick={onClick} className={`p-6 flex flex-row items-center gap-4 border-none shadow-sm ${onClick ? 'cursor-pointer hover:shadow-md transition-shadow' : ''}`}>
       <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${color}`}>
         <Icon className="w-6 h-6 text-white" />
       </div>
@@ -18,7 +19,7 @@ function StatCard({ label, value, icon: Icon, color, badge, onClick }: {
       {badge && (
         <span className="text-xs font-bold text-sky-600 bg-sky-50 px-2 py-1 rounded-lg border border-sky-100">{badge}</span>
       )}
-    </div>
+    </Card>
   )
 }
 
@@ -66,28 +67,28 @@ export default function Overview() {
       </div>
 
       {/* Quick Actions */}
-      <div className="card p-5">
+      <Card className="p-5 border-none shadow-sm">
         <h2 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4">Quick Actions</h2>
         <div className="flex flex-wrap gap-3">
-          <button onClick={() => navigate('/projects')} className="btn-primary">
-            <FolderKanban className="w-4 h-4" /> Add Project
-          </button>
-          <button onClick={() => navigate('/jobs')} className="btn-secondary">
-            <HardHat className="w-4 h-4" /> Add Job Position
-          </button>
-          <button onClick={() => navigate('/applications')} className="btn-secondary">
-            <Briefcase className="w-4 h-4" /> View Applications
-          </button>
-          <button onClick={() => navigate('/messages')} className="btn-secondary">
-            <Mail className="w-4 h-4" /> View Messages
-          </button>
+          <Button onClick={() => navigate('/projects')}>
+            <FolderKanban className="w-4 h-4 mr-2" /> Add Project
+          </Button>
+          <Button variant="secondary" onClick={() => navigate('/jobs')}>
+            <HardHat className="w-4 h-4 mr-2" /> Add Job Position
+          </Button>
+          <Button variant="outline" onClick={() => navigate('/applications')}>
+            <Briefcase className="w-4 h-4 mr-2" /> View Applications
+          </Button>
+          <Button variant="outline" onClick={() => navigate('/messages')}>
+            <Mail className="w-4 h-4 mr-2" /> View Messages
+          </Button>
         </div>
-      </div>
+      </Card>
 
       {/* Recent rows */}
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Recent Applications */}
-        <div className="card">
+        <Card className="border-none shadow-sm p-0 overflow-hidden">
           <div className="flex items-center justify-between p-5 border-b border-gray-50">
             <h2 className="text-base font-bold text-gray-900">Recent Applications</h2>
             <button onClick={() => navigate('/applications')} className="text-xs text-sky-600 hover:text-sky-700 font-semibold">View All</button>
@@ -97,7 +98,7 @@ export default function Overview() {
               <p className="text-sm text-gray-400 text-center py-8">No applications yet</p>
             )}
             {stats?.recentApplications?.map((a: { _id: string; fullName: string; position: string; status: string; createdAt: string }) => (
-              <div key={a._id} className="flex items-center justify-between px-5 py-3.5">
+              <div key={a._id} className="flex items-center justify-between px-5 py-3.5 hover:bg-slate-50 transition-colors">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 bg-violet-100 rounded-full flex items-center justify-center text-violet-600 font-bold text-xs flex-shrink-0">
                     {a.fullName.charAt(0).toUpperCase()}
@@ -107,14 +108,14 @@ export default function Overview() {
                     <p className="text-xs text-gray-400">{a.position}</p>
                   </div>
                 </div>
-                <span className={`badge-${a.status}`}>{a.status}</span>
+                <span className={`badge-${a.status} px-2 py-0.5 rounded-full text-xs font-medium`}>{a.status}</span>
               </div>
             ))}
           </div>
-        </div>
+        </Card>
 
         {/* Recent Messages */}
-        <div className="card">
+        <Card className="border-none shadow-sm p-0 overflow-hidden">
           <div className="flex items-center justify-between p-5 border-b border-gray-50">
             <h2 className="text-base font-bold text-gray-900">Recent Messages</h2>
             <button onClick={() => navigate('/messages')} className="text-xs text-sky-600 hover:text-sky-700 font-semibold">View All</button>
@@ -124,7 +125,7 @@ export default function Overview() {
               <p className="text-sm text-gray-400 text-center py-8">No messages yet</p>
             )}
             {stats?.recentMessages?.map((m: { _id: string; name: string; email: string; message: string; isRead: boolean; createdAt: string }) => (
-              <div key={m._id} className="flex items-start gap-3 px-5 py-3.5">
+              <div key={m._id} className="flex items-start gap-3 px-5 py-3.5 hover:bg-slate-50 transition-colors">
                 <div className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0 ${m.isRead ? 'bg-gray-200' : 'bg-sky-500'}`} />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between gap-2">
@@ -139,7 +140,7 @@ export default function Overview() {
               </div>
             ))}
           </div>
-        </div>
+        </Card>
       </div>
     </div>
   )

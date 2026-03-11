@@ -1,9 +1,7 @@
 import { motion } from 'framer-motion'
-import { Container } from '@/components/ui/Container'
-import { SectionHeader } from '@/components/ui/SectionHeader'
+import { Container, SectionHeader, PageHero } from '@fortune/shared-ui'
 import PartnersSection from '@/components/PartnersSection'
 import { ShieldCheck, HardHat, Leaf, Award, Download } from 'lucide-react'
-import { PageHero } from '@/components/ui/PageHero'
 
 export default function HSEPage() {
     return (

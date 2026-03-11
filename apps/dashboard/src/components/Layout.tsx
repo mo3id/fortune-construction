@@ -4,6 +4,7 @@ import { authStorage } from '../lib/auth'
 import Sidebar from './Sidebar'
 import { useQuery } from '@tanstack/react-query'
 import { api } from '../lib/api'
+import { Button } from '@fortune/shared-ui'
 
 export default function Layout() {
   const navigate = useNavigate()
@@ -51,9 +52,9 @@ export default function Layout() {
                 <p className="text-sm font-bold text-gray-800 capitalize">{user?.username || 'Admin'}</p>
                 <p className="text-xs text-gray-400">Super Admin</p>
               </div>
-              <button onClick={handleLogout} className="p-2 rounded-lg hover:bg-red-50 hover:text-red-500 text-gray-400 transition-colors ml-1" title="Logout">
+              <Button variant="ghost" size="icon-sm" onClick={handleLogout} className="hover:bg-red-50 hover:text-red-500 text-gray-400 ml-1" title="Logout">
                 <LogOut className="w-4 h-4" />
-              </button>
+              </Button>
             </div>
           </div>
         </header>

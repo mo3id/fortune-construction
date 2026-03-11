@@ -3,8 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
 import { useUIStore } from '@/store/useUIStore'
 import { cn } from '@/lib/utils'
-import { Button } from './ui/Button'
-import { Container } from './ui/Container'
+import { Button, Container } from '@fortune/shared-ui'
 import { NAV_LINKS } from '@/lib/constants'
 
 export default function Navbar() {

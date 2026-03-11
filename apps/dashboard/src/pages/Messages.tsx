@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from '../lib/api'
 import { Trash2, Mail, MailOpen, Search, Phone } from 'lucide-react'
 import toast from 'react-hot-toast'
+import { GlobalModal } from '@fortune/shared-ui'
 
 interface Message {
   _id: string; name: string; email: string; phone?: string;
@@ -14,6 +15,7 @@ export default function Messages() {
   const [search, setSearch] = useState('')
   const [filter, setFilter] = useState('')
   const [expanded, setExpanded] = useState<string | null>(null)
+  const [deleteId, setDeleteId] = useState<string | null>(null)
 
   const { data: messages = [], isLoading } = useQuery<Message[]>({
     queryKey: ['messages', filter],
@@ -104,7 +106,7 @@ export default function Messages() {
                     <MailOpen className="w-3.5 h-3.5" />
                   </button>
                 )}
-                <button onClick={() => { if (confirm('Delete this message?')) remove.mutate(m._id) }} className="btn-danger py-1 px-2.5">
+                <button onClick={() => setDeleteId(m._id)} className="btn-danger py-1 px-2.5">
                   <Trash2 className="w-3.5 h-3.5" />
                 </button>
               </div>
@@ -112,6 +114,19 @@ export default function Messages() {
           </div>
         ))}
       </div>
+
+      <GlobalModal
+        open={!!deleteId}
+        onOpenChange={(open) => !open && setDeleteId(null)}
+        title="Delete Message"
+        description="Are you sure you want to delete this message? This action cannot be undone."
+        type="destructive"
+        actionText="Delete"
+        onAction={() => {
+          if (deleteId) remove.mutate(deleteId)
+          setDeleteId(null)
+        }}
+      />
     </div>
   )
 }

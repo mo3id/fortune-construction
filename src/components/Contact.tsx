@@ -1,7 +1,6 @@
 import { ContactInfo } from './contact/ContactInfo'
 import { ContactForm } from './contact/ContactForm'
-import { SectionHeader } from './ui/SectionHeader'
-import { Container } from './ui/Container'
+import { SectionHeader, Container } from '@fortune/shared-ui'
 
 export default function Contact() {
     return (

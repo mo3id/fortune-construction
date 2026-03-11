@@ -1,4 +1,3 @@
-import { Image } from '@/components/ui/Image';
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { ArrowRight, HardHat, Construction, MapPin } from 'lucide-react'
@@ -9,6 +8,7 @@ import Services from '@/components/Services'
 import Partners from '@/components/Partners'
 import { apiFetch } from '@/lib/apiClient'
 import { projectsData } from '@/data/projects'
+import { Image } from '@fortune/shared-ui'
 
 interface ApiProject { _id: string; title: string; category: string; location: string; coverImage: string }
 

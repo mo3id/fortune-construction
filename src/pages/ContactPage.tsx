@@ -1,9 +1,7 @@
-import { Image } from '@/components/ui/Image';
+import { Image, Container, PageHero } from '@fortune/shared-ui'
 import { motion } from 'framer-motion'
-import { Container } from '@/components/ui/Container'
 import { Mail, Phone, MapPin, Clock } from 'lucide-react'
 import { ContactForm } from '@/components/contact/ContactForm'
-import { PageHero } from '@/components/ui/PageHero'
 
 export default function ContactPage() {
     return (

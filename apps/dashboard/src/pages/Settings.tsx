@@ -1,142 +1,131 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from '../lib/api'
-import { Save, Loader2, Globe, Phone, Mail, MapPin, Calendar } from 'lucide-react'
-import toast from 'react-hot-toast'
-
-interface Settings {
-  companyName: string; tagline: string; phone: string; email: string;
-  address: string; foundedYear: number; heroTitle: string; heroBadge: string;
-  heroSubtitle: string; socialFacebook: string; socialTwitter: string;
-  socialLinkedin: string; socialYoutube: string;
-}
+import { Save, Loader2, Globe, Phone, Mail, MapPin, Calendar, Share2, Type } from 'lucide-react'
+import { toast } from 'sonner'
+import { 
+  useFormSchema, 
+  settingsSchema, 
+  SettingsFormData, 
+  FormInput, 
+  Form, 
+  Button,
+  Card
+} from '@fortune/shared-ui'
 
 export default function Settings() {
   const qc = useQueryClient()
-  const [form, setForm] = useState<Settings | null>(null)
 
-  const { data, isLoading } = useQuery<Settings>({
+  const form = useFormSchema({
+    schema: settingsSchema,
+    defaultValues: {
+      companyName: '', tagline: '', phone: '', email: '',
+      address: '', foundedYear: new Date().getFullYear(), 
+      heroTitle: '', heroBadge: '', heroSubtitle: '', 
+      socialFacebook: '', socialTwitter: '', socialLinkedin: '', socialYoutube: ''
+    }
+  })
+
+  const { data, isLoading } = useQuery<SettingsFormData>({
     queryKey: ['settings'],
     queryFn: () => api.get('/settings').then(r => r.data),
   })
 
-  useEffect(() => { if (data) setForm({ ...data }) }, [data])
+  useEffect(() => { 
+    if (data) form.reset(data) 
+  }, [data, form])
 
   const save = useMutation({
-    mutationFn: (d: Settings) => api.put('/settings', d),
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ['settings'] }); toast.success('Settings saved!') },
-    onError: () => toast.error('Failed to save'),
+    mutationFn: (d: SettingsFormData) => api.put('/settings', d),
+    onSuccess: () => { 
+      qc.invalidateQueries({ queryKey: ['settings'] })
+      toast.success('Settings saved successfully!') 
+    },
+    onError: () => toast.error('Failed to save settings'),
   })
 
-  const f = (k: keyof Settings) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-    setForm(p => p ? { ...p, [k]: e.target.value } : p)
+  const onSubmit = (data: SettingsFormData) => {
+    save.mutate(data)
+  }
 
-  if (isLoading || !form) return <div className="flex items-center justify-center h-64"><div className="w-8 h-8 border-2 border-sky-500 border-t-transparent rounded-full animate-spin" /></div>
+  if (isLoading) return <div className="flex items-center justify-center h-64"><Loader2 className="w-8 h-8 text-sky-500 animate-spin" /></div>
 
   return (
-    <div className="space-y-6 max-w-3xl">
+    <div className="max-w-4xl space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-12">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Site Settings</h1>
           <p className="text-sm text-gray-500 mt-0.5">Manage company information and website content</p>
         </div>
-        <button
-          className="btn-primary"
-          onClick={() => save.mutate(form)}
-          disabled={save.isPending}
-        >
-          {save.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-          {save.isPending ? 'Saving...' : 'Save Changes'}
-        </button>
-      </div>
-
-      {/* Company Info */}
-      <div className="card p-6 space-y-4">
-        <h2 className="text-base font-bold text-gray-900 flex items-center gap-2">
-          <Globe className="w-4 h-4 text-sky-500" /> Company Information
-        </h2>
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="label">Company Name</label>
-            <input className="input" value={form.companyName} onChange={f('companyName')} />
-          </div>
-          <div>
-            <label className="label flex items-center gap-1.5"><Calendar className="w-3.5 h-3.5" />Founded Year</label>
-            <input type="number" className="input" value={form.foundedYear} onChange={e => setForm(p => p ? { ...p, foundedYear: Number(e.target.value) } : p)} />
-          </div>
-          <div className="col-span-2">
-            <label className="label">Tagline</label>
-            <input className="input" value={form.tagline} onChange={f('tagline')} />
-          </div>
-        </div>
-      </div>
-
-      {/* Contact */}
-      <div className="card p-6 space-y-4">
-        <h2 className="text-base font-bold text-gray-900 flex items-center gap-2">
-          <Phone className="w-4 h-4 text-sky-500" /> Contact Details
-        </h2>
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="label flex items-center gap-1.5"><Phone className="w-3.5 h-3.5" />Phone</label>
-            <input className="input" value={form.phone} onChange={f('phone')} />
-          </div>
-          <div>
-            <label className="label flex items-center gap-1.5"><Mail className="w-3.5 h-3.5" />Email</label>
-            <input type="email" className="input" value={form.email} onChange={f('email')} />
-          </div>
-          <div className="col-span-2">
-            <label className="label flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5" />Address</label>
-            <input className="input" value={form.address} onChange={f('address')} />
-          </div>
-        </div>
-      </div>
-
-      {/* Hero Section */}
-      <div className="card p-6 space-y-4">
-        <h2 className="text-base font-bold text-gray-900">Hero Section</h2>
-        <div>
-          <label className="label">Badge Text</label>
-          <input className="input" value={form.heroBadge} onChange={f('heroBadge')} placeholder="20 Years of Construction Excellence" />
-        </div>
-        <div>
-          <label className="label">Main Title</label>
-          <input className="input" value={form.heroTitle} onChange={f('heroTitle')} placeholder="Crafting Visionary Infrastructure." />
-        </div>
-        <div>
-          <label className="label">Subtitle / Description</label>
-          <textarea className="input h-24 resize-none" value={form.heroSubtitle} onChange={f('heroSubtitle')} />
-        </div>
-      </div>
-
-      {/* Social Media */}
-      <div className="card p-6 space-y-4">
-        <h2 className="text-base font-bold text-gray-900">Social Media Links</h2>
-        <div className="grid grid-cols-2 gap-4">
-          {([
-            ['socialFacebook', 'Facebook URL'],
-            ['socialTwitter', 'Twitter / X URL'],
-            ['socialLinkedin', 'LinkedIn URL'],
-            ['socialYoutube', 'YouTube URL'],
-          ] as [keyof Settings, string][]).map(([key, label]) => (
-            <div key={key}>
-              <label className="label">{label}</label>
-              <input className="input" value={form[key] as string} onChange={f(key)} placeholder="https://..." />
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="flex justify-end pb-6">
-        <button
-          className="btn-primary px-8"
-          onClick={() => save.mutate(form)}
-          disabled={save.isPending}
-        >
-          {save.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+        <Button onClick={form.handleSubmit(onSubmit)} disabled={save.isPending}>
+          {save.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
           {save.isPending ? 'Saving...' : 'Save All Changes'}
-        </button>
+        </Button>
       </div>
+
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          {/* Company Info */}
+          <Card className="p-6">
+            <h2 className="text-base font-bold text-gray-900 flex items-center gap-2 mb-6 pb-2 border-b border-slate-100">
+              <Globe className="w-5 h-5 text-sky-500" /> Company Information
+            </h2>
+            <div className="grid md:grid-cols-2 gap-x-6 gap-y-4">
+              <FormInput name="companyName" label="Company Name" />
+              <FormInput name="foundedYear" label="Founded Year" type="number" />
+              <div className="md:col-span-2">
+                <FormInput name="tagline" label="Tagline" />
+              </div>
+            </div>
+          </Card>
+
+          {/* Contact */}
+          <Card className="p-6">
+            <h2 className="text-base font-bold text-gray-900 flex items-center gap-2 mb-6 pb-2 border-b border-slate-100">
+              <Phone className="w-5 h-5 text-sky-500" /> Contact Details
+            </h2>
+            <div className="grid md:grid-cols-2 gap-x-6 gap-y-4">
+              <div className="relative">
+                <Phone className="absolute left-3 top-9 w-4 h-4 text-slate-400" />
+                <div className="[&_input]:pl-9"><FormInput name="phone" label="Phone Number" placeholder="+265 123 456 789" /></div>
+              </div>
+              <div className="relative">
+                <Mail className="absolute left-3 top-9 w-4 h-4 text-slate-400" />
+                <div className="[&_input]:pl-9"><FormInput name="email" label="Email Address" type="email" /></div>
+              </div>
+              <div className="md:col-span-2 relative">
+                <MapPin className="absolute left-3 top-9 w-4 h-4 text-slate-400" />
+                <div className="[&_input]:pl-9"><FormInput name="address" label="Office Address" /></div>
+              </div>
+            </div>
+          </Card>
+
+          {/* Hero Section */}
+          <Card className="p-6">
+            <h2 className="text-base font-bold text-gray-900 flex items-center gap-2 mb-6 pb-2 border-b border-slate-100">
+              <Type className="w-5 h-5 text-sky-500" /> Website Hero Section
+            </h2>
+            <div className="space-y-4">
+              <FormInput name="heroBadge" label="Badge Text" placeholder="e.g. 20 Years of Construction Excellence" />
+              <FormInput name="heroTitle" label="Main Title" placeholder="e.g. Crafting Visionary Infrastructure." />
+              <FormInput name="heroSubtitle" label="Subtitle / Description" type="textarea" rows={3} />
+            </div>
+          </Card>
+
+          {/* Social Media */}
+          <Card className="p-6">
+            <h2 className="text-base font-bold text-gray-900 flex items-center gap-2 mb-6 pb-2 border-b border-slate-100">
+              <Share2 className="w-5 h-5 text-sky-500" /> Social Media Links
+            </h2>
+            <div className="grid md:grid-cols-2 gap-x-6 gap-y-4">
+              <FormInput name="socialFacebook" label="Facebook URL" placeholder="https://facebook.com/..." />
+              <FormInput name="socialTwitter" label="Twitter / X URL" placeholder="https://twitter.com/..." />
+              <FormInput name="socialLinkedin" label="LinkedIn URL" placeholder="https://linkedin.com/in/..." />
+              <FormInput name="socialYoutube" label="YouTube URL" placeholder="https://youtube.com/..." />
+            </div>
+          </Card>
+        </form>
+      </Form>
     </div>
   )
 }

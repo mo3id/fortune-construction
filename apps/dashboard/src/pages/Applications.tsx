@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from '../lib/api'
 import { Trash2, ChevronDown, Search, FileText } from 'lucide-react'
 import toast from 'react-hot-toast'
+import { GlobalModal } from '@fortune/shared-ui'
 
 interface Application {
   _id: string; fullName: string; email: string; phone: string;
@@ -17,6 +18,7 @@ export default function Applications() {
   const [search, setSearch] = useState('')
   const [filterStatus, setFilterStatus] = useState('')
   const [expanded, setExpanded] = useState<string | null>(null)
+  const [deleteId, setDeleteId] = useState<string | null>(null)
 
   const { data: apps = [], isLoading } = useQuery<Application[]>({
     queryKey: ['applications', filterStatus],
@@ -119,7 +121,7 @@ export default function Applications() {
                         <button onClick={() => setExpanded(expanded === a._id ? null : a._id)} className="btn-secondary text-xs py-1 px-2.5">
                           <ChevronDown className={`w-3.5 h-3.5 transition-transform ${expanded === a._id ? 'rotate-180' : ''}`} />
                         </button>
-                        <button onClick={() => { if (confirm('Delete?')) remove.mutate(a._id) }} className="btn-danger py-1 px-2.5">
+                        <button onClick={() => setDeleteId(a._id)} className="btn-danger py-1 px-2.5">
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
                       </div>
@@ -142,6 +144,19 @@ export default function Applications() {
           </table>
         </div>
       </div>
+
+      <GlobalModal
+        open={!!deleteId}
+        onOpenChange={(open) => !open && setDeleteId(null)}
+        title="Delete Application"
+        description="Are you sure you want to delete this application? This action cannot be undone."
+        type="destructive"
+        actionText="Delete"
+        onAction={() => {
+          if (deleteId) remove.mutate(deleteId)
+          setDeleteId(null)
+        }}
+      />
     </div>
   )
 }

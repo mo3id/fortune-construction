@@ -1,7 +1,12 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   darkMode: ['class'],
-  content: ['./index.html', './src/**/*.{ts,tsx}'],
+  content: [
+    './index.html', 
+    './src/**/*.{ts,tsx}',
+    './apps/dashboard/src/**/*.{ts,tsx}',
+    './packages/shared-ui/src/**/*.{ts,tsx}'
+  ],
   theme: {
     extend: {
       colors: {
@@ -39,10 +44,14 @@ export default {
         input: 'var(--input)',
         ring: 'var(--ring)',
         brand: {
-          navy: '#06162d',    // Deep navy from logo
-          teal: '#00c3b6',    // Vibrant teal from logo
-          light: '#e6f7f6',   // Soft teal tint
+          navy: '#06162d',
+          teal: '#00c3b6',
+          light: '#e6f7f6',
+          500: '#0ea5e9',
+          600: '#0284c7',
+          700: '#0369a1',
         },
+        sidebar: '#1e293b',
         navy: {
           50: '#f4f7fa',
           100: '#e9eff4',
@@ -52,7 +61,7 @@ export default {
           500: '#4a739d',
           600: '#385b7f',
           700: '#2d4967',
-          800: '#06162d', // Logo Navy
+          800: '#06162d',
           900: '#030b16',
         },
         teal: {
@@ -61,12 +70,30 @@ export default {
           200: '#99f6e4',
           300: '#5eead4',
           400: '#2dd4bf',
-          500: '#00c3b6', // Logo Teal
+          500: '#00c3b6',
           600: '#0d9488',
           700: '#0f766e',
           800: '#115e59',
           900: '#134e4a',
         },
+        slate: {
+          50: '#f8fafc',
+          100: '#f1f5f9',
+          200: '#e2e8f0',
+          300: '#cbd5e1',
+          400: '#94a3b8',
+          500: '#64748b',
+          600: '#475569',
+          700: '#334155',
+          800: '#1e293b',
+          900: '#0f172a',
+        },
+        sky: {
+          50: '#f0f9ff',
+          100: '#e0f2fe',
+          500: '#0ea5e9',
+          600: '#0284c7',
+        }
       },
       fontFamily: {
         display: ['"Outfit"', 'system-ui', 'sans-serif'],
@@ -95,5 +122,5 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animate")],
 }

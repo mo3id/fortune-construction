@@ -1,0 +1,141 @@
+import React from 'react'
+import {
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '../ui/form'
+import { Input } from '../ui/input'
+import { Textarea } from '../ui/textarea'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
+import { useFormContext } from 'react-hook-form'
+import { motion, AnimatePresence } from 'framer-motion'
+import { AlertCircle } from 'lucide-react'
+
+interface SelectOption {
+  label: string
+  value: string
+}
+
+interface CustomFormInputProps {
+  name: string
+  label: string
+  placeholder?: string
+  description?: string
+  type?: 'text' | 'email' | 'tel' | 'number' | 'password' | 'textarea' | 'select' | 'file'
+  options?: SelectOption[] // For select type
+  disabled?: boolean
+  rows?: number // For textarea type
+  accept?: string // For file type
+  onChangeFile?: (file: File | null) => void // Custom handler for files
+}
+
+export function FormInput({
+  name,
+  label,
+  placeholder,
+  description,
+  type = 'text',
+  options = [],
+  disabled = false,
+  rows = 4,
+  accept,
+  onChangeFile,
+}: CustomFormInputProps) {
+  const { control, formState: { errors } } = useFormContext()
+  const error = errors[name]
+
+  return (
+    <FormField
+      control={control}
+      name={name}
+      render={({ field }) => (
+        <FormItem className="space-y-1.5 w-full">
+          <FormLabel className="text-sm font-medium text-slate-700 dark:text-slate-300">
+            {label}
+          </FormLabel>
+          <FormControl>
+            {type === 'textarea' ? (
+              <Textarea
+                placeholder={placeholder}
+                disabled={disabled}
+                rows={rows}
+                className="resize-none bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm transition-all focus:bg-white dark:focus:bg-slate-900"
+                {...field}
+                value={field.value ?? ''}
+              />
+            ) : type === 'select' ? (
+              <Select disabled={disabled} onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger className="bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm transition-all focus:bg-white dark:focus:bg-slate-900">
+                    <SelectValue placeholder={placeholder} />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {options.map((opt) => (
+                    <SelectItem key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            ) : type === 'file' ? (
+              <Input
+                type="file"
+                disabled={disabled}
+                accept={accept}
+                onChange={(e) => {
+                  const file = e.target.files?.[0] || null
+                  // RHF doesn't natively handle files well without custom setup, so we pass it up if needed
+                  if (onChangeFile) onChangeFile(file)
+                  else field.onChange(e)
+                }}
+                onBlur={field.onBlur}
+                name={field.name}
+                ref={field.ref}
+                className="bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm transition-all file:bg-slate-100 file:text-slate-700 file:border-0 file:rounded-md file:px-4 file:py-1 hover:file:bg-slate-200 cursor-pointer"
+              />
+            ) : (
+              <Input
+                type={type}
+                placeholder={placeholder}
+                disabled={disabled}
+                className="bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm transition-all focus:bg-white dark:focus:bg-slate-900"
+                {...field}
+                value={field.value ?? ''}
+                onChange={(e) => {
+                  if (type === 'number') {
+                    // Coerce to number if typing
+                    const val = e.target.value
+                    field.onChange(val === '' ? '' : Number(val))
+                  } else {
+                    field.onChange(e)
+                  }
+                }}
+              />
+            )}
+          </FormControl>
+          
+          {description && <FormDescription>{description}</FormDescription>}
+          
+          <AnimatePresence mode="wait">
+            {error && (
+              <motion.div
+                initial={{ opacity: 0, y: -10, height: 0 }}
+                animate={{ opacity: 1, y: 0, height: 'auto' }}
+                exit={{ opacity: 0, y: -10, height: 0 }}
+                transition={{ duration: 0.2 }}
+                className="text-sm font-medium text-destructive flex items-center gap-1.5 mt-1"
+              >
+                <AlertCircle className="w-4 h-4" />
+                <span>{error.message?.toString()}</span>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </FormItem>
+      )}
+    />
+  )
+}

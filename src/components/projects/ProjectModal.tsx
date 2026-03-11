@@ -1,6 +1,5 @@
-import { Image } from '@/components/ui/Image';
+import { Image, Button } from '@fortune/shared-ui';
 import { X, MapPin, Calendar } from 'lucide-react'
-import { Button } from '@/components/ui/Button'
 import { ProjectModalProps } from '@/types'
 
 export function ProjectModal({ project, onClose }: ProjectModalProps) {

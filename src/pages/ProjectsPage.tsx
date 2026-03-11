@@ -1,9 +1,8 @@
-import { Image } from '@/components/ui/Image';
+import { Image, PageHero } from '@fortune/shared-ui'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { ArrowRight, MapPin } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
-import { PageHero } from '@/components/ui/PageHero'
 import { apiFetch } from '@/lib/apiClient'
 import { projectsData } from '@/data/projects'
 

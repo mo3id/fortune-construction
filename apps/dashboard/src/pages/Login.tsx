@@ -1,24 +1,26 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { HardHat, Eye, EyeOff, Loader2 } from 'lucide-react'
+import { HardHat, Loader2 } from 'lucide-react'
 import { api } from '../lib/api'
 import { authStorage } from '../lib/auth'
 import toast from 'react-hot-toast'
+import { useFormSchema, loginSchema, LoginFormData, FormInput, Form, Button } from '@fortune/shared-ui'
 
 export default function Login() {
   const navigate = useNavigate()
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [show, setShow] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const form = useFormSchema({
+    schema: loginSchema,
+    defaultValues: { username: '', password: '' }
+  })
+
+  const onSubmit = async (data: LoginFormData) => {
     setLoading(true)
     try {
-      const { data } = await api.post('/auth/login', { username, password })
-      authStorage.setToken(data.token)
-      authStorage.setUser({ username: data.username })
+      const res = await api.post('/auth/login', data)
+      authStorage.setToken(res.data.token)
+      authStorage.setUser({ username: res.data.username })
       toast.success('Welcome back!')
       navigate('/')
     } catch {
@@ -43,46 +45,32 @@ export default function Login() {
         {/* Card */}
         <div className="bg-white rounded-2xl shadow-2xl p-8">
           <h2 className="text-xl font-bold text-gray-900 mb-6">Sign in to your account</h2>
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label className="label">Username</label>
-              <input
-                type="text"
-                className="input"
-                placeholder="admin"
-                value={username}
-                onChange={e => setUsername(e.target.value)}
-                required
-                autoFocus
+          
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+              <FormInput 
+                name="username" 
+                label="Username" 
+                placeholder="admin" 
+                disabled={loading}
               />
-            </div>
-            <div>
-              <label className="label">Password</label>
-              <div className="relative">
-                <input
-                  type={show ? 'text' : 'password'}
-                  className="input pr-10"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShow(!show)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                >
-                  {show ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
-              </div>
-            </div>
-            <button type="submit" className="btn-primary w-full justify-center py-2.5 text-base" disabled={loading}>
-              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
-              {loading ? 'Signing in...' : 'Sign In'}
-            </button>
-          </form>
-          <p className="text-center text-xs text-gray-400 mt-6">
-            Default: <code className="bg-gray-100 px-1 rounded">admin</code> / <code className="bg-gray-100 px-1 rounded">admin123</code>
+              <FormInput 
+                name="password" 
+                label="Password" 
+                type="password" 
+                placeholder="••••••••" 
+                disabled={loading}
+              />
+              
+              <Button type="submit" className="w-full h-11 text-base mt-2" disabled={loading}>
+                {loading ? <Loader2 className="w-5 h-5 mr-2 animate-spin" /> : null}
+                {loading ? 'Signing in...' : 'Sign In'}
+              </Button>
+            </form>
+          </Form>
+
+          <p className="text-center text-xs text-slate-500 mt-8">
+            Default: <code className="bg-slate-100 px-1.5 py-0.5 rounded text-slate-700">admin</code> / <code className="bg-slate-100 px-1.5 py-0.5 rounded text-slate-700">admin123</code>
           </p>
         </div>
       </div>

@@ -1,37 +1,16 @@
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { Send, Loader2 } from 'lucide-react'
-import { contactSchema } from '@/lib/validation'
 import { useUIStore } from '@/store/useUIStore'
-import { Button } from '@/components/ui/Button'
-import { Input } from '@/components/ui/Input'
-import { Textarea } from '@/components/ui/Textarea'
-import { Label } from '@/components/ui/label'
-import { cn } from '@/lib/utils'
 import { SuccessMessage } from './SuccessMessage'
-import { FormFieldProps, ContactFormData } from '@/types'
 import { API } from '@/lib/apiClient'
-
-function FormField({ label, error, children, className }: FormFieldProps) {
-    return (
-        <div className={cn('flex flex-col gap-1.5', className)}>
-            <Label className="text-navy-800 font-medium">{label}</Label>
-            {children}
-            {error && <p className="text-xs text-red-500">{error}</p>}
-        </div>
-    )
-}
+import { useFormSchema, contactSchema, ContactFormData, FormInput, Form, Button } from '@fortune/shared-ui'
+import { motion } from 'framer-motion'
 
 export function ContactForm() {
     const { isFormSubmitted, isFormSubmitting, setFormSubmitting, setFormSubmitted } = useUIStore()
 
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-        reset,
-    } = useForm<ContactFormData>({
-        resolver: zodResolver(contactSchema),
+    const form = useFormSchema({
+        schema: contactSchema,
+        defaultValues: { name: '', email: '', phone: '', message: '' }
     })
 
     const onSubmit = async (data: ContactFormData) => {
@@ -44,9 +23,8 @@ export function ContactForm() {
             })
             if (!res.ok) throw new Error('Failed to send')
             setFormSubmitted(true)
-            reset()
+            form.reset()
         } catch {
-            // fall through — show generic error via console; form stays open
             console.error('Contact form submission failed')
         } finally {
             setFormSubmitting(false)
@@ -54,73 +32,57 @@ export function ContactForm() {
     }
 
     if (isFormSubmitted) {
-        return <SuccessMessage />
+        return (
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}>
+                <SuccessMessage />
+            </motion.div>
+        )
     }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
-            <div>
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+            <div className="mb-6">
                 <h3 className="font-display text-2xl font-bold text-navy-800 mb-1">Project Enquiry</h3>
                 <p className="text-gray-400 text-sm">All fields are required. We&apos;ll respond within 24 hours.</p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <FormField label="Full Name" error={errors.name?.message}>
-                    <Input
-                        placeholder="Your full name"
-                        aria-invalid={!!errors.name}
-                        className="h-10 rounded-sm border-gray-200 focus-visible:border-teal-500 focus-visible:ring-teal-500/20"
-                        {...register('name')}
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5" noValidate>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <FormInput name="name" label="Full Name" placeholder="Your full name" disabled={isFormSubmitting} />
+                        <FormInput name="email" label="Email Address" type="email" placeholder="your@email.com" disabled={isFormSubmitting} />
+                    </div>
+
+                    <FormInput name="phone" label="Phone Number" type="tel" placeholder="+265 999 123 456" disabled={isFormSubmitting} />
+                    
+                    <FormInput 
+                        name="message" 
+                        label="Project Details" 
+                        type="textarea" 
+                        rows={5}
+                        placeholder="Describe your project — type, location, scope, timeline, and any specific requirements..." 
+                        disabled={isFormSubmitting}
                     />
-                </FormField>
-                <FormField label="Email Address" error={errors.email?.message}>
-                    <Input
-                        type="email"
-                        placeholder="your@email.com"
-                        aria-invalid={!!errors.email}
-                        className="h-10 rounded-sm border-gray-200 focus-visible:border-teal-500 focus-visible:ring-teal-500/20"
-                        {...register('email')}
-                    />
-                </FormField>
-            </div>
 
-            <FormField label="Phone Number" error={errors.phone?.message}>
-                <Input
-                    type="tel"
-                    placeholder="+265 999 123 456"
-                    aria-invalid={!!errors.phone}
-                    className="h-10 rounded-sm border-gray-200 focus-visible:border-teal-500 focus-visible:ring-teal-500/20"
-                    {...register('phone')}
-                />
-            </FormField>
-
-            <FormField label="Project Details" error={errors.message?.message}>
-                <Textarea
-                    rows={5}
-                    placeholder="Describe your project — type, location, scope, timeline, and any specific requirements..."
-                    aria-invalid={!!errors.message}
-                    className="rounded-sm border-gray-200 focus-visible:border-teal-500 focus-visible:ring-teal-500/20 resize-none"
-                    {...register('message')}
-                />
-            </FormField>
-
-            <Button
-                type="submit"
-                disabled={isFormSubmitting}
-                className="w-full h-11 rounded-sm bg-teal-500 hover:bg-teal-600 text-white font-semibold gap-2"
-            >
-                {isFormSubmitting ? (
-                    <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        Sending...
-                    </>
-                ) : (
-                    <>
-                        <Send className="w-4 h-4" />
-                        Send Enquiry
-                    </>
-                )}
-            </Button>
-        </form>
+                    <Button
+                        type="submit"
+                        disabled={isFormSubmitting}
+                        className="w-full h-11 rounded-sm bg-teal-500 hover:bg-teal-600 text-white font-semibold gap-2 transition-all hover:shadow-lg hover:-translate-y-0.5 duration-300"
+                    >
+                        {isFormSubmitting ? (
+                            <>
+                                <Loader2 className="w-4 h-4 animate-spin" />
+                                Sending...
+                            </>
+                        ) : (
+                            <>
+                                <Send className="w-4 h-4" />
+                                Send Enquiry
+                            </>
+                        )}
+                    </Button>
+                </form>
+            </Form>
+        </motion.div>
     )
 }

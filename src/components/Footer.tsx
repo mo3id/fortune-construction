@@ -1,5 +1,5 @@
 import { Facebook, Twitter, Linkedin, Youtube } from 'lucide-react'
-import { Container } from './ui/Container'
+import { Container } from '@fortune/shared-ui'
 import { FooterMap } from './footer/FooterMap'
 import { FooterLinks } from './footer/FooterLinks'
 import { Newsletter } from './footer/Newsletter'

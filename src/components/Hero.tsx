@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { ArrowDown, PlayCircle } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
-import { Button } from '@/components/ui/Button'
+import { Button } from '@fortune/shared-ui'
 import { VideoBackground } from './hero/VideoBackground'
 import { HeroStats } from './hero/HeroStats'
 import { HERO_VIDEOS } from '@/lib/constants'

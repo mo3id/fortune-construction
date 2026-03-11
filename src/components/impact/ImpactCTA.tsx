@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/Button'
+import { Button } from '@fortune/shared-ui'
 
 export function ImpactCTA() {
     return (

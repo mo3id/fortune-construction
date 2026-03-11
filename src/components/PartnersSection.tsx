@@ -1,7 +1,5 @@
-import { Image } from '@/components/ui/Image';
+import { Image, Container, SectionHeader } from '@fortune/shared-ui'
 import { motion } from 'framer-motion'
-import { Container } from './ui/Container'
-import { SectionHeader } from './ui/SectionHeader'
 
 const PARTNERS = [
     { name: 'Ministry of Works', type: 'Government', logo: 'https://ui-avatars.com/api/?name=MoW&background=06162d&color=fff&size=128' },

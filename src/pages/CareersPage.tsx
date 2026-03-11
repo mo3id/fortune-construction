@@ -1,14 +1,7 @@
 import { motion } from 'framer-motion'
 import { useQuery } from '@tanstack/react-query'
-import { Container } from '@/components/ui/Container'
+import { Container, PageHero, Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@fortune/shared-ui'
 import { Briefcase, Building2, HardHat, TrendingUp, MapPin, Clock } from 'lucide-react'
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion"
-import { PageHero } from '@/components/ui/PageHero'
 import ApplicationForm from '@/components/ApplicationForm'
 import { apiFetch } from '@/lib/apiClient'
 

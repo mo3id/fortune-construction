@@ -1,5 +1,5 @@
 import { Phone, Mail, MapPin, Clock } from 'lucide-react'
-import { Button } from '@/components/ui/Button'
+import { Button } from '@fortune/shared-ui'
 import { SITE } from '@/lib/constants'
 
 const CONTACT_INFO = [

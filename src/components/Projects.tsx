@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useUIStore } from '@/store/useUIStore'
-import { SectionHeader } from './ui/SectionHeader'
-import { Container } from './ui/Container'
+import { Container, SectionHeader } from '@fortune/shared-ui'
 import { ProjectCard } from './projects/ProjectCard'
 import { ProjectFilter } from './projects/ProjectFilter'
 import { ProjectModal } from './projects/ProjectModal'

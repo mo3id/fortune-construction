@@ -1,7 +1,6 @@
 import { Route, Building2, Layers } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
-import { SectionHeader } from './ui/SectionHeader'
-import { Container } from './ui/Container'
+import { Container, SectionHeader } from '@fortune/shared-ui'
 import { ServiceCard } from './services/ServiceCard'
 import { WhyUs } from './services/WhyUs'
 import { Service } from '@/types'

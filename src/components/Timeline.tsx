@@ -1,6 +1,5 @@
 import { Flag, Award, TrendingUp, Globe, Zap, Star } from 'lucide-react'
-import { Container } from './ui/Container'
-import { SectionHeader } from './ui/SectionHeader'
+import { Container, SectionHeader } from '@fortune/shared-ui'
 import { TimelineItem } from './timeline/TimelineItem'
 import { TimelineEvent } from '@/types'
 

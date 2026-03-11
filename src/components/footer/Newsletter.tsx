@@ -1,5 +1,4 @@
-import { Button } from '@/components/ui/Button'
-import { Input } from '@/components/ui/Input'
+import { Button, Input } from '@fortune/shared-ui'
 
 export function Newsletter() {
     return (

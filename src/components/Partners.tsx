@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { Container } from './ui/Container'
-import { SectionHeader } from './ui/SectionHeader'
+import { Container, SectionHeader } from '@fortune/shared-ui'
 import { PartnerLogo } from './partners/PartnerLogo'
 import { TestimonialCard } from './partners/TestimonialCard'
 import { apiFetch } from '@/lib/apiClient'

@@ -3,7 +3,7 @@ import {
   LayoutDashboard, FolderKanban, Briefcase, MessageSquare,
   Users, Handshake, Settings, Wrench, HardHat, ChevronRight,
 } from 'lucide-react'
-import { clsx } from 'clsx'
+import { cn } from '@fortune/shared-ui'
 
 const NAV = [
   { label: 'Overview', icon: LayoutDashboard, to: '/' },
@@ -41,7 +41,7 @@ export default function Sidebar() {
             to={to}
             end={to === '/'}
             className={({ isActive }) =>
-              clsx(
+              cn(
                 'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 group',
                 isActive
                   ? 'bg-sky-500 text-white shadow-lg shadow-sky-500/30'
@@ -51,7 +51,7 @@ export default function Sidebar() {
           >
             {({ isActive }) => (
               <>
-                <Icon className={clsx('w-4 h-4 flex-shrink-0 transition-transform', !isActive && 'group-hover:scale-110')} />
+                <Icon className={cn('w-4 h-4 flex-shrink-0 transition-transform', !isActive && 'group-hover:scale-110')} />
                 <span className="flex-1">{label}</span>
                 {isActive && <ChevronRight className="w-3 h-3 opacity-70" />}
               </>

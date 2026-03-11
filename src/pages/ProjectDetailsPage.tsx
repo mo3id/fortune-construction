@@ -1,9 +1,8 @@
-import { Image } from '@/components/ui/Image';
+import { Image, PageHero } from '@fortune/shared-ui'
 import { motion } from 'framer-motion'
 import { useParams, Link } from 'react-router-dom'
 import { ArrowLeft, Calendar, DollarSign, MapPin, Construction, CheckCircle2 } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
-import { PageHero } from '@/components/ui/PageHero'
 import { apiFetch } from '@/lib/apiClient'
 import { useState } from 'react'
 import Lightbox from 'react-18-image-lightbox'

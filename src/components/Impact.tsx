@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Route, Home, Clock, CheckCircle } from 'lucide-react'
-import { Container } from './ui/Container'
-import { SectionHeader } from './ui/SectionHeader'
+import { Container, SectionHeader } from '@fortune/shared-ui'
 import { MetricCard } from './impact/MetricCard'
 import { ImpactCTA } from './impact/ImpactCTA'
 
