@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Database
+.mongodb-data/
+apps/api/.mongodb-data/
