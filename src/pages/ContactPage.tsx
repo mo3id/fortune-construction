@@ -2,8 +2,24 @@ import { Image, Container, PageHero } from '@fortune/shared-ui'
 import { motion } from 'framer-motion'
 import { Mail, Phone, MapPin, Clock } from 'lucide-react'
 import { ContactForm } from '@/components/contact/ContactForm'
+import { useQuery } from '@tanstack/react-query'
+import { apiFetch } from '@/lib/apiClient'
+
+interface SiteSettings {
+    companyName: string; tagline: string; phone: string; email: string; address: string;
+}
 
 export default function ContactPage() {
+    const { data: settings } = useQuery<SiteSettings>({
+        queryKey: ['settings'],
+        queryFn: () => apiFetch<SiteSettings>('/settings'),
+        staleTime: 60_000,
+    })
+
+    const address = settings?.address || 'Area 4, Lilongwe, Malawi'
+    const phone = settings?.phone || '+265 1 75X XXX'
+    const email = settings?.email || 'info@fortuneconstruction.mw'
+
     return (
         <div className="flex flex-col w-full bg-background min-h-screen">
             <PageHero 
@@ -38,7 +54,7 @@ export default function ContactPage() {
                                     </div>
                                     <div>
                                         <h4 className="font-bold text-navy-800 mb-1 text-lg">Head Office</h4>
-                                        <p className="text-navy-600 font-light leading-relaxed">Plot 123, Area 4<br />PO Box 30XXX<br />Lilongwe, Malawi</p>
+                                        <p className="text-navy-600 font-light leading-relaxed">{address}</p>
                                     </div>
                                 </div>
 
@@ -48,7 +64,7 @@ export default function ContactPage() {
                                     </div>
                                     <div>
                                         <h4 className="font-bold text-navy-800 mb-1 text-lg">Phone</h4>
-                                        <p className="text-navy-600 font-light leading-relaxed">+265 1 75X XXX<br />+265 99 XXX XXXX</p>
+                                        <p className="text-navy-600 font-light leading-relaxed">{phone}</p>
                                     </div>
                                 </div>
 
@@ -58,7 +74,7 @@ export default function ContactPage() {
                                     </div>
                                     <div>
                                         <h4 className="font-bold text-navy-800 mb-1 text-lg">Email</h4>
-                                        <p className="text-navy-600 font-light leading-relaxed">info@fortuneconstruction.mw<br />projects@fortuneconstruction.mw</p>
+                                        <p className="text-navy-600 font-light leading-relaxed">{email}</p>
                                     </div>
                                 </div>
 

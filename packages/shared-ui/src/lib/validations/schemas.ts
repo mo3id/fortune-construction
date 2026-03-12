@@ -55,9 +55,11 @@ export const projectSchema = z.object({
   title: baseSchemas.requiredString('Title is required', 2),
   category: baseSchemas.requiredString('Category is required'),
   location: baseSchemas.requiredString('Location is required'),
+  startDate: z.coerce.date().optional(),
+  endDate: z.coerce.date().optional(),
   duration: z.string().optional(),
-  budget: z.string().optional(),
-  coverImage: z.string().url('Must be a valid URL').optional().or(z.literal('')),
+  budget: z.coerce.number({ invalid_type_error: 'Budget must be a number' }).positive('Budget must be positive').optional().or(z.literal('')),
+  coverImage: z.string().optional().or(z.literal('')),
   completionDate: z.string().optional(),
   challenge: z.string().optional(),
   solution: z.string().optional(),
@@ -76,7 +78,7 @@ export const teamSchema = z.object({
   name: baseSchemas.requiredString('Name is required', 2),
   role: baseSchemas.requiredString('Role is required'),
   bio: baseSchemas.requiredString('Bio is required', 10),
-  photo: z.string().url('Must be a valid URL').optional().or(z.literal('')),
+  photo: z.string().optional().or(z.literal('')),
   socialLinks: z.object({
     linkedin: z.string().optional(),
     twitter: z.string().optional(),
@@ -85,7 +87,7 @@ export const teamSchema = z.object({
 
 export const partnerSchema = z.object({
   name: baseSchemas.requiredString('Name is required', 2),
-  logo: z.string().url('Must be a valid URL').optional().or(z.literal('')),
+  logo: z.string().optional().or(z.literal('')),
   website: z.string().url('Must be a valid URL').optional().or(z.literal('')),
   description: z.string().optional(),
   order: z.coerce.number().optional().default(0),

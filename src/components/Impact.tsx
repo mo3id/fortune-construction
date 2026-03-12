@@ -1,47 +1,45 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, ReactNode } from 'react'
 import { Route, Home, Clock, CheckCircle } from 'lucide-react'
 import { Container, SectionHeader } from '@fortune/shared-ui'
 import { MetricCard } from './impact/MetricCard'
 import { ImpactCTA } from './impact/ImpactCTA'
+import { usePageContent } from '@/hooks/usePageContent'
 
-const METRICS = [
-    {
-        icon: <Route className="w-8 h-8" />,
-        target: 1500,
-        suffix: '+',
-        label: 'KM of Roads Paved',
-        description: 'Connecting communities across all regions of Malawi with durable, engineered roads.',
-        color: 'bg-teal-500',
-    },
-    {
-        icon: <Home className="w-8 h-8" />,
-        target: 2000,
-        suffix: '+',
-        label: 'Families Housed',
-        description: 'Quality residential and social housing projects delivered on time and on budget.',
-        color: 'bg-navy-800',
-    },
-    {
-        icon: <Clock className="w-8 h-8" />,
-        target: 20,
-        suffix: '+',
-        label: 'Years of Experience',
-        description: 'Two decades of expertise in civil, structural, and commercial construction.',
-        color: 'bg-teal-500',
-    },
-    {
-        icon: <CheckCircle className="w-8 h-8" />,
-        target: 500,
-        suffix: '+',
-        label: 'Successful Projects',
-        description: 'A proven track record of successful delivery for government and private clients.',
-        color: 'bg-navy-800',
-    },
+const ICON_MAP: Record<string, ReactNode> = {
+    Route: <Route className="w-8 h-8" />,
+    Home: <Home className="w-8 h-8" />,
+    Clock: <Clock className="w-8 h-8" />,
+    CheckCircle: <CheckCircle className="w-8 h-8" />,
+}
+
+const COLORS = ['bg-teal-500', 'bg-navy-800', 'bg-teal-500', 'bg-navy-800']
+
+interface ApiMetric { target: number; suffix: string; label: string; description: string; icon: string }
+interface ImpactContent { title?: string; subtitle?: string; description?: string; items?: ApiMetric[] }
+
+const FALLBACK_METRICS = [
+    { icon: 'Route', target: 1500, suffix: '+', label: 'KM of Roads Paved', description: 'Connecting communities across all regions of Malawi with durable, engineered roads.' },
+    { icon: 'Home', target: 2000, suffix: '+', label: 'Families Housed', description: 'Quality residential and social housing projects delivered on time and on budget.' },
+    { icon: 'Clock', target: 20, suffix: '+', label: 'Years of Experience', description: 'Two decades of expertise in civil, structural, and commercial construction.' },
+    { icon: 'CheckCircle', target: 500, suffix: '+', label: 'Successful Projects', description: 'A proven track record of successful delivery for government and private clients.' },
 ]
 
 export default function Impact() {
     const sectionRef = useRef<HTMLElement>(null)
     const [isVisible, setIsVisible] = useState(false)
+    const { data: homeContent } = usePageContent<{ impactMetrics?: ImpactContent }>('home')
+
+    const content = homeContent?.impactMetrics
+    const items = content?.items?.length ? content.items : FALLBACK_METRICS
+
+    const metrics = items.map((m, i) => ({
+        icon: ICON_MAP[m.icon] || <CheckCircle className="w-8 h-8" />,
+        target: m.target,
+        suffix: m.suffix,
+        label: m.label,
+        description: m.description,
+        color: COLORS[i % COLORS.length],
+    }))
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -61,13 +59,13 @@ export default function Impact() {
         <section id="impact" ref={sectionRef} className="section-padding bg-gray-50">
             <Container>
                 <SectionHeader
-                    subtitle="Our Impact"
-                    title="Two Decades of Building a Stronger Malawi"
-                    description="Our numbers tell a story of commitment, craftsmanship, and community transformation."
+                    subtitle={content?.subtitle || "Our Impact"}
+                    title={content?.title || "Two Decades of Building a Stronger Malawi"}
+                    description={content?.description || "Our numbers tell a story of commitment, craftsmanship, and community transformation."}
                 />
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {METRICS.map((metric, i) => (
+                    {metrics.map((metric, i) => (
                         <MetricCard key={metric.label} metric={metric} index={i} isVisible={isVisible} />
                     ))}
                 </div>

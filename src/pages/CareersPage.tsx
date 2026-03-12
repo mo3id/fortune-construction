@@ -1,21 +1,38 @@
+import { ReactNode } from 'react'
 import { motion } from 'framer-motion'
 import { useQuery } from '@tanstack/react-query'
 import { Container, PageHero, Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@fortune/shared-ui'
 import { Briefcase, Building2, HardHat, TrendingUp, MapPin, Clock } from 'lucide-react'
 import ApplicationForm from '@/components/ApplicationForm'
 import { apiFetch } from '@/lib/apiClient'
+import { usePageContent } from '@/hooks/usePageContent'
 
 interface ApiJob {
     _id: string; title: string; location: string; type: string;
     description: string; requirements: string[]; isActive: boolean;
 }
 
-const BENEFITS = [
-    { icon: <TrendingUp />, title: 'Career Growth', desc: 'Clear progression paths and continuous professional development programs.' },
-    { icon: <Building2 />, title: 'Major Projects', desc: 'Work on landmark infrastructure that shapes the future of Malawi.' },
-    { icon: <Briefcase />, title: 'Competitive Package', desc: 'Industry-leading salary, health insurance, and performance bonuses.' },
-    { icon: <HardHat />, title: 'Safety First Culture', desc: 'A work environment where your health and wellbeing are the top priority.' },
-]
+interface CareersContent {
+    benefits?: { title?: string; subtitle?: string; items?: { title: string; desc: string; icon?: string }[] }
+}
+
+const BENEFIT_ICON_MAP: Record<string, ReactNode> = {
+    TrendingUp: <TrendingUp />,
+    Building2: <Building2 />,
+    Briefcase: <Briefcase />,
+    HardHat: <HardHat />,
+}
+
+function isImageUrl(str?: string) {
+    if (!str) return false
+    return str.startsWith('http') || str.startsWith('/') || str.startsWith('data:')
+}
+
+function renderBenefitIcon(icon?: string) {
+    if (!icon) return <Briefcase />
+    if (isImageUrl(icon)) return <img src={icon} alt="" className="w-7 h-7 object-contain" />
+    return BENEFIT_ICON_MAP[icon] || <Briefcase />
+}
 
 const FALLBACK_JOBS = [
     { _id: 'civil-engineer', title: 'Senior Civil Engineer', location: 'Lilongwe Head Office', type: 'Full-time', description: 'Lead complex infrastructure projects from design to execution.', requirements: ['BSc in Civil Engineering', '10+ years experience', 'Registered with Malawi Board of Engineers', 'Strong proficiency in AutoCAD and Civil 3D'], isActive: true },
@@ -31,7 +48,18 @@ export default function CareersPage() {
         staleTime: 60_000,
     })
 
+    const { data: careersContent } = usePageContent<CareersContent>('careers')
+
     const jobs = (apiJobs?.length ? apiJobs : FALLBACK_JOBS).filter(j => j.isActive)
+
+    const benefitsData = careersContent?.benefits
+    const benefitItems = benefitsData?.items?.length ? benefitsData.items : [
+        { title: 'Career Growth', desc: 'Clear progression paths and continuous professional development programs.', icon: 'TrendingUp' },
+        { title: 'Major Projects', desc: 'Work on landmark infrastructure that shapes the future of Malawi.', icon: 'Building2' },
+        { title: 'Competitive Package', desc: 'Industry-leading salary, health insurance, and performance bonuses.', icon: 'Briefcase' },
+        { title: 'Safety First Culture', desc: 'A work environment where your health and wellbeing are the top priority.', icon: 'HardHat' },
+    ]
+
     return (
         <div className="flex flex-col w-full bg-background min-h-screen">
             <PageHero 
@@ -45,11 +73,11 @@ export default function CareersPage() {
             <section className="section-padding bg-navy-50">
                 <Container>
                     <div className="text-center mb-16">
-                        <span className="section-subtitle">Why Join Us</span>
-                        <h2 className="section-title">More Than Just a Job</h2>
+                        <span className="section-subtitle">{benefitsData?.subtitle || 'Why Join Us'}</span>
+                        <h2 className="section-title">{benefitsData?.title || 'More Than Just a Job'}</h2>
                     </div>
                     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        {BENEFITS.map((benefit, i) => (
+                        {benefitItems.map((benefit, i) => (
                             <motion.div 
                                 key={benefit.title}
                                 initial={{ opacity: 0, y: 20 }}
@@ -59,7 +87,7 @@ export default function CareersPage() {
                                 className="bg-white p-8 border border-navy-100 rounded-sm card-hover flex flex-col items-center text-center"
                             >
                                 <div className="w-16 h-16 bg-navy-900 rounded-sm flex items-center justify-center text-teal-500 mb-6 shadow-md shadow-navy-900/10">
-                                    {benefit.icon}
+                                    {renderBenefitIcon(benefit.icon)}
                                 </div>
                                 <h3 className="text-xl font-display font-bold text-navy-800 mb-3">{benefit.title}</h3>
                                 <p className="text-navy-600 font-light leading-relaxed">{benefit.desc}</p>

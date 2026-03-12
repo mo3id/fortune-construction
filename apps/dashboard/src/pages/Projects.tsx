@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { api, uploadImage } from '../lib/api'
-import { Plus, Pencil, Trash2, Loader2, MapPin, DollarSign, Clock, ImagePlus } from 'lucide-react'
+import { Plus, Pencil, Trash2, Loader2, MapPin, DollarSign, Clock, ImagePlus, X } from 'lucide-react'
 import { toast } from 'sonner'
 import { 
   useFormSchema, 
@@ -29,6 +29,8 @@ export default function Projects() {
   const [editingId, setEditingId] = useState<string | null>(null)
   const [deleteId, setDeleteId] = useState<string | null>(null)
   const [uploading, setUploading] = useState(false)
+
+  const [uploadingGallery, setUploadingGallery] = useState(false)
 
   const form = useFormSchema({
     schema: projectSchema,
@@ -73,6 +75,7 @@ export default function Projects() {
 
   const handleImageUpload = async (file: File | null) => {
     if (!file) return
+    setUploadingGallery(false)
     setUploading(true)
     try {
       const url = await uploadImage(file)
@@ -82,6 +85,26 @@ export default function Projects() {
     } finally {
       setUploading(false)
     }
+  }
+
+  const handleGalleryUpload = async (files: FileList | null) => {
+    if (!files || files.length === 0) return
+    setUploadingGallery(true)
+    try {
+      const uploadPromises = Array.from(files).map(file => uploadImage(file))
+      const urls = await Promise.all(uploadPromises)
+      const current = form.getValues('galleryImages') || []
+      form.setValue('galleryImages', [...current, ...urls])
+    } catch {
+      toast.error('Gallery upload failed')
+    } finally {
+      setUploadingGallery(false)
+    }
+  }
+
+  const removeGalleryImage = (index: number) => {
+    const current = form.getValues('galleryImages') || []
+    form.setValue('galleryImages', current.filter((_, i) => i !== index))
   }
 
   const onSubmit = (data: ProjectFormData) => {
@@ -169,13 +192,14 @@ export default function Projects() {
                 ]} 
               />
               <FormInput name="location" label="Location *" placeholder="Lilongwe, Malawi" />
-              <FormInput name="duration" label="Duration" placeholder="24 Months" />
-              <FormInput name="budget" label="Budget" placeholder="$15M USD" />
-              <FormInput name="completionDate" label="Completion Date" placeholder="October 2024" />
-              <FormInput name="coverImage" label="Cover Image URL" placeholder="https://..." />
+              <FormInput name="startDate" label="Start Date" type="date" />
+              <FormInput name="endDate" label="End Date" type="date" />
+              <FormInput name="budget" label="Budget" type="number" min="0" placeholder="15000000" />
+              <FormInput name="completionDate" label="Completion Date (Text)" placeholder="October 2024" />
+              <FormInput name="coverImage" label="Cover Image URL or Upload" placeholder="https://..." />
             </div>
 
-            <div className="flex items-end">
+            <div className="flex items-end mb-4">
               <Button type="button" variant="outline" className="w-full relative overflow-hidden" disabled={uploading}>
                 <input type="file" accept="image/*" className="absolute inset-0 opacity-0 cursor-pointer" onChange={(e) => handleImageUpload(e.target.files?.[0] || null)} />
                 {uploading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <ImagePlus className="w-4 h-4 mr-2" />}
@@ -184,10 +208,46 @@ export default function Projects() {
             </div>
             
             {form.watch('coverImage') && (
-              <div className="mt-2">
-                <img src={form.watch('coverImage')} className="h-32 w-full object-cover rounded-lg border border-slate-200" alt="preview" />
+              <div className="mt-2 mb-6">
+                <img src={form.watch('coverImage')} className="h-40 w-full object-cover rounded-lg border border-slate-200" alt="preview" />
               </div>
             )}
+
+            {/* Gallery Section */}
+            <div className="space-y-3 pt-4 border-t border-slate-100">
+              <label className="text-sm font-medium text-gray-900">Project Gallery</label>
+              <div className="grid grid-cols-3 gap-3">
+                {(form.watch('galleryImages') || []).map((img, idx) => (
+                  <div key={idx} className="relative aspect-square rounded-md overflow-hidden group border border-slate-200">
+                    <img src={img} alt={`Gallery ${idx}`} className="w-full h-full object-cover" />
+                    <button
+                      type="button"
+                      onClick={() => removeGalleryImage(idx)}
+                      className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </div>
+                ))}
+                <div className="relative aspect-square bg-slate-50 border-2 border-dashed border-slate-200 rounded-md hover:border-sky-500 transition-colors flex flex-col items-center justify-center text-slate-400">
+                  {uploadingGallery ? (
+                    <Loader2 className="w-6 h-6 animate-spin text-sky-500" />
+                  ) : (
+                    <>
+                      <Plus className="w-6 h-6 mb-1" />
+                      <span className="text-xs">Add Photos</span>
+                      <input 
+                        type="file" 
+                        accept="image/*" 
+                        multiple 
+                        className="absolute inset-0 opacity-0 cursor-pointer"
+                        onChange={(e) => handleGalleryUpload(e.target.files)}
+                      />
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
 
             <FormInput name="challenge" label="The Challenge" type="textarea" placeholder="Describe the main challenge..." rows={3} />
             <FormInput name="solution" label="The Solution" type="textarea" placeholder="Describe the solution approach..." rows={3} />

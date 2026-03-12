@@ -1,8 +1,75 @@
 import { Image, PageHero } from '@fortune/shared-ui'
 import { motion } from 'framer-motion'
 import { CheckCircle, Shield, Target, Users, HardHat } from 'lucide-react'
+import { useQuery } from '@tanstack/react-query'
+import { apiFetch } from '@/lib/apiClient'
+import { usePageContent } from '@/hooks/usePageContent'
+import { ReactNode } from 'react'
+
+interface ApiTeamMember { _id: string; name: string; role: string; photo?: string; bio?: string; order: number }
+
+interface AboutContent {
+    vision?: { title?: string; description?: string }
+    mission?: { title?: string; description?: string }
+    timeline?: { title?: string; subtitle?: string; items?: { year: string; title: string; desc: string }[] }
+    coreValues?: { title?: string; subtitle?: string; items?: { title: string; desc: string; icon?: string }[] }
+}
+
+const VALUE_ICON_MAP: Record<string, ReactNode> = {
+    Shield: <Shield />,
+    CheckCircle: <CheckCircle />,
+    Users: <Users />,
+}
+
+function isImageUrl(str?: string) {
+    if (!str) return false
+    return str.startsWith('http') || str.startsWith('/') || str.startsWith('data:')
+}
+
+function renderIcon(icon?: string, fallback: ReactNode = <Shield />) {
+    if (!icon) return fallback
+    if (isImageUrl(icon)) return <img src={icon} alt="" className="w-8 h-8 object-contain" />
+    return VALUE_ICON_MAP[icon] || fallback
+}
+
+const FALLBACK_LEADERS = [
+    { name: "David Chen", role: "Managing Director", img: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=800&auto=format&fit=crop&fm=webp" },
+    { name: "Sarah Banda", role: "Head of Operations", img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800&auto=format&fit=crop&fm=webp" },
+    { name: "Michael Tembo", role: "Chief Engineer", img: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=800&auto=format&fit=crop&fm=webp" },
+    { name: "Elena Phiri", role: "HSE Director", img: "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=800&auto=format&fit=crop&fm=webp" }
+]
 
 export default function AboutPage() {
+    const { data: apiTeam } = useQuery<ApiTeamMember[]>({
+        queryKey: ['team'],
+        queryFn: () => apiFetch<ApiTeamMember[]>('/team'),
+        staleTime: 60_000,
+    })
+
+    const { data: aboutContent } = usePageContent<AboutContent>('about')
+
+    const leaders = apiTeam?.length
+        ? apiTeam.map(m => ({ name: m.name, role: m.role, img: m.photo || '' }))
+        : FALLBACK_LEADERS
+
+    const vision = aboutContent?.vision
+    const mission = aboutContent?.mission
+    const timeline = aboutContent?.timeline
+    const coreValues = aboutContent?.coreValues
+
+    const timelineItems = timeline?.items?.length ? timeline.items : [
+        { year: '2006', title: 'Company Founded', desc: 'Established in Lilongwe as a specialized contractor for residential projects.' },
+        { year: '2012', title: 'First Government Contract', desc: 'Awarded a major road infrastructure project, marking our entry into the public sector.' },
+        { year: '2018', title: 'ISO Certification', desc: 'Achieved international recognition for quality management and safety standards.' },
+        { year: '2026', title: 'National Leader', desc: 'Celebrating 20 years with over 150 completed landmark projects across Malawi.' }
+    ]
+
+    const valueItems = coreValues?.items?.length ? coreValues.items : [
+        { icon: 'Shield', title: 'Safety First', desc: 'Zero compromises when it comes to the health and safety of our workforce and the public.' },
+        { icon: 'CheckCircle', title: 'Uncompromising Quality', desc: 'Rigorous material testing and engineering precision in every phase of construction.' },
+        { icon: 'Users', title: 'Community Impact', desc: 'Building sustainably and empowering local talent to foster long-term national development.' }
+    ]
+
     return (
         <div className="flex flex-col w-full">
             <PageHero 
@@ -23,9 +90,9 @@ export default function AboutPage() {
                         className="bg-white p-10 md:p-14 rounded-sm shadow-xl shadow-navy-900/5 border-t-4 border-teal-500"
                     >
                         <Target className="w-12 h-12 text-teal-500 mb-6" />
-                        <h2 className="text-3xl md:text-4xl font-display font-bold text-navy-800 mb-6">Our Vision</h2>
+                        <h2 className="text-3xl md:text-4xl font-display font-bold text-navy-800 mb-6">{vision?.title || 'Our Vision'}</h2>
                         <p className="text-navy-600 leading-relaxed text-lg font-light">
-                            To be the premier civil engineering and construction firm in East Africa, recognized for delivering world-class infrastructure that drives economic growth and improves the quality of life in the communities we serve.
+                            {vision?.description || 'To be the premier civil engineering and construction firm in East Africa, recognized for delivering world-class infrastructure that drives economic growth and improves the quality of life in the communities we serve.'}
                         </p>
                     </motion.div>
 
@@ -37,9 +104,9 @@ export default function AboutPage() {
                         className="bg-navy-900 p-10 md:p-14 rounded-sm shadow-xl"
                     >
                         <Shield className="w-12 h-12 text-teal-500 mb-6" />
-                        <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-6">Our Mission</h2>
+                        <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-6">{mission?.title || 'Our Mission'}</h2>
                         <p className="text-teal-50/80 leading-relaxed text-lg font-light">
-                            To provide exceptional construction services through innovation, rigorous quality control, and an uncompromising commitment to Health, Safety, and Environment (HSE) standards, ensuring every project stands the test of time.
+                            {mission?.description || 'To provide exceptional construction services through innovation, rigorous quality control, and an uncompromising commitment to Health, Safety, and Environment (HSE) standards, ensuring every project stands the test of time.'}
                         </p>
                     </motion.div>
                 </div>
@@ -55,7 +122,7 @@ export default function AboutPage() {
                             viewport={{ once: true }}
                             className="section-subtitle"
                         >
-                            Our Journey
+                            {timeline?.subtitle || 'Our Journey'}
                         </motion.span>
                         <motion.h2 
                             initial={{ opacity: 0, y: 20 }}
@@ -64,7 +131,7 @@ export default function AboutPage() {
                             transition={{ delay: 0.1 }}
                             className="section-title"
                         >
-                            A Legacy of Excellence
+                            {timeline?.title || 'A Legacy of Excellence'}
                         </motion.h2>
                     </div>
 
@@ -72,12 +139,7 @@ export default function AboutPage() {
                         {/* Central Line */}
                         <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-teal-500/50 via-teal-500 to-teal-500/50 transform md:-translate-x-1/2" />
 
-                        {[
-                            { year: '2006', title: 'Company Founded', desc: 'Established in Lilongwe as a specialized contractor for residential projects.' },
-                            { year: '2012', title: 'First Government Contract', desc: 'Awarded a major road infrastructure project, marking our entry into the public sector.' },
-                            { year: '2018', title: 'ISO Certification', desc: 'Achieved international recognition for quality management and safety standards.' },
-                            { year: '2026', title: 'National Leader', desc: 'Celebrating 20 years with over 150 completed landmark projects across Malawi.' }
-                        ].map((item, index) => (
+                        {timelineItems.map((item, index) => (
                             <motion.div 
                                 key={item.year}
                                 initial={{ opacity: 0, y: 30 }}
@@ -111,16 +173,12 @@ export default function AboutPage() {
             <section className="section-padding bg-navy-50">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-20">
-                        <span className="section-subtitle">What Drives Us</span>
-                        <h2 className="section-title">Our Core Values</h2>
+                        <span className="section-subtitle">{coreValues?.subtitle || 'What Drives Us'}</span>
+                        <h2 className="section-title">{coreValues?.title || 'Our Core Values'}</h2>
                     </div>
 
                     <div className="grid md:grid-cols-3 gap-8">
-                        {[
-                            { icon: <Shield />, title: 'Safety First', desc: 'Zero compromises when it comes to the health and safety of our workforce and the public.' },
-                            { icon: <CheckCircle />, title: 'Uncompromising Quality', desc: 'Rigorous material testing and engineering precision in every phase of construction.' },
-                            { icon: <Users />, title: 'Community Impact', desc: 'Building sustainably and empowering local talent to foster long-term national development.' }
-                        ].map((value, idx) => (
+                        {valueItems.map((value, idx) => (
                             <motion.div 
                                 key={idx}
                                 initial={{ opacity: 0, y: 20 }}
@@ -130,7 +188,7 @@ export default function AboutPage() {
                                 className="bg-white p-10 rounded-sm card-hover shadow-sm border border-navy-100"
                             >
                                 <div className="w-14 h-14 bg-teal-50 rounded-full flex items-center justify-center text-teal-600 mb-8">
-                                    {value.icon}
+                                    {renderIcon(value.icon)}
                                 </div>
                                 <h3 className="text-xl font-display font-bold text-navy-800 mb-4">{value.title}</h3>
                                 <p className="text-navy-600 font-light leading-relaxed">{value.desc}</p>
@@ -151,12 +209,7 @@ export default function AboutPage() {
                         </p>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10">
-                        {[
-                            { name: "David Chen", role: "Managing Director", img: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=800&auto=format&fit=crop&fm=webp" },
-                            { name: "Sarah Banda", role: "Head of Operations", img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800&auto=format&fit=crop&fm=webp" },
-                            { name: "Michael Tembo", role: "Chief Engineer", img: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=800&auto=format&fit=crop&fm=webp" },
-                            { name: "Elena Phiri", role: "HSE Director", img: "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=800&auto=format&fit=crop&fm=webp" }
-                        ].map((leader, i) => (
+                        {leaders.map((leader, i) => (
                             <motion.div 
                                 key={i} 
                                 initial={{ opacity: 0, y: 20 }}

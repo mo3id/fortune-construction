@@ -5,6 +5,7 @@ import Partner from './models/Partner';
 import TeamMember from './models/TeamMember';
 import JobPosition from './models/JobPosition';
 import SiteSettings from './models/SiteSettings';
+import PageContent from './models/PageContent';
 
 export async function autoSeed(): Promise<void> {
   console.log('🌱 Auto-seeding in-memory database...');
@@ -60,10 +61,10 @@ export async function autoSeed(): Promise<void> {
   ]);
 
   await TeamMember.insertMany([
-    { name: 'David Chen', role: 'Managing Director', image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=800', order: 1 },
-    { name: 'Sarah Banda', role: 'Head of Operations', image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800', order: 2 },
-    { name: 'Michael Tembo', role: 'Chief Engineer', image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=800', order: 3 },
-    { name: 'Elena Phiri', role: 'HSE Director', image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=800', order: 4 },
+    { name: 'David Chen', role: 'Managing Director', photo: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=800', bio: 'Over 25 years of experience leading major infrastructure projects across East Africa.', order: 1 },
+    { name: 'Sarah Banda', role: 'Head of Operations', photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800', bio: 'Expert in project logistics and operational excellence with a track record of on-time delivery.', order: 2 },
+    { name: 'Michael Tembo', role: 'Chief Engineer', photo: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=800', bio: 'Structural engineering specialist with deep expertise in bridge and highway construction.', order: 3 },
+    { name: 'Elena Phiri', role: 'HSE Director', photo: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=800', bio: 'NEBOSH-certified safety professional ensuring zero-harm culture across all project sites.', order: 4 },
   ]);
 
   await JobPosition.insertMany([
@@ -80,6 +81,128 @@ export async function autoSeed(): Promise<void> {
     heroSubtitle: 'Fortune Construction Limited delivers world-class civil engineering across Malawi.',
     socialFacebook: '', socialTwitter: '', socialLinkedin: '', socialYoutube: '',
   });
+
+  // --- Page Content ---
+  await PageContent.insertMany([
+    // HOME — Hero
+    {
+      page: 'home', section: 'hero',
+      content: {
+        badge: '20 Years of Construction Excellence',
+        title: 'Crafting Visionary Infrastructure.',
+        subtitle: 'Fortune Construction Limited delivers world-class civil engineering across Malawi, building the bedrock of national progress.',
+        videos: [
+          { url: '/assets/videos/vedio1.mp4' },
+          { url: '/assets/videos/vedio2.mp4' },
+          { url: '/assets/videos/vedio3.mp4' },
+        ],
+      },
+    },
+    // HOME — Impact
+    {
+      page: 'home', section: 'impactMetrics',
+      content: {
+        title: 'Two Decades of Building a Stronger Malawi',
+        subtitle: 'Our Impact',
+        description: 'Our numbers tell a story of commitment, craftsmanship, and community transformation.',
+        items: [
+          { target: 1500, suffix: '+', label: 'KM of Roads Paved', description: 'Connecting communities across all regions of Malawi with durable, engineered roads.', icon: 'Route' },
+          { target: 2000, suffix: '+', label: 'Families Housed', description: 'Quality residential and social housing projects delivered on time and on budget.', icon: 'Home' },
+          { target: 20, suffix: '+', label: 'Years of Experience', description: 'Two decades of expertise in civil, structural, and commercial construction.', icon: 'Clock' },
+          { target: 500, suffix: '+', label: 'Successful Projects', description: 'A proven track record of successful delivery for government and private clients.', icon: 'CheckCircle' },
+        ],
+      },
+    },
+    // ABOUT
+    {
+      page: 'about', section: 'vision',
+      content: {
+        title: 'Our Vision',
+        description: 'To be the premier civil engineering and construction firm in East Africa, recognized for delivering world-class infrastructure that drives economic growth and improves the quality of life in the communities we serve.',
+      },
+    },
+    {
+      page: 'about', section: 'mission',
+      content: {
+        title: 'Our Mission',
+        description: 'To provide exceptional construction services through innovation, rigorous quality control, and an uncompromising commitment to Health, Safety, and Environment (HSE) standards, ensuring every project stands the test of time.',
+      },
+    },
+    {
+      page: 'about', section: 'timeline',
+      content: {
+        title: 'A Legacy of Excellence',
+        subtitle: 'Our Journey',
+        items: [
+          { year: '2006', title: 'Company Founded', desc: 'Established in Lilongwe as a specialized contractor for residential projects.' },
+          { year: '2012', title: 'First Government Contract', desc: 'Awarded a major road infrastructure project, marking our entry into the public sector.' },
+          { year: '2018', title: 'ISO Certification', desc: 'Achieved international recognition for quality management and safety standards.' },
+          { year: '2026', title: 'National Leader', desc: 'Celebrating 20 years with over 150 completed landmark projects across Malawi.' },
+        ],
+      },
+    },
+    {
+      page: 'about', section: 'coreValues',
+      content: {
+        title: 'Our Core Values',
+        subtitle: 'What Drives Us',
+        items: [
+          { title: 'Safety First', desc: 'Zero compromises when it comes to the health and safety of our workforce and the public.', icon: 'Shield' },
+          { title: 'Uncompromising Quality', desc: 'Rigorous material testing and engineering precision in every phase of construction.', icon: 'CheckCircle' },
+          { title: 'Community Impact', desc: 'Building sustainably and empowering local talent to foster long-term national development.', icon: 'Users' },
+        ],
+      },
+    },
+    // HSE
+    {
+      page: 'hse', section: 'policies',
+      content: {
+        items: [
+          { title: 'Health & Safety', description: 'Our "Zero Harm" policy ensures rigorous training, daily site briefings, and strict adherence to international safety protocols. Every worker returns home safely, every day.', icon: 'ShieldCheck' },
+          { title: 'Quality Control', description: 'We source premium materials, conduct exhaustive structural testing, and utilize advanced engineering technologies to guarantee the longevity and resilience of our infrastructure.', icon: 'HardHat' },
+          { title: 'Environmental Policy', description: 'Dedicated to preserving Malawi\'s natural beauty, we minimize construction waste, optimize resource efficiency, and actively implement sustainable building practices.', icon: 'Leaf' },
+        ],
+      },
+    },
+    {
+      page: 'hse', section: 'safetyStats',
+      content: {
+        items: [
+          { value: '1M+', label: 'Man-hours Without LTI' },
+          { value: '100%', label: 'Workers HSE Certified' },
+          { value: 'ISO', label: '9001:2015 Compliant' },
+        ],
+      },
+    },
+    {
+      page: 'hse', section: 'certifications',
+      content: {
+        title: 'Our Accreditations',
+        subtitle: 'Recognized Excellence',
+        description: 'We operate strictly according to international standards for quality management and occupational safety.',
+        items: [
+          { title: 'ISO 9001:2015' },
+          { title: 'ISO 14001:2015' },
+          { title: 'ISO 45001:2018' },
+          { title: 'NEBOSH Certified' },
+        ],
+      },
+    },
+    // CAREERS
+    {
+      page: 'careers', section: 'benefits',
+      content: {
+        title: 'More Than Just a Job',
+        subtitle: 'Why Join Us',
+        items: [
+          { title: 'Career Growth', desc: 'Clear progression paths and continuous professional development programs.', icon: 'TrendingUp' },
+          { title: 'Major Projects', desc: 'Work on landmark infrastructure that shapes the future of Malawi.', icon: 'Building2' },
+          { title: 'Competitive Package', desc: 'Industry-leading salary, health insurance, and performance bonuses.', icon: 'Briefcase' },
+          { title: 'Safety First Culture', desc: 'A work environment where your health and wellbeing are the top priority.', icon: 'HardHat' },
+        ],
+      },
+    },
+  ]);
 
   console.log('✅ Auto-seed complete — login: admin / admin123');
 }

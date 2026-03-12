@@ -11,6 +11,7 @@ import Team from './pages/Team'
 import Partners from './pages/Partners'
 import Services from './pages/Services'
 import Settings from './pages/Settings'
+import PageContent from './pages/PageContent'
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   return authStorage.isLoggedIn() ? <>{children}</> : <Navigate to="/login" replace />
@@ -37,6 +38,7 @@ export default function App() {
         <Route path="partners" element={<Partners />} />
         <Route path="services" element={<Services />} />
         <Route path="settings" element={<Settings />} />
+        <Route path="content" element={<PageContent />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

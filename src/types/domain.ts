@@ -43,6 +43,7 @@ export interface Partner {
     name: string
     abbr: string
     color: string
+    logo?: string
 }
 
 export interface Testimonial {

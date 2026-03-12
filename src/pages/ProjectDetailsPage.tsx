@@ -12,6 +12,7 @@ interface ApiProjectFull {
     _id: string; title: string; category: string; location: string; duration: string;
     budget: string; challenge: string; solution: string; result: string;
     coverImage: string; galleryImages: string[]; completionDate: string;
+    startDate?: string; endDate?: string;
 }
 
 export default function ProjectDetailsPage() {
@@ -24,6 +25,15 @@ export default function ProjectDetailsPage() {
         queryFn: () => apiFetch<ApiProjectFull>(`/projects/${id}`),
         enabled: !!id,
     })
+
+    const getDurationDisplay = () => {
+        if (project?.startDate && project?.endDate) {
+            const start = new Date(project.startDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+            const end = new Date(project.endDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+            return `${start} - ${end}`;
+        }
+        return project?.duration;
+    }
 
     if (isLoading) return (
         <div className="min-h-[60vh] flex items-center justify-center bg-navy-50">
@@ -56,7 +66,7 @@ export default function ProjectDetailsPage() {
                 <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-navy-100">
                     {[
                         { icon: <MapPin />, label: 'Location', value: project.location },
-                        { icon: <Calendar />, label: 'Duration', value: project.duration },
+                        { icon: <Calendar />, label: 'Duration', value: getDurationDisplay() },
                         { icon: <DollarSign />, label: 'Budget', value: project.budget },
                         { icon: <CheckCircle2 />, label: 'Completed', value: project.completionDate },
                     ].map((stat, idx) => (

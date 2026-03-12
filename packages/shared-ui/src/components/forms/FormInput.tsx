@@ -24,11 +24,13 @@ interface CustomFormInputProps {
   label: string
   placeholder?: string
   description?: string
-  type?: 'text' | 'email' | 'tel' | 'number' | 'password' | 'textarea' | 'select' | 'file'
+  type?: 'text' | 'email' | 'tel' | 'number' | 'password' | 'textarea' | 'select' | 'file' | 'date'
   options?: SelectOption[] // For select type
   disabled?: boolean
   rows?: number // For textarea type
   accept?: string // For file type
+  min?: string | number // For number/date type
+  max?: string | number // For number/date type
   onChangeFile?: (file: File | null) => void // Custom handler for files
 }
 
@@ -42,6 +44,8 @@ export function FormInput({
   disabled = false,
   rows = 4,
   accept,
+  min,
+  max,
   onChangeFile,
 }: CustomFormInputProps) {
   const { control, formState: { errors } } = useFormContext()
@@ -102,6 +106,8 @@ export function FormInput({
                 type={type}
                 placeholder={placeholder}
                 disabled={disabled}
+                min={min}
+                max={max}
                 className="bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm transition-all focus:bg-white dark:focus:bg-slate-900"
                 {...field}
                 value={field.value ?? ''}
@@ -109,7 +115,12 @@ export function FormInput({
                   if (type === 'number') {
                     // Coerce to number if typing
                     const val = e.target.value
-                    field.onChange(val === '' ? '' : Number(val))
+                    if (val === '') {
+                        field.onChange('')
+                    } else {
+                        const num = Number(val)
+                        field.onChange(isNaN(num) ? val : num)
+                    }
                   } else {
                     field.onChange(e)
                   }

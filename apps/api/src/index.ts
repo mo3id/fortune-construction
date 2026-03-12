@@ -17,6 +17,7 @@ import messageRoutes from './routes/messages';
 import settingsRoutes from './routes/settings';
 import uploadRoutes from './routes/upload';
 import statsRoutes from './routes/stats';
+import pageContentRoutes from './routes/pageContent';
 
 dotenv.config();
 
@@ -55,6 +56,7 @@ async function startServer() {
   app.use('/api/settings', settingsRoutes);
   app.use('/api/upload', uploadRoutes);
   app.use('/api/stats', statsRoutes);
+  app.use('/api/content', pageContentRoutes);
 
   app.get('/health', (_req, res) => res.json({ status: 'ok', timestamp: new Date() }));
 

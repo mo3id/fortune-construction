@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { api } from '../lib/api'
-import { Plus, Pencil, Trash2, Loader2 } from 'lucide-react'
+import { api, uploadImage } from '../lib/api'
+import { Plus, Pencil, Trash2, Loader2, ImagePlus } from 'lucide-react'
 import { toast } from 'sonner'
 import { 
   useFormSchema, 
@@ -25,6 +25,7 @@ export default function Partners() {
   const [modalOpen, setModalOpen] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [deleteId, setDeleteId] = useState<string | null>(null)
+  const [uploading, setUploading] = useState(false)
 
   const form = useFormSchema({
     schema: partnerSchema,
@@ -54,6 +55,16 @@ export default function Partners() {
       toast.success('Partner deleted') 
     },
   })
+
+  const handleLogoUpload = async (file: File | null) => {
+    if (!file) return
+    setUploading(true)
+    try {
+      const url = await uploadImage(file)
+      form.setValue('logo', url)
+    } catch { toast.error('Upload failed') }
+    finally { setUploading(false) }
+  }
 
   const openAdd = () => { 
     setEditingId(null)
@@ -141,7 +152,19 @@ export default function Partners() {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 px-1">
             <FormInput name="name" label="Partner Name *" placeholder="e.g. African Development Bank" />
-            <FormInput name="logo" label="Logo URL" placeholder="https://..." />
+            <FormInput name="logo" label="Logo (URL or Upload)" placeholder="https://..." />
+            <div className="flex items-end">
+              <Button type="button" variant="outline" className="w-full relative overflow-hidden" disabled={uploading}>
+                <input type="file" accept="image/*" className="absolute inset-0 opacity-0 cursor-pointer" onChange={(e) => handleLogoUpload(e.target.files?.[0] || null)} />
+                {uploading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <ImagePlus className="w-4 h-4 mr-2" />}
+                {uploading ? 'Uploading...' : 'Upload Logo'}
+              </Button>
+            </div>
+            {form.watch('logo') && (
+              <div className="flex justify-center">
+                <img src={form.watch('logo')} alt="Logo preview" className="h-16 object-contain rounded border border-slate-200 p-1" />
+              </div>
+            )}
             <FormInput name="website" label="Website URL" placeholder="https://..." />
             <FormInput name="description" label="Short Description" type="textarea" rows={2} />
             <FormInput name="order" label="Display Order" type="number" />

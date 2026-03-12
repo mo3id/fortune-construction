@@ -1,11 +1,13 @@
 import { cn } from '@/lib/utils'
 import { HERO_VIDEOS } from '@/lib/constants'
-import { VideoBackgroundProps } from '@/types'
 
-export function VideoBackground({ currentIndex }: VideoBackgroundProps) {
+interface Props { currentIndex: number; videos?: string[] }
+
+export function VideoBackground({ currentIndex, videos }: Props) {
+    const srcs = videos?.length ? videos : HERO_VIDEOS
     return (
         <div className="absolute inset-0 z-0">
-            {HERO_VIDEOS.map((src, index) => (
+            {srcs.map((src, index) => (
                 <video
                     key={src}
                     className={cn(

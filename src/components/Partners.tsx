@@ -40,7 +40,7 @@ export default function Partners() {
     })
 
     const partners = apiPartners?.length
-        ? apiPartners.map((p, i) => ({ name: p.name, abbr: p.abbr, color: COLORS[i % COLORS.length] }))
+        ? apiPartners.map((p, i) => ({ name: p.name, abbr: p.abbr, color: COLORS[i % COLORS.length], logo: p.logo }))
         : FALLBACK_PARTNERS
 
     return (

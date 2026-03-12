@@ -11,6 +11,8 @@ export interface IProject extends Document {
   result: string;
   coverImage: string;
   galleryImages: string[];
+  startDate: Date;
+  endDate: Date;
   completionDate: string;
   createdAt: Date;
 }
@@ -19,13 +21,15 @@ const ProjectSchema = new Schema<IProject>({
   title: { type: String, required: true, trim: true },
   category: { type: String, required: true },
   location: { type: String, required: true },
-  duration: { type: String, required: true },
+  duration: { type: String },
   budget: { type: String, required: true },
   challenge: { type: String, required: true },
   solution: { type: String, required: true },
   result: { type: String, required: true },
   coverImage: { type: String, default: '' },
   galleryImages: [{ type: String }],
+  startDate: { type: Date },
+  endDate: { type: Date },
   completionDate: { type: String, required: true },
 }, { timestamps: true });
 

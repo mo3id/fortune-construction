@@ -173,7 +173,20 @@ export default function Team() {
             <FormInput name="name" label="Full Name *" placeholder="e.g. John Doe" />
             <FormInput name="role" label="Role / Title *" placeholder="e.g. Managing Director" />
             <FormInput name="bio" label="Biography *" type="textarea" rows={3} />
-            <FormInput name="photo" label="Image URL (optional)" placeholder="https://..." />
+            
+            <FormInput name="photo" label="Profile Image (URL or Upload)" placeholder="https://..." />
+            <div className="flex items-end mb-4">
+              <Button type="button" variant="outline" className="w-full relative overflow-hidden" disabled={uploading}>
+                <input 
+                  type="file" 
+                  accept="image/*" 
+                  className="absolute inset-0 opacity-0 cursor-pointer" 
+                  onChange={(e) => handleImageUpload(e.target.files?.[0] || null)} 
+                />
+                {uploading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <ImagePlus className="w-4 h-4 mr-2" />}
+                {uploading ? 'Uploading...' : 'Upload Image'}
+              </Button>
+            </div>
             
             <div className="grid grid-cols-2 gap-4">
               <FormInput name="socialLinks.linkedin" label="LinkedIn (optional)" placeholder="https://linkedin.com/in/..." />

@@ -7,10 +7,16 @@ import { HeroStats } from './hero/HeroStats'
 import { HERO_VIDEOS } from '@/lib/constants'
 import { cn } from '@/lib/utils'
 import { apiFetch } from '@/lib/apiClient'
+import { usePageContent } from '@/hooks/usePageContent'
 
 interface SiteSettings {
     heroTitle: string; heroBadge: string; heroSubtitle: string;
     companyName: string; tagline: string; phone: string; email: string; address: string;
+}
+
+interface HeroContent {
+    badge?: string; title?: string; subtitle?: string;
+    videos?: { url: string }[];
 }
 
 export default function Hero() {
@@ -22,20 +28,27 @@ export default function Hero() {
         staleTime: 60_000,
     })
 
+    const { data: homeContent } = usePageContent<{ hero?: HeroContent }>('home')
+    const heroApi = homeContent?.hero
+
+    const videos = heroApi?.videos?.length
+        ? heroApi.videos.map(v => v.url)
+        : HERO_VIDEOS
+
     useEffect(() => {
         const timer = setInterval(() => {
-            setCurrentVideo((prev) => (prev + 1) % HERO_VIDEOS.length)
+            setCurrentVideo((prev) => (prev + 1) % videos.length)
         }, 6000)
         return () => clearInterval(timer)
-    }, [])
+    }, [videos.length])
 
     const scrollTo = (selector: string) =>
         document.querySelector(selector)?.scrollIntoView({ behavior: 'smooth' })
 
-    const heroBadge = settings?.heroBadge || '20 Years of Construction Excellence'
-    const heroSubtitle = settings?.heroSubtitle || 'Fortune Construction Limited delivers world-class civil engineering across Malawi, building the bedrock of national progress.'
+    const heroBadge = heroApi?.badge || settings?.heroBadge || '20 Years of Construction Excellence'
+    const heroSubtitle = heroApi?.subtitle || settings?.heroSubtitle || 'Fortune Construction Limited delivers world-class civil engineering across Malawi, building the bedrock of national progress.'
 
-    const heroTitleRaw = settings?.heroTitle || 'Crafting Visionary Infrastructure.'
+    const heroTitleRaw = heroApi?.title || settings?.heroTitle || 'Crafting Visionary Infrastructure.'
     const visIdx = heroTitleRaw.indexOf('Visionary')
 
     return (
@@ -43,7 +56,7 @@ export default function Hero() {
             id="hero"
             className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-navy-900"
         >
-            <VideoBackground currentIndex={currentVideo} />
+            <VideoBackground currentIndex={currentVideo} videos={videos} />
 
             {/* Gradient overlay */}
             <div className="absolute inset-0 z-10 bg-gradient-to-b from-navy-900/85 via-navy-800/60 to-navy-900/90" />
