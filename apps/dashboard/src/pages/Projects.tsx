@@ -117,37 +117,38 @@ export default function Projects() {
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Projects</h1>
-          <p className="text-sm text-gray-500 mt-0.5">{projects.length} projects total</p>
+          <h1 className="text-2xl font-display font-bold text-slate-900 dark:text-white">Projects</h1>
+          <p className="text-sm text-slate-500 mt-1">{projects.length} projects total</p>
         </div>
-        <Button onClick={openAdd}>
+        <Button onClick={openAdd} className="shadow-lg shadow-teal-500/20">
           <Plus className="w-4 h-4 mr-2" /> Add Project
         </Button>
       </div>
 
-      <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
+      <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
         {projects.map(p => (
-          <Card key={p._id} className="overflow-hidden group hover:shadow-lg transition-all duration-300">
-            <div className="aspect-video bg-slate-100 relative overflow-hidden">
+          <Card key={p._id} className="overflow-hidden group hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900">
+            <div className="aspect-video bg-slate-100 dark:bg-slate-800 relative overflow-hidden">
               {p.coverImage
-                ? <img src={p.coverImage} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                : <div className="w-full h-full flex items-center justify-center text-slate-300"><ImagePlus className="w-10 h-10" /></div>}
-              <span className="absolute top-3 left-3 text-xs font-bold bg-sky-500 text-white px-2.5 py-1 rounded-lg shadow-sm">
+                ? <img src={p.coverImage} alt={p.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                : <div className="w-full h-full flex items-center justify-center text-slate-300 dark:text-slate-700"><ImagePlus className="w-10 h-10" /></div>}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <span className="absolute top-4 left-4 text-[10px] font-bold uppercase tracking-wider bg-teal-500 text-white px-3 py-1.5 rounded-full shadow-lg">
                 {p.category}
               </span>
             </div>
-            <div className="p-5">
-              <h3 className="font-bold text-gray-900 text-base mb-3 line-clamp-1">{p.title}</h3>
-              <div className="space-y-1.5 mb-4">
-                <div className="flex items-center gap-2 text-xs text-gray-500"><MapPin className="w-3.5 h-3.5 text-sky-500" />{p.location}</div>
-                <div className="flex items-center gap-2 text-xs text-gray-500"><DollarSign className="w-3.5 h-3.5 text-sky-500" />{p.budget}</div>
-                <div className="flex items-center gap-2 text-xs text-gray-500"><Clock className="w-3.5 h-3.5 text-sky-500" />{p.duration}</div>
+            <div className="p-6">
+              <h3 className="font-bold text-slate-900 dark:text-white text-lg mb-4 line-clamp-1 group-hover:text-teal-600 transition-colors">{p.title}</h3>
+              <div className="space-y-3 mb-6">
+                <div className="flex items-center gap-2.5 text-xs font-medium text-slate-500 dark:text-slate-400"><MapPin className="w-4 h-4 text-teal-500" />{p.location}</div>
+                <div className="flex items-center gap-2.5 text-xs font-medium text-slate-500 dark:text-slate-400"><DollarSign className="w-4 h-4 text-teal-500" />{p.budget}</div>
+                <div className="flex items-center gap-2.5 text-xs font-medium text-slate-500 dark:text-slate-400"><Clock className="w-4 h-4 text-teal-500" />{p.duration}</div>
               </div>
-              <div className="flex gap-2 pt-4 border-t border-slate-100">
-                <Button variant="outline" onClick={() => openEdit(p)} className="flex-1 h-8 text-xs">
+            <div className="flex gap-3 pt-5 border-t border-slate-50 dark:border-slate-800">
+                <Button variant="outline" onClick={() => openEdit(p)} className="flex-1 h-9 text-xs font-bold uppercase tracking-wider">
                   <Pencil className="w-3.5 h-3.5 mr-2" /> Edit
                 </Button>
-                <Button variant="destructive" onClick={() => setDeleteId(p._id)} className="h-8 px-3">
+                <Button variant="destructive" onClick={() => setDeleteId(p._id)} className="h-9 px-4">
                   <Trash2 className="w-3.5 h-3.5" />
                 </Button>
               </div>

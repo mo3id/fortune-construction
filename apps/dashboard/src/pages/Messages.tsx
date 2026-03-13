@@ -46,68 +46,91 @@ export default function Messages() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Contact Messages</h1>
-          <p className="text-sm text-gray-500 mt-0.5">{messages.length} total · {unread} unread</p>
+          <h1 className="text-2xl font-display font-bold text-slate-900 dark:text-white">Contact Messages</h1>
+          <p className="text-sm text-slate-500 mt-1">{messages.length} total · {unread} unread messages</p>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="card p-4 flex flex-wrap gap-3">
-        <div className="relative flex-1 min-w-48">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-          <input className="input pl-9" placeholder="Search messages..." value={search} onChange={e => setSearch(e.target.value)} />
+      <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-wrap gap-4 items-center">
+        <div className="relative flex-1 min-w-[300px]">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+          <input 
+            className="w-full h-11 pl-11 pr-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 rounded-xl text-sm focus:outline-none focus:ring-4 focus:ring-teal-500/10 focus:border-teal-500 transition-all" 
+            placeholder="Search messages by name, email, or content..." 
+            value={search} 
+            onChange={e => setSearch(e.target.value)} 
+          />
         </div>
-        <select className="input w-auto" value={filter} onChange={e => setFilter(e.target.value)}>
+        <select 
+          className="h-11 px-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-4 focus:ring-teal-500/10 focus:border-teal-500 transition-all cursor-pointer min-w-[160px]" 
+          value={filter} 
+          onChange={e => setFilter(e.target.value)}
+        >
           <option value="">All Messages</option>
-          <option value="false">Unread</option>
-          <option value="true">Read</option>
+          <option value="false">Unread Only</option>
+          <option value="true">Read Messages</option>
         </select>
       </div>
 
       {/* Messages list */}
-      <div className="card divide-y divide-gray-50 overflow-hidden">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm overflow-hidden divide-y divide-slate-50 dark:divide-slate-800">
         {filtered.length === 0 && (
-          <div className="text-center py-12 text-gray-400">No messages found</div>
+          <div className="text-center py-20 text-slate-400 dark:text-slate-600 font-medium">No messages found</div>
         )}
         {filtered.map(m => (
           <div
             key={m._id}
-            className={`p-5 hover:bg-gray-50/50 transition-colors ${!m.isRead ? 'border-l-2 border-l-sky-500' : ''}`}
+            className={`p-6 transition-all duration-300 relative group ${!m.isRead ? 'bg-teal-50/20 dark:bg-teal-900/5' : 'hover:bg-slate-50/50 dark:hover:bg-slate-800/20'}`}
           >
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex items-start gap-3 flex-1 min-w-0">
-                <div className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 ${m.isRead ? 'bg-gray-100 text-gray-500' : 'bg-teal-100 text-teal-600'}`}>
+            {!m.isRead && <div className="absolute left-0 top-0 bottom-0 w-1 bg-teal-500" />}
+            
+            <div className="flex items-start justify-between gap-6">
+              <div className="flex items-start gap-4 flex-1 min-w-0">
+                <div className={`w-11 h-11 rounded-xl flex items-center justify-center text-sm font-bold flex-shrink-0 border transition-colors ${m.isRead ? 'bg-slate-50 dark:bg-slate-800 text-slate-500 border-slate-100 dark:border-slate-700' : 'bg-teal-50 dark:bg-teal-900/20 text-teal-600 dark:text-teal-400 border-teal-100 dark:border-teal-900/30'}`}>
                   {m.name.charAt(0).toUpperCase()}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <p className={`font-semibold ${m.isRead ? 'text-gray-700' : 'text-gray-900'}`}>{m.name}</p>
-                    {!m.isRead && <span className="w-1.5 h-1.5 rounded-full bg-sky-500 flex-shrink-0" />}
-                    <span className="text-xs text-gray-400">{new Date(m.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                  <div className="flex items-center gap-3 flex-wrap mb-1.5">
+                    <p className={`font-bold text-base leading-none ${m.isRead ? 'text-slate-700 dark:text-slate-300' : 'text-slate-900 dark:text-white'}`}>{m.name}</p>
+                    {!m.isRead && <span className="flex h-2 w-2 rounded-full bg-teal-500" />}
+                    <span className="text-xs font-medium text-slate-400 dark:text-slate-500 ml-auto md:ml-0">{new Date(m.createdAt).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' })}</span>
                   </div>
-                  <div className="flex items-center gap-3 mt-0.5 flex-wrap">
-                    <a href={`mailto:${m.email}`} className="text-xs text-sky-600 hover:underline flex items-center gap-1"><Mail className="w-3 h-3" />{m.email}</a>
-                    {m.phone && <span className="text-xs text-gray-400 flex items-center gap-1"><Phone className="w-3 h-3" />{m.phone}</span>}
+                  <div className="flex items-center gap-4 flex-wrap mb-4">
+                    <a href={`mailto:${m.email}`} className="text-xs font-semibold text-teal-600 dark:text-teal-400 hover:underline flex items-center gap-1.5"><Mail className="w-3.5 h-3.5" />{m.email}</a>
+                    {m.phone && <span className="text-xs font-medium text-slate-400 dark:text-slate-500 flex items-center gap-1.5"><Phone className="w-3.5 h-3.5" />{m.phone}</span>}
                   </div>
-                  <p
-                    className={`text-sm text-gray-600 mt-2 leading-relaxed ${expanded !== m._id ? 'line-clamp-2 cursor-pointer' : 'whitespace-pre-wrap'}`}
+                  <div 
+                    className={`relative bg-slate-50 dark:bg-slate-800/40 p-4 rounded-xl border border-slate-100 dark:border-slate-800/50 transition-all ${expanded !== m._id ? 'cursor-pointer hover:border-teal-500/30' : ''}`}
                     onClick={() => { setExpanded(expanded === m._id ? null : m._id); if (!m.isRead) markRead.mutate(m._id) }}
                   >
-                    {m.message}
-                  </p>
-                  {expanded !== m._id && m.message.length > 120 && (
-                    <button className="text-xs text-sky-600 mt-1" onClick={() => { setExpanded(m._id); if (!m.isRead) markRead.mutate(m._id) }}>Read more</button>
-                  )}
+                    <p className={`text-sm text-slate-600 dark:text-slate-300 leading-relaxed ${expanded !== m._id ? 'line-clamp-2' : 'whitespace-pre-wrap'}`}>
+                      {m.message}
+                    </p>
+                    {expanded !== m._id && m.message.length > 150 && (
+                      <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-slate-50 dark:from-slate-800/40 to-transparent flex items-end justify-center pb-1 rounded-b-xl">
+                        <span className="text-[10px] font-bold text-teal-600 uppercase tracking-wider">Show more</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
-              <div className="flex items-center gap-2 flex-shrink-0">
+              <div className="flex items-center gap-2 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
                 {!m.isRead && (
-                  <button onClick={() => markRead.mutate(m._id)} className="btn-secondary text-xs py-1 px-2.5" title="Mark as read">
-                    <MailOpen className="w-3.5 h-3.5" />
+                  <button 
+                    onClick={() => markRead.mutate(m._id)} 
+                    className="h-9 px-3 flex items-center gap-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-teal-600 dark:text-teal-400 border border-teal-100 dark:border-teal-900/30 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm transition-all" 
+                    title="Mark as read"
+                  >
+                    <MailOpen className="w-3.5 h-3.5" /> Read
                   </button>
                 )}
-                <button onClick={() => setDeleteId(m._id)} className="btn-danger py-1 px-2.5">
-                  <Trash2 className="w-3.5 h-3.5" />
+                <button 
+                  onClick={() => setDeleteId(m._id)} 
+                  className="h-9 w-9 flex items-center justify-center bg-rose-50 dark:bg-rose-900/10 hover:bg-rose-100 dark:hover:bg-rose-900/20 text-rose-500 rounded-full transition-all"
+                  title="Delete message"
+                >
+                  <Trash2 className="w-4 h-4" />
                 </button>
               </div>
             </div>

@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { api } from '../lib/api'
-import { FolderKanban, MessageSquare, Briefcase, HardHat, Mail, Clock } from 'lucide-react'
+import { FolderKanban, MessageSquare, Briefcase, HardHat, Mail, Clock, Plus } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { Card, Button } from '@fortune/shared-ui'
 
@@ -8,16 +8,16 @@ function StatCard({ label, value, icon: Icon, color, badge, onClick }: {
   label: string; value: number; icon: React.ElementType; color: string; badge?: string; onClick?: () => void
 }) {
   return (
-    <Card onClick={onClick} className={`p-6 flex flex-row items-center gap-4 border-none shadow-sm ${onClick ? 'cursor-pointer hover:shadow-md transition-shadow' : ''}`}>
-      <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${color}`}>
-        <Icon className="w-6 h-6 text-white" />
+    <Card onClick={onClick} className={`p-6 flex flex-row items-center gap-5 border border-slate-100 dark:border-slate-800 shadow-sm transition-all duration-300 ${onClick ? 'cursor-pointer hover:shadow-xl hover:-translate-y-1' : ''} bg-white dark:bg-slate-900 rounded-2xl`}>
+      <div className={`w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg shadow-teal-500/20 ${color}`}>
+        <Icon className="w-7 h-7 text-white" />
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-2xl font-bold text-gray-900">{value ?? 0}</p>
-        <p className="text-sm text-gray-500 font-medium">{label}</p>
+        <p className="text-3xl font-display font-bold text-slate-900 dark:text-white leading-none mb-1">{value ?? 0}</p>
+        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">{label}</p>
       </div>
       {badge && (
-        <span className="text-xs font-bold text-sky-600 bg-sky-50 px-2 py-1 rounded-lg border border-sky-100">{badge}</span>
+        <span className="text-[10px] font-bold text-teal-600 bg-teal-50 dark:bg-teal-900/20 px-2.5 py-1 rounded-full border border-teal-100 dark:border-teal-900/30 uppercase tracking-tight">{badge}</span>
       )}
     </Card>
   )
@@ -40,19 +40,19 @@ export default function Overview() {
     <div className="space-y-6">
       {/* Page Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Overview</h1>
-        <p className="text-sm text-gray-500 mt-0.5">Welcome back! Here's what's happening.</p>
+        <h1 className="text-2xl font-display font-bold text-slate-900 dark:text-white">Overview</h1>
+        <p className="text-sm text-slate-500 mt-1">Welcome back! Here's your business performance summary.</p>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-        <StatCard label="Total Projects" value={stats?.projects} icon={FolderKanban} color="bg-sky-500" onClick={() => navigate('/projects')} />
-        <StatCard label="Job Positions" value={stats?.jobs} icon={HardHat} color="bg-indigo-500" onClick={() => navigate('/jobs')} />
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+        <StatCard label="Total Projects" value={stats?.projects} icon={FolderKanban} color="bg-teal-600" onClick={() => navigate('/projects')} />
+        <StatCard label="Job Positions" value={stats?.jobs} icon={HardHat} color="bg-slate-800" onClick={() => navigate('/jobs')} />
         <StatCard
           label="Applications"
           value={stats?.applications}
           icon={Briefcase}
-          color="bg-violet-500"
+          color="bg-slate-700"
           badge={stats?.newApplications > 0 ? `${stats.newApplications} new` : undefined}
           onClick={() => navigate('/applications')}
         />
@@ -67,20 +67,20 @@ export default function Overview() {
       </div>
 
       {/* Quick Actions */}
-      <Card className="p-5 border-none shadow-sm">
-        <h2 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4">Quick Actions</h2>
-        <div className="flex flex-wrap gap-3">
-          <Button onClick={() => navigate('/projects')}>
-            <FolderKanban className="w-4 h-4 mr-2" /> Add Project
+      <Card className="p-6 border border-slate-100 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900 rounded-2xl">
+        <h2 className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] mb-6">Quick Management</h2>
+        <div className="flex flex-wrap gap-4">
+          <Button onClick={() => navigate('/projects')} className="shadow-lg shadow-teal-500/10">
+            <Plus className="w-4 h-4 mr-2" /> New Project
           </Button>
           <Button variant="secondary" onClick={() => navigate('/jobs')}>
-            <HardHat className="w-4 h-4 mr-2" /> Add Job Position
+            <Plus className="w-4 h-4 mr-2" /> New Job
           </Button>
           <Button variant="outline" onClick={() => navigate('/applications')}>
-            <Briefcase className="w-4 h-4 mr-2" /> View Applications
+            <Briefcase className="w-4 h-4 mr-2" /> Applications
           </Button>
           <Button variant="outline" onClick={() => navigate('/messages')}>
-            <Mail className="w-4 h-4 mr-2" /> View Messages
+            <Mail className="w-4 h-4 mr-2" /> Messages
           </Button>
         </div>
       </Card>

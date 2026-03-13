@@ -8,7 +8,7 @@ import Services from '@/components/Services'
 import Partners from '@/components/Partners'
 import { apiFetch } from '@/lib/apiClient'
 import { projectsData } from '@/data/projects'
-import { Image } from '@fortune/shared-ui'
+import { Image, Button } from '@fortune/shared-ui'
 
 interface ApiProject { _id: string; title: string; category: string; location: string; coverImage: string }
 
@@ -30,90 +30,123 @@ function App() {
             <Services />
             
             {/* About Teaser Section */}
-            <section className="section-padding bg-navy-900 text-white relative overflow-hidden">
-                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1541888086925-920a0f6707dd?q=80&w=2000&auto=format&fit=crop&fm=webp')] bg-cover bg-center opacity-10 mix-blend-overlay" />
-                <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12 relative z-10">
+            <section className="relative section-padding overflow-hidden bg-slate-900 dark:bg-black text-white dark">
+                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1541888086925-920a0f6707dd?q=80&w=2000&auto=format&fit=crop&fm=webp')] bg-cover bg-center opacity-10 mix-blend-overlay scale-110" />
+                <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-900/40 to-transparent opacity-80" />
+                
+                <div className="max-w-7xl mx-auto px-6 flex flex-col lg:flex-row items-center gap-16 lg:gap-24 relative z-10">
                     <motion.div 
                         initial={{ opacity: 0, x: -30 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true, margin: "-100px" }}
-                        transition={{ duration: 0.6 }}
-                        className="flex-1"
+                        transition={{ duration: 0.8, ease: "easeOut" }}
+                        className="flex-1 text-center lg:text-left"
                     >
-                        <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">Building Malawi's Future, Together</h2>
-                        <p className="text-teal-50/80 text-lg mb-8 leading-relaxed font-light">
-                            For over two decades, Fortune Construction has been at the forefront of infrastructure development in Malawi. Our commitment to excellence, safety, and innovation has made us the trusted partner for major national projects.
+                        <motion.span 
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            className="inline-block px-4 py-1.5 mb-8 text-[10px] font-black tracking-[0.3em] uppercase text-teal-400 bg-teal-500/10 rounded-full border border-teal-500/20"
+                        >
+                            Corporate Heritage
+                        </motion.span>
+                        <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white leading-tight mb-8 tracking-tight">Building Malawi's Future <span className="text-teal-500 block lg:inline">With Precision</span></h2>
+                        <p className="text-slate-300 text-lg md:text-xl mb-12 leading-relaxed font-light max-w-2xl mx-auto lg:mx-0">
+                            For over two decades, Fortune Construction has defined the skyline of Malawi. Our engineering mastery and uncompromising commitment to safety make us the premier choice for national-scale infrastructure.
                         </p>
-                        <Link to="/about" className="btn-primary">
-                            Discover Our Story <ArrowRight className="w-5 h-5 ml-2" />
-                        </Link>
+                <div className="flex flex-col sm:flex-row items-stretch justify-center lg:justify-start gap-6">
+                            <Link to="/about" className="flex">
+                                <Button size="lg" className="shadow-2xl shadow-teal-500/20 px-10 h-20 text-base font-bold uppercase tracking-widest bg-teal-600 hover:bg-teal-500 text-white border-none w-full sm:w-auto">
+                                    Our Full Story <ArrowRight className="w-5 h-5 ml-3" />
+                                </Button>
+                            </Link>
+                            <div className="flex items-center gap-6 px-10 py-4 bg-slate-800/40 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl min-w-[300px] justify-center group/badge hover:bg-slate-800/60 transition-all duration-500">
+                                <div className="text-teal-400 font-display font-black text-5xl group-hover/badge:scale-110 transition-transform duration-500 leading-none">20+</div>
+                                <div className="text-[13px] font-black text-white uppercase tracking-[0.2em] leading-tight text-left">Years of<br />Elite Excellence</div>
+                            </div>
+                        </div>
                     </motion.div>
+                    
                     <motion.div 
-                        initial={{ opacity: 0, x: 30 }}
-                        whileInView={{ opacity: 1, x: 0 }}
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true, margin: "-100px" }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                        className="flex-1 w-full"
+                        transition={{ duration: 1, ease: "easeOut" }}
+                        className="flex-1 w-full relative"
                     >
-                        <div className="relative aspect-[4/3] rounded-sm overflow-hidden border-4 border-white/10 shadow-2xl">
+                        <div className="relative aspect-[4/5] lg:aspect-square rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl group">
                             <Image 
                                 src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1200&auto=format&fit=crop&fm=webp" 
-                                alt="Construction Engineering" 
-                                className="w-full h-full object-cover"
+                                alt="Construction Engineering Mastery" 
+                                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-navy-900/60 to-transparent" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-60" />
+                            <div className="absolute bottom-10 left-10 right-10 p-8 bg-white/10 backdrop-blur-md rounded-3xl border border-white/20 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-700">
+                                <p className="text-white text-sm font-light italic leading-relaxed">
+                                    "We don't just execute projects; we architect the foundations of national progress through elite engineering."
+                                </p>
+                            </div>
                         </div>
+                        {/* Decorative elements */}
+                        <div className="absolute -top-10 -right-10 w-32 h-32 bg-teal-500/20 rounded-full blur-3xl" />
+                        <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-teal-600/20 rounded-full blur-3xl" />
                     </motion.div>
                 </div>
             </section>
 
             {/* Projects Teaser Section */}
-            <section className="section-padding bg-navy-50 relative overflow-hidden">
-                <div className="max-w-7xl mx-auto relative z-10">
-                    <div className="flex justify-between items-end mb-12">
+            <section className="relative section-padding overflow-hidden">
+                <div className="absolute inset-0 bg-slate-50 dark:bg-slate-950 -z-10" />
+                <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-800 to-transparent" />
+                
+                <div className="max-w-7xl mx-auto px-6 relative z-10">
+                    <div className="flex flex-col md:flex-row justify-between items-center lg:items-end mb-20 gap-8">
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
+                            className="text-center md:text-left"
                         >
-                            <span className="section-subtitle">Our Work</span>
-                            <h2 className="section-title">Featured Projects</h2>
+                            <span className="text-[10px] font-black tracking-[0.3em] uppercase text-teal-600 mb-4 block">Proven Performance</span>
+                            <h2 className="text-4xl md:text-5xl font-display font-bold text-slate-900 dark:text-white tracking-tight">Featured Portfolio</h2>
                         </motion.div>
-                        <Link to="/projects" className="hidden md:flex text-teal-600 hover:text-navy-900 font-bold items-center transition-colors uppercase tracking-wide text-sm">
-                            View All Projects <ArrowRight className="w-5 h-5 ml-2" />
+                        <Link to="/projects">
+                            <Button variant="outline" size="lg" className="font-black uppercase tracking-widest text-[10px] h-14 px-8 border-slate-200 dark:border-slate-800 hover:border-teal-500/30 hover:bg-teal-50 dark:hover:bg-teal-900/10">
+                                View Full Portfolio <ArrowRight className="w-4 h-4 ml-3" />
+                            </Button>
                         </Link>
                     </div>
 
-                    <div className="grid md:grid-cols-3 gap-8 mb-8">
+                    <div className="grid md:grid-cols-3 gap-10">
                         {featuredProjects.map((project, i) => (
                             <motion.div 
                                 key={project._id} 
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
-                                transition={{ duration: 0.5, delay: i * 0.1 }}
-                                className="group bg-white rounded-sm overflow-hidden card-hover border border-navy-100 flex flex-col cursor-pointer shadow-sm"
+                                transition={{ duration: 0.6, delay: i * 0.1 }}
+                                className="group bg-white dark:bg-slate-900 rounded-[2rem] overflow-hidden shadow-xl shadow-slate-200 dark:shadow-black/20 border border-slate-100 dark:border-slate-800 flex flex-col hover:-translate-y-2 transition-all duration-500"
                             >
                                 <div className="aspect-[4/3] relative overflow-hidden">
                                     <Image 
                                         src={project.coverImage} 
-                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                                         alt={project.title}
                                     />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-navy-900/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-                                        <Link to={`/projects/${project._id}`} className="text-white font-bold flex items-center tracking-wide uppercase text-sm">
-                                            View Details <ArrowRight className="w-4 h-4 ml-2" />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-8">
+                                        <Link to={`/projects/${project._id}`} className="text-white font-black tracking-[0.2em] uppercase text-[10px] flex items-center group/link">
+                                            View Case Study <ArrowRight className="w-3.5 h-3.5 ml-2 transform group-hover/link:translate-x-1 transition-transform" />
                                         </Link>
                                     </div>
-                                    <div className="absolute top-4 left-4 bg-teal-500 text-white text-xs font-bold px-3 py-1.5 rounded-sm uppercase tracking-wider shadow-lg">
+                                    <div className="absolute top-6 left-6 bg-teal-500 text-white text-[10px] font-black px-4 py-2 rounded-full uppercase tracking-widest shadow-xl">
                                         {project.category}
                                     </div>
                                 </div>
-                                <div className="p-8 flex flex-col flex-grow">
-                                    <h3 className="text-xl font-display font-bold text-navy-800 mb-3 group-hover:text-teal-600 transition-colors">
+                                <div className="p-10 flex flex-col flex-grow relative">
+                                    <div className="absolute top-0 left-10 w-12 h-1 bg-teal-500 -translate-y-full" />
+                                    <h3 className="text-2xl font-display font-bold text-slate-900 dark:text-white mb-4 group-hover:text-teal-600 transition-colors">
                                         {project.title}
                                     </h3>
-                                    <div className="flex items-center text-navy-500 text-sm font-medium">
+                                    <div className="flex items-center text-slate-500 dark:text-slate-400 text-sm font-medium">
                                         <MapPin className="w-4 h-4 mr-2 text-teal-500" />
                                         {project.location}
                                     </div>
@@ -121,36 +154,47 @@ function App() {
                             </motion.div>
                         ))}
                     </div>
-                    
-                    <Link to="/projects" className="md:hidden flex text-teal-600 font-bold items-center justify-center w-full mt-8 uppercase tracking-wide">
-                        View All Projects <ArrowRight className="w-5 h-5 ml-2" />
-                    </Link>
                 </div>
             </section>
 
             <Partners />
 
             {/* Contact Call to Action */}
-            <section className="py-24 px-6 relative bg-navy-900 overflow-hidden border-t-4 border-teal-500">
-                <div className="absolute inset-0 opacity-10">
-                    <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1541888086925-920a0f6707dd?q=80&w=2000&auto=format&fit=crop&fm=webp')] bg-cover bg-center" />
-                </div>
+            <section className="relative py-32 px-6 overflow-hidden bg-[#06162d] text-white dark">
+                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1541888086925-920a0f6707dd?q=80&w=2000&auto=format&fit=crop&fm=webp')] bg-cover bg-center opacity-10 mix-blend-overlay scale-110" />
+                <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-teal-500/30 to-transparent" />
+                
                 <motion.div 
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.6 }}
-                    className="max-w-4xl mx-auto text-center relative z-10"
+                    transition={{ duration: 0.8 }}
+                    className="max-w-5xl mx-auto text-center relative z-10"
                 >
-                    <HardHat className="w-16 h-16 text-teal-500 mx-auto mb-8 drop-shadow-lg" />
-                    <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-6 leading-tight">Ready to start your next project?</h2>
-                    <p className="text-teal-50/80 text-xl mb-12 max-w-2xl mx-auto font-light leading-relaxed">
-                        Let's collaborate to build infrastructure that stands the test of time. Contact our engineering team today for a consultation.
+                    <div className="inline-flex items-center justify-center w-24 h-24 bg-teal-500/10 rounded-[2.5rem] border border-teal-500/20 mb-12 text-teal-500 shadow-2xl shadow-teal-500/10 rotate-3 hover:rotate-0 transition-transform duration-500 mx-auto">
+                        <HardHat className="w-12 h-12" />
+                    </div>
+                    <h2 className="text-4xl md:text-6xl lg:text-7xl font-display font-bold text-white mb-8 tracking-tight leading-[1.1]">Ready to Engineer <span className="text-teal-500 block md:inline">The Impossible?</span></h2>
+                    <p className="text-slate-200 text-xl md:text-2xl mb-16 max-w-3xl mx-auto font-light leading-relaxed">
+                        Let's collaborate to build infrastructure that stands the test of time. Join Malawi's most elite engineering teams in crafting the future.
                     </p>
-                    <Link to="/contact" className="btn-primary text-lg px-12 py-5 shadow-xl shadow-teal-500/20">
-                        Get in Touch <Construction className="w-6 h-6 ml-2" />
-                    </Link>
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-8">
+                        <Link to="/contact">
+                            <Button size="lg" className="shadow-2xl shadow-teal-500/20 px-12 h-16 text-base font-bold uppercase tracking-widest bg-teal-600 hover:bg-teal-500 text-white border-none transition-all hover:-translate-y-1">
+                                Secure Consultation <Construction className="w-5 h-5 ml-3" />
+                            </Button>
+                        </Link>
+                        <Link to="/careers">
+                            <Button variant="outline" size="lg" className="px-12 h-16 text-base font-bold uppercase tracking-widest text-white border-white/40 bg-white/5 hover:bg-white/10 hover:border-teal-400 transition-all hover:-translate-y-1 group">
+                                <span className="group-hover:text-teal-400 transition-colors">Join Our Team</span>
+                            </Button>
+                        </Link>
+                    </div>
                 </motion.div>
+                
+                {/* Background Decor */}
+                <div className="absolute -bottom-48 -right-48 w-[600px] h-[600px] bg-teal-500/5 rounded-full blur-[120px] pointer-events-none" />
+                <div className="absolute -top-48 -left-48 w-[600px] h-[600px] bg-teal-600/5 rounded-full blur-[120px] pointer-events-none" />
             </section>
         </div>
     )

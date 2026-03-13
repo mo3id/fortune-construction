@@ -14,6 +14,10 @@ export interface ISiteSettings extends Document {
   socialTwitter: string;
   socialLinkedin: string;
   socialYoutube: string;
+  workingDays: string;
+  workingHoursStart: string;
+  workingHoursEnd: string;
+  workingHoursDisplay: string;
 }
 
 const SiteSettingsSchema = new Schema<ISiteSettings>({
@@ -30,6 +34,10 @@ const SiteSettingsSchema = new Schema<ISiteSettings>({
   socialTwitter: { type: String, default: '' },
   socialLinkedin: { type: String, default: '' },
   socialYoutube: { type: String, default: '' },
+  workingDays: { type: String, default: 'Mon – Fri' },
+  workingHoursStart: { type: String, default: '07:30' },
+  workingHoursEnd: { type: String, default: '17:00' },
+  workingHoursDisplay: { type: String, default: 'Mon – Fri: 7:30am – 5:00pm' },
 }, { timestamps: true });
 
 export default mongoose.model<ISiteSettings>('SiteSettings', SiteSettingsSchema);

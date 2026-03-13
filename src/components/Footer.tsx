@@ -32,29 +32,32 @@ export default function Footer() {
     ].filter(s => s.href)
 
     return (
-        <footer id="footer" className="bg-navy-900 text-white">
+        <footer id="footer" className="bg-slate-950 text-white relative overflow-hidden">
+            {/* Background pattern */}
+            <div className="absolute inset-0 opacity-[0.02] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }} />
+            
             <FooterMap />
 
-            {/* Main footer */}
-            <div className="py-16">
+            {/* Main footer content */}
+            <div className="relative z-10 pt-24 pb-12">
                 <Container>
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
-                        {/* Brand */}
-                        <div className="md:col-span-1">
-                            <div className="flex items-center mb-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 lg:gap-12 mb-20">
+                        {/* Brand Column */}
+                        <div className="lg:col-span-1">
+                            <div className="flex items-center mb-10 group">
                                 <img
                                     src="/Logo-new-01.png"
                                     alt={`${SITE.name} Logo`}
-                                    className="h-10 w-auto object-contain"
+                                    className="h-12 md:h-16 w-auto object-contain brightness-0 invert transition-transform duration-500 group-hover:scale-105"
                                 />
                             </div>
-                            <p className="text-white/40 text-sm leading-relaxed mb-6">
-                                Building Malawi&apos;s future with integrity, expertise, and commitment to excellence since {foundedYear}.
+                            <p className="text-slate-400 text-sm leading-relaxed mb-10 font-light max-w-xs">
+                                Since {foundedYear}, Fortune Construction has been Malawi's premier engineering firm, architecting national progress with uncompromising integrity.
                             </p>
 
-                            {/* Social */}
+                            {/* Strategic Social Presence */}
                             {socialLinks.length > 0 && (
-                                <div className="flex gap-3">
+                                <div className="flex gap-4">
                                     {socialLinks.map((s) => (
                                         <a
                                             key={s.label}
@@ -62,30 +65,42 @@ export default function Footer() {
                                             aria-label={s.label}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="w-9 h-9 bg-white/5 hover:bg-teal-500 rounded-sm flex items-center justify-center text-white/40 hover:text-white transition-all duration-200"
+                                            className="w-11 h-11 bg-white/5 hover:bg-teal-600 rounded-xl flex items-center justify-center text-white/40 hover:text-white border border-white/5 transition-all duration-500 group/social"
                                         >
-                                            {s.icon}
+                                            <div className="group-hover/social:scale-110 transition-transform duration-300">
+                                                {s.icon}
+                                            </div>
                                         </a>
                                     ))}
                                 </div>
                             )}
                         </div>
 
-                        {/* Links */}
+                        {/* Links Columns */}
                         <FooterLinks />
 
-                        {/* Newsletter */}
+                        {/* Intelligence Subscription */}
                         <Newsletter />
                     </div>
 
-                    {/* Bottom bar */}
-                    <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-                        <p className="text-white/30 text-xs">
-                            &copy; {new Date().getFullYear()} {companyName} Limited. All rights reserved. Registered in Malawi.
-                        </p>
-                        <div className="flex gap-6">
+                    {/* Bottom Legal Bar */}
+                    <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-8">
+                        <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
+                            <p className="text-slate-500 text-[10px] font-bold uppercase tracking-widest">
+                                &copy; {new Date().getFullYear()} {companyName} Limited
+                            </p>
+                            <div className="hidden md:block w-1 h-1 rounded-full bg-slate-800" />
+                            <p className="text-slate-600 text-[10px] font-medium uppercase tracking-widest">
+                                Registered in the Republic of Malawi
+                            </p>
+                        </div>
+                        
+                        <div className="flex gap-8">
                             {LEGAL_LINKS.map((link) => (
-                                <button key={link} className="text-white/30 hover:text-white/60 text-xs transition-colors">
+                                <button 
+                                    key={link} 
+                                    className="text-slate-500 hover:text-teal-500 text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300 hover:translate-y-[-1px]"
+                                >
                                     {link}
                                 </button>
                             ))}

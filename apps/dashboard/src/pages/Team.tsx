@@ -96,31 +96,35 @@ export default function Team() {
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Team Members</h1>
-          <p className="text-sm text-gray-500 mt-0.5">{members.length} members</p>
+          <h1 className="text-2xl font-display font-bold text-slate-900 dark:text-white">Leadership Team</h1>
+          <p className="text-sm text-slate-500 mt-1">Manage the profiles of the visionary professionals leading Fortune Construction.</p>
         </div>
-        <Button onClick={openAdd}>
+        <Button onClick={openAdd} className="shadow-lg shadow-teal-500/20">
           <Plus className="w-4 h-4 mr-2" /> Add Member
         </Button>
       </div>
 
-      <div className="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5">
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
         {members.map(m => (
-          <Card key={m._id} className="p-5 flex flex-col items-center text-center hover:shadow-md transition-all duration-300">
-            <div className="w-20 h-20 rounded-full overflow-hidden bg-slate-100 mb-3 ring-2 ring-sky-100 ring-offset-2">
+          <Card key={m._id} className="p-6 flex flex-col items-center text-center hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 group">
+            <div className="relative w-24 h-24 rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-800 mb-4 ring-4 ring-teal-50 dark:ring-teal-900/20 ring-offset-4 ring-offset-white dark:ring-offset-slate-900">
               {m.photo
-                ? <img src={m.photo} alt={m.name} className="w-full h-full object-cover" />
-                : <div className="w-full h-full flex items-center justify-center text-slate-300"><User className="w-8 h-8" /></div>}
+                ? <img src={m.photo} alt={m.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                : <div className="w-full h-full flex items-center justify-center text-slate-300 dark:text-slate-700"><User className="w-10 h-10" /></div>}
             </div>
-            <p className="font-bold text-gray-900">{m.name}</p>
-            <p className="text-xs text-sky-600 font-medium mt-0.5">{m.role}</p>
-            <p className="text-xs text-slate-500 mt-2 line-clamp-2">{m.bio}</p>
-            <div className="flex gap-2 mt-4 w-full">
-              <Button variant="outline" onClick={() => openEdit(m)} className="flex-1 h-8 text-xs">
-                <Pencil className="w-3 h-3 mr-2" /> Edit
+            
+            <div className="flex-1 w-full">
+              <p className="font-bold text-slate-900 dark:text-white text-lg leading-tight">{m.name}</p>
+              <p className="text-[10px] font-bold text-teal-600 dark:text-teal-400 mt-1.5 uppercase tracking-[0.2em]">{m.role}</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400 mt-4 line-clamp-3 leading-relaxed px-2">{m.bio}</p>
+            </div>
+
+            <div className="flex gap-2 w-full mt-6 pt-4 border-t border-slate-50 dark:border-slate-800">
+              <Button variant="outline" onClick={() => openEdit(m)} className="flex-1 h-9 text-[10px] font-bold uppercase tracking-wider">
+                <Pencil className="w-3.5 h-3.5 mr-1.5" /> Edit
               </Button>
-              <Button variant="destructive" onClick={() => setDeleteId(m._id)} className="h-8 px-3">
-                <Trash2 className="w-3 h-3" />
+              <Button variant="destructive" onClick={() => setDeleteId(m._id)} className="h-9 px-3">
+                <Trash2 className="w-3.5 h-3.5" />
               </Button>
             </div>
           </Card>

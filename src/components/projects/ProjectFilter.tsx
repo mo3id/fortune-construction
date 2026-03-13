@@ -7,16 +7,16 @@ export function ProjectFilter({
     onCategoryChange,
 }: ProjectFilterProps) {
     return (
-        <div className="flex items-center justify-center gap-2 mb-10 flex-wrap">
+        <div className="flex items-center justify-center gap-3 mb-16 flex-wrap">
             {categories.map((cat) => (
                 <button
                     key={cat}
                     onClick={() => onCategoryChange(cat)}
                     className={cn(
-                        'px-6 py-2.5 text-sm font-semibold tracking-wide rounded-sm border transition-all duration-200',
+                        'px-8 py-3 text-[10px] font-black tracking-[0.2em] uppercase rounded-xl border transition-all duration-500',
                         activeCategory === cat
-                            ? 'bg-teal-500 border-teal-500 text-white'
-                            : 'bg-white border-gray-200 text-gray-600 hover:border-teal-500 hover:text-teal-500'
+                            ? 'bg-teal-600 border-teal-600 text-white shadow-lg shadow-teal-500/20 scale-105'
+                            : 'bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 text-slate-500 dark:text-slate-400 hover:border-teal-500/30 hover:text-teal-600'
                     )}
                 >
                     {cat}

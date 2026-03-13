@@ -80,6 +80,8 @@ export async function autoSeed(): Promise<void> {
     heroTitle: 'Crafting Visionary Infrastructure.', heroBadge: '20 Years of Construction Excellence',
     heroSubtitle: 'Fortune Construction Limited delivers world-class civil engineering across Malawi.',
     socialFacebook: '', socialTwitter: '', socialLinkedin: '', socialYoutube: '',
+    workingDays: 'Mon – Fri', workingHoursStart: '07:30', workingHoursEnd: '17:00',
+    workingHoursDisplay: 'Mon – Fri: 7:30am – 5:00pm',
   });
 
   // --- Page Content ---

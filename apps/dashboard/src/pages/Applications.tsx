@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from '../lib/api'
 import { Trash2, ChevronDown, Search, FileText } from 'lucide-react'
@@ -47,62 +47,73 @@ export default function Applications() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Job Applications</h1>
-          <p className="text-sm text-gray-500 mt-0.5">{apps.length} total applications</p>
+          <h1 className="text-2xl font-display font-bold text-slate-900 dark:text-white">Job Applications</h1>
+          <p className="text-sm text-slate-500 mt-1">{apps.length} total applications found</p>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="card p-4 flex flex-wrap gap-3">
-        <div className="relative flex-1 min-w-48">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-          <input className="input pl-9" placeholder="Search by name, email, position..." value={search} onChange={e => setSearch(e.target.value)} />
+      <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-wrap gap-4 items-center">
+        <div className="relative flex-1 min-w-[300px]">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+          <input 
+            className="w-full h-11 pl-11 pr-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 rounded-xl text-sm focus:outline-none focus:ring-4 focus:ring-teal-500/10 focus:border-teal-500 transition-all" 
+            placeholder="Search by name, email, or position..." 
+            value={search} 
+            onChange={e => setSearch(e.target.value)} 
+          />
         </div>
-        <select className="input w-auto" value={filterStatus} onChange={e => setFilterStatus(e.target.value)}>
+        <select 
+          className="h-11 px-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-4 focus:ring-teal-500/10 focus:border-teal-500 transition-all cursor-pointer min-w-[160px]" 
+          value={filterStatus} 
+          onChange={e => setFilterStatus(e.target.value)}
+        >
           <option value="">All Statuses</option>
           {STATUSES.map(s => <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>)}
         </select>
       </div>
 
-      {/* Table */}
-      <div className="card overflow-hidden">
+      {/* Table Content */}
+      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-100 bg-gray-50/60">
-                <th className="text-left px-5 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Applicant</th>
-                <th className="text-left px-5 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Position</th>
-                <th className="text-left px-5 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
-                <th className="text-left px-5 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</th>
-                <th className="px-5 py-3.5" />
+              <tr className="border-b border-slate-50 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30">
+                <th className="text-left px-6 py-4 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em]">Applicant</th>
+                <th className="text-left px-6 py-4 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em]">Position</th>
+                <th className="text-left px-6 py-4 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em]">Status</th>
+                <th className="text-left px-6 py-4 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em]">Date</th>
+                <th className="px-6 py-4" />
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-50">
+            <tbody className="divide-y divide-slate-50 dark:divide-slate-800">
               {filtered.length === 0 && (
-                <tr><td colSpan={5} className="text-center py-12 text-gray-400">No applications found</td></tr>
+                <tr><td colSpan={5} className="text-center py-20 text-slate-400 dark:text-slate-600 font-medium">No applications found matching your criteria</td></tr>
               )}
               {filtered.map(a => (
-                <>
-                  <tr key={a._id} className="hover:bg-gray-50/50 transition-colors">
-                    <td className="px-5 py-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-violet-100 flex items-center justify-center text-violet-600 font-bold text-xs flex-shrink-0">
+                <React.Fragment key={a._id}>
+                  <tr className="group hover:bg-slate-50/50 dark:hover:bg-slate-800/20 transition-colors">
+                    <td className="px-6 py-5">
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 rounded-xl bg-teal-50 dark:bg-teal-900/20 flex items-center justify-center text-teal-600 dark:text-teal-400 font-bold text-sm flex-shrink-0 border border-teal-100 dark:border-teal-900/30">
                           {a.fullName.charAt(0).toUpperCase()}
                         </div>
                         <div>
-                          <p className="font-semibold text-gray-800">{a.fullName}</p>
-                          <p className="text-xs text-gray-400">{a.email}</p>
+                          <p className="font-bold text-slate-900 dark:text-white leading-none mb-1.5">{a.fullName}</p>
+                          <p className="text-xs font-medium text-slate-400 dark:text-slate-500 tracking-tight">{a.email}</p>
                         </div>
                       </div>
                     </td>
-                    <td className="px-5 py-4 text-gray-600">{a.position}</td>
-                    <td className="px-5 py-4">
+                    <td className="px-6 py-5">
+                      <span className="font-semibold text-slate-700 dark:text-slate-300">{a.position}</span>
+                    </td>
+                    <td className="px-6 py-5">
                       <select
-                        className={`text-xs font-medium rounded-lg border px-2 py-1 cursor-pointer focus:outline-none focus:ring-1 focus:ring-sky-500
-                          ${a.status === 'new' ? 'bg-blue-50 text-blue-700 border-blue-100' : ''}
-                          ${a.status === 'reviewed' ? 'bg-yellow-50 text-yellow-700 border-yellow-100' : ''}
-                          ${a.status === 'shortlisted' ? 'bg-green-50 text-green-700 border-green-100' : ''}
-                          ${a.status === 'rejected' ? 'bg-red-50 text-red-700 border-red-100' : ''}
+                        className={`text-[10px] font-bold uppercase tracking-wider rounded-full border px-3 py-1.5 cursor-pointer focus:outline-none focus:ring-4 focus:ring-teal-500/10 transition-all
+                          ${a.status === 'new' ? 'bg-blue-50 text-blue-700 border-blue-100 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-900/30' : ''}
+                          ${a.status === 'reviewed' ? 'bg-amber-50 text-amber-700 border-amber-100 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-900/30' : ''}
+                          ${a.status === 'shortlisted' ? 'bg-teal-50 text-teal-700 border-teal-100 dark:bg-teal-900/20 dark:text-teal-400 dark:border-teal-900/30' : ''}
+                          ${a.status === 'rejected' ? 'bg-rose-50 text-rose-700 border-rose-100 dark:bg-rose-900/20 dark:text-rose-400 dark:border-rose-900/30' : ''}
                         `}
                         value={a.status}
                         onChange={e => updateStatus.mutate({ id: a._id, status: e.target.value })}
@@ -110,35 +121,60 @@ export default function Applications() {
                         {STATUSES.map(s => <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>)}
                       </select>
                     </td>
-                    <td className="px-5 py-4 text-gray-400 text-xs">{new Date(a.createdAt).toLocaleDateString()}</td>
-                    <td className="px-5 py-4">
-                      <div className="flex items-center gap-1.5 justify-end">
+                    <td className="px-6 py-5 text-slate-400 dark:text-slate-500 text-xs font-medium">{new Date(a.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</td>
+                    <td className="px-6 py-5">
+                      <div className="flex items-center gap-2 justify-end">
                         {a.cvFile && (
-                          <a href={`http://localhost:3001${a.cvFile}`} target="_blank" rel="noreferrer" className="btn-secondary text-xs py-1 px-2.5">
-                            <FileText className="w-3.5 h-3.5" /> CV
+                          <a 
+                            href={`http://localhost:3001${a.cvFile}`} 
+                            target="_blank" 
+                            rel="noreferrer" 
+                            className="h-8 px-3 flex items-center gap-2 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-full text-xs font-bold uppercase tracking-wider transition-all"
+                          >
+                            <FileText className="w-3.5 h-3.5 text-teal-500" /> CV
                           </a>
                         )}
-                        <button onClick={() => setExpanded(expanded === a._id ? null : a._id)} className="btn-secondary text-xs py-1 px-2.5">
-                          <ChevronDown className={`w-3.5 h-3.5 transition-transform ${expanded === a._id ? 'rotate-180' : ''}`} />
+                        <button 
+                          onClick={() => setExpanded(expanded === a._id ? null : a._id)} 
+                          className={`h-8 w-8 flex items-center justify-center bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 dark:text-slate-500 rounded-full transition-all ${expanded === a._id ? 'bg-teal-50 text-teal-600 dark:bg-teal-900/20 dark:text-teal-400' : ''}`}
+                        >
+                          <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${expanded === a._id ? 'rotate-180' : ''}`} />
                         </button>
-                        <button onClick={() => setDeleteId(a._id)} className="btn-danger py-1 px-2.5">
-                          <Trash2 className="w-3.5 h-3.5" />
+                        <button 
+                          onClick={() => setDeleteId(a._id)} 
+                          className="h-8 w-8 flex items-center justify-center bg-rose-50 dark:bg-rose-900/10 hover:bg-rose-100 dark:hover:bg-rose-900/20 text-rose-500 rounded-full transition-all"
+                        >
+                          <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
                     </td>
                   </tr>
                   {expanded === a._id && (
-                    <tr key={`${a._id}-exp`} className="bg-slate-50">
-                      <td colSpan={5} className="px-5 py-4">
-                        <div className="text-sm text-gray-700 space-y-1">
-                          <p className="font-semibold text-gray-500 text-xs uppercase tracking-wider mb-2">Cover Letter</p>
-                          <p className="leading-relaxed whitespace-pre-wrap text-gray-600">{a.coverLetter || 'No cover letter provided'}</p>
-                          <p className="text-xs text-gray-400 mt-3">Phone: {a.phone}</p>
+                    <tr key={`${a._id}-exp`} className="bg-slate-50/50 dark:bg-slate-900/50">
+                      <td colSpan={5} className="px-10 py-8 border-l-2 border-teal-500">
+                        <div className="grid md:grid-cols-3 gap-8">
+                          <div className="md:col-span-2">
+                            <h4 className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] mb-4">Cover Letter / Introduction</h4>
+                            <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-wrap bg-white dark:bg-slate-800/50 p-5 rounded-xl border border-slate-100 dark:border-slate-800 shadow-sm">{a.coverLetter || 'No cover letter provided'}</p>
+                          </div>
+                          <div>
+                            <h4 className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] mb-4">Contact Details</h4>
+                            <div className="bg-white dark:bg-slate-800/50 p-5 rounded-xl border border-slate-100 dark:border-slate-800 shadow-sm space-y-4">
+                              <div>
+                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Phone Number</p>
+                                <p className="text-sm font-semibold text-slate-700 dark:text-slate-200">{a.phone}</p>
+                              </div>
+                              <div>
+                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Email Address</p>
+                                <p className="text-sm font-semibold text-slate-700 dark:text-slate-200">{a.email}</p>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </td>
                     </tr>
                   )}
-                </>
+                </React.Fragment>
               ))}
             </tbody>
           </table>

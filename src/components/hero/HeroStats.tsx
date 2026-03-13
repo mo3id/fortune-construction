@@ -1,13 +1,21 @@
 import { HERO_STATS } from '@/lib/constants'
+import { motion } from 'framer-motion'
 
 export function HeroStats() {
     return (
-        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 border-t border-white/10 pt-8 max-w-3xl mx-auto">
-            {HERO_STATS.map((stat) => (
-                <div key={stat.label} className="text-center">
-                    <p className="font-display text-2xl md:text-3xl font-bold text-teal-400">{stat.value}</p>
-                    <p className="text-white/40 text-[10px] tracking-widest uppercase mt-1">{stat.label}</p>
-                </div>
+        <div className="mt-24 lg:mt-32 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 border-t border-white/10 pt-12 max-w-4xl mx-auto">
+            {HERO_STATS.map((stat, i) => (
+                <motion.div 
+                    key={stat.label} 
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.8 + (i * 0.1) }}
+                    className="text-center group"
+                >
+                    <p className="font-display text-3xl md:text-4xl font-black text-teal-500 group-hover:scale-110 transition-transform duration-500">{stat.value}</p>
+                    <p className="text-slate-500 text-[10px] font-black tracking-[0.2em] uppercase mt-3 transition-colors group-hover:text-slate-300">{stat.label}</p>
+                </motion.div>
             ))}
         </div>
     )

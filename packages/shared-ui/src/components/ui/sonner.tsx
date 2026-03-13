@@ -14,10 +14,10 @@ const Toaster = ({ ...props }: ToasterProps) => {
       }}
       toastOptions={{
         classNames: {
-          toast: "group toast group-[.toaster]:bg-white group-[.toaster]:text-gray-950 group-[.toaster]:border-gray-200 group-[.toaster]:shadow-lg",
-          description: "group-[.toast]:text-gray-500",
-          actionButton: "group-[.toast]:bg-gray-900 group-[.toast]:text-gray-50",
-          cancelButton: "group-[.toast]:bg-gray-100 group-[.toast]:text-gray-500",
+          toast: "group toast group-[.toaster]:bg-white dark:group-[.toaster]:bg-slate-900 group-[.toaster]:text-slate-900 dark:group-[.toaster]:text-white group-[.toaster]:border-slate-100 dark:group-[.toaster]:border-slate-800 group-[.toaster]:shadow-2xl group-[.toaster]:rounded-2xl p-4",
+          description: "group-[.toast]:text-slate-500 dark:group-[.toast]:text-slate-400 font-light text-xs",
+          actionButton: "group-[.toast]:bg-teal-600 group-[.toast]:text-white group-[.toast]:rounded-xl group-[.toast]:font-bold group-[.toast]:uppercase group-[.toast]:tracking-widest group-[.toast]:text-[10px] h-9",
+          cancelButton: "group-[.toast]:bg-slate-100 dark:group-[.toast]:bg-slate-800 group-[.toast]:text-slate-500 group-[.toast]:rounded-xl group-[.toast]:font-bold group-[.toast]:uppercase group-[.toast]:tracking-widest group-[.toast]:text-[10px] h-9",
         },
       }}
       {...props}

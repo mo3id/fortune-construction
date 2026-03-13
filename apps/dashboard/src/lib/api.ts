@@ -29,3 +29,17 @@ export const uploadImage = async (file: File): Promise<string> => {
   })
   return `${BASE_URL}${data.url}`
 }
+
+export const uploadVideo = async (file: File): Promise<string> => {
+  const fd = new FormData()
+  fd.append('video', file)
+  const { data } = await api.post('/upload/video', fd, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  })
+  return `${BASE_URL}${data.url}`
+}
+
+export const uploadMedia = async (file: File): Promise<string> => {
+  const isVideo = /\.(mp4|webm|mov|avi)$/i.test(file.name)
+  return isVideo ? uploadVideo(file) : uploadImage(file)
+}

@@ -104,48 +104,48 @@ export default function Jobs() {
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Job Positions</h1>
-          <p className="text-sm text-gray-500 mt-0.5">{jobs.filter(j => j.isActive).length} active · {jobs.length} total</p>
+          <h1 className="text-2xl font-display font-bold text-slate-900 dark:text-white">Job Positions</h1>
+          <p className="text-sm text-slate-500 mt-1">{jobs.filter(j => j.isActive).length} active · {jobs.length} total</p>
         </div>
-        <Button onClick={openAdd}>
+        <Button onClick={openAdd} className="shadow-lg shadow-teal-500/20">
           <Plus className="w-4 h-4 mr-2" /> Add Position
         </Button>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-4">
+      <div className="grid md:grid-cols-2 gap-6">
         {jobs.map(j => (
-          <Card key={j._id} className={`p-5 hover:shadow-md transition-all duration-300 ${!j.isActive ? 'opacity-60 grayscale-[0.5]' : ''}`}>
-            <div className="flex items-start justify-between gap-3 mb-3">
+          <Card key={j._id} className={`p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border-slate-100 dark:border-slate-800 ${!j.isActive ? 'opacity-60 grayscale-[0.5]' : ''}`}>
+            <div className="flex items-start justify-between gap-4 mb-4">
               <div>
-                <h3 className="font-bold text-gray-900">{j.title}</h3>
-                <div className="flex items-center gap-3 mt-1.5 flex-wrap">
-                  <span className="flex items-center gap-1 text-xs text-gray-500"><MapPin className="w-3 h-3" />{j.location}</span>
-                  <span className="flex items-center gap-1 text-xs text-gray-500"><Clock className="w-3 h-3" />{j.type}</span>
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white leading-tight">{j.title}</h3>
+                <div className="flex items-center gap-4 mt-2 flex-wrap">
+                  <span className="flex items-center gap-1.5 text-xs font-medium text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/50 px-2.5 py-1 rounded-md border border-slate-100 dark:border-slate-800"><MapPin className="w-3 h-3 text-teal-500" />{j.location}</span>
+                  <span className="flex items-center gap-1.5 text-xs font-medium text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/50 px-2.5 py-1 rounded-md border border-slate-100 dark:border-slate-800"><Clock className="w-3 h-3 text-teal-500" />{j.type}</span>
                 </div>
               </div>
               <button
                 onClick={() => toggle.mutate({ id: j._id, isActive: !j.isActive })}
-                className={`flex-shrink-0 ${j.isActive ? 'text-green-500' : 'text-gray-400'} hover:scale-110 transition-transform`}
+                className={`flex-shrink-0 transition-all duration-300 ${j.isActive ? 'text-teal-500 hover:text-teal-600' : 'text-slate-300 hover:text-slate-400'} hover:scale-110`}
                 title={j.isActive ? 'Deactivate' : 'Activate'}
               >
-                {j.isActive ? <ToggleRight className="w-7 h-7" /> : <ToggleLeft className="w-7 h-7" />}
+                {j.isActive ? <ToggleRight className="w-8 h-8" /> : <ToggleLeft className="w-8 h-8" />}
               </button>
             </div>
-            <p className="text-sm text-gray-500 line-clamp-2 mb-3">{j.description}</p>
+            <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2 mb-4 leading-relaxed">{j.description}</p>
             {j.requirements.length > 0 && (
-              <div className="flex flex-wrap gap-1.5 mb-4">
+              <div className="flex flex-wrap gap-2 mb-6 pt-4 border-t border-slate-50 dark:border-slate-800">
                 {j.requirements.slice(0, 3).map((r, i) => (
-                  <span key={i} className="text-xs bg-sky-50 text-sky-700 border border-sky-100 rounded-md px-2 py-0.5">{r}</span>
+                  <span key={i} className="text-[10px] font-bold uppercase tracking-wider bg-teal-50 dark:bg-teal-900/20 text-teal-700 dark:text-teal-400 border border-teal-100 dark:border-teal-900/30 rounded-md px-2 py-1">{r}</span>
                 ))}
-                {j.requirements.length > 3 && <span className="text-xs text-gray-400">+{j.requirements.length - 3} more</span>}
+                {j.requirements.length > 3 && <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider ml-1 self-center">+{j.requirements.length - 3} more</span>}
               </div>
             )}
-            <div className="flex gap-2 w-full mt-3">
-              <Button variant="outline" onClick={() => openEdit(j)} className="flex-1 h-8 text-xs">
-                <Pencil className="w-3 h-3 mr-2" /> Edit
+            <div className="flex gap-3 w-full mt-auto">
+              <Button variant="outline" onClick={() => openEdit(j)} className="flex-1 h-9 text-xs font-bold uppercase tracking-wider">
+                <Pencil className="w-3.5 h-3.5 mr-2" /> Edit
               </Button>
-              <Button variant="destructive" onClick={() => setDeleteId(j._id)} className="h-8 px-3">
-                <Trash2 className="w-3 h-3" />
+              <Button variant="destructive" onClick={() => setDeleteId(j._id)} className="h-9 px-4">
+                <Trash2 className="w-3.5 h-3.5" />
               </Button>
             </div>
           </Card>

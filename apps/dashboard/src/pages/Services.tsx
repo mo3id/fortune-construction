@@ -81,26 +81,36 @@ export default function Services() {
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Services</h1>
-        <p className="text-sm text-gray-500 mt-0.5">Edit the main service offerings shown on the website</p>
+        <h1 className="text-2xl font-display font-bold text-slate-900 dark:text-white">Our Services</h1>
+        <p className="text-sm text-slate-500 mt-1">Manage the core service offerings and expertise displayed on the website.</p>
       </div>
 
-      <div className="space-y-4">
+      <div className="grid gap-6">
         {services.map(s => (
-          <Card key={s._id} className="p-6 hover:shadow-md transition-shadow duration-300">
-            <div className="flex items-start justify-between gap-4">
+          <Card key={s._id} className="p-8 hover:shadow-xl transition-all duration-300 border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 group relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-1.5 h-full bg-teal-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="flex items-start justify-between gap-8">
               <div className="flex-1 min-w-0">
-                <h3 className="font-bold text-gray-900 text-lg">{s.title}</h3>
-                {s.tagline && <p className="text-sky-600 text-sm font-medium mt-0.5">{s.tagline}</p>}
-                <p className="text-gray-500 text-sm mt-2 line-clamp-2">{s.description}</p>
-                <div className="flex flex-wrap gap-1.5 mt-3">
+                <div className="flex items-center gap-3 mb-2">
+                  <h3 className="font-bold text-slate-900 dark:text-white text-xl">{s.title}</h3>
+                  {s.tagline && (
+                    <span className="px-3 py-1 bg-teal-50 dark:bg-teal-900/20 text-teal-600 dark:text-teal-400 text-[10px] font-bold uppercase tracking-widest rounded-full border border-teal-100 dark:border-teal-900/30">
+                      {s.tagline}
+                    </span>
+                  )}
+                </div>
+                <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-6 max-w-3xl">{s.description}</p>
+                <div className="flex flex-wrap gap-2">
                   {s.features.map((f, i) => (
-                    <span key={i} className="text-xs bg-sky-50 text-sky-700 border border-sky-100 rounded-md px-2 py-0.5">{f}</span>
+                    <div key={i} className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 dark:bg-slate-800/50 text-slate-600 dark:text-slate-300 text-xs font-medium rounded-lg border border-slate-100 dark:border-slate-800">
+                      <div className="w-1 h-1 rounded-full bg-teal-500" />
+                      {f}
+                    </div>
                   ))}
                 </div>
               </div>
-              <Button variant="outline" onClick={() => openEdit(s)} className="flex-shrink-0">
-                <Pencil className="w-4 h-4 mr-2" /> Edit
+              <Button variant="outline" onClick={() => openEdit(s)} className="flex-shrink-0 h-10 px-5 text-xs font-bold uppercase tracking-wider">
+                <Pencil className="w-4 h-4 mr-2" /> Edit Service
               </Button>
             </div>
           </Card>

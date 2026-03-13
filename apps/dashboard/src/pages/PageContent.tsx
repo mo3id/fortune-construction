@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { api } from '../lib/api'
+import { api, uploadMedia } from '../lib/api'
 import { Loader2, Save, Plus, Trash2, FileText } from 'lucide-react'
 import { toast } from 'sonner'
-import { Button, Card, Input, Textarea } from '@fortune/shared-ui'
+import { Button, Card, Input, Textarea, MediaUploadField } from '@fortune/shared-ui'
 
 const PAGES = [
   { key: 'home', label: 'Home' },
@@ -24,7 +24,7 @@ const SECTION_CONFIG: Record<string, { label: string; fields: FieldConfig[] }[]>
         { key: 'title', label: 'Hero Title', type: 'text' },
         { key: 'subtitle', label: 'Hero Subtitle', type: 'textarea' },
         { key: 'videos', label: 'Background Videos', type: 'array', itemFields: [
-          { key: 'url', label: 'Video URL (path or link)', type: 'text' },
+          { key: 'url', label: 'Video URL (path or link)', type: 'media', accept: 'video' },
         ]},
       ],
     },
@@ -136,7 +136,8 @@ const SECTION_CONFIG: Record<string, { label: string; fields: FieldConfig[] }[]>
 interface FieldConfig {
   key: string
   label: string
-  type: 'text' | 'textarea' | 'number' | 'array'
+  type: 'text' | 'textarea' | 'number' | 'array' | 'media'
+  accept?: 'image' | 'video' | 'any'
   itemFields?: FieldConfig[]
 }
 
@@ -174,21 +175,21 @@ export default function PageContentEditor() {
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Page Content</h1>
-          <p className="text-sm text-gray-500 mt-0.5">Edit content for all website pages</p>
+          <h1 className="text-2xl font-display font-bold text-slate-900 dark:text-white">Page Content</h1>
+          <p className="text-sm text-slate-500 mt-1">Manage and update the dynamic content across your website pages.</p>
         </div>
       </div>
 
       {/* Page Tabs */}
-      <div className="flex gap-2 border-b border-gray-200 pb-0">
+      <div className="flex gap-2 border-b border-slate-100 dark:border-slate-800 pb-0">
         {PAGES.map(p => (
           <button
             key={p.key}
             onClick={() => setActivePage(p.key)}
-            className={`px-4 py-2.5 text-sm font-medium rounded-t-lg transition-colors border-b-2 -mb-[1px] ${
+            className={`px-6 py-3 text-xs font-bold uppercase tracking-wider rounded-t-xl transition-all border-b-2 -mb-[2px] ${
               activePage === p.key
-                ? 'text-sky-600 border-sky-500 bg-sky-50'
-                : 'text-gray-500 border-transparent hover:text-gray-700 hover:bg-gray-50'
+                ? 'text-teal-600 border-teal-500 bg-teal-50/50 dark:bg-teal-900/10'
+                : 'text-slate-400 border-transparent hover:text-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800/50'
             }`}
           >
             {p.label}
@@ -243,33 +244,39 @@ function SectionEditor({
   }
 
   return (
-    <Card className="overflow-hidden">
+    <Card className={`overflow-hidden border transition-all duration-300 ${expanded ? 'shadow-xl border-teal-500/20 ring-1 ring-teal-500/5' : 'border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md'}`}>
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full flex items-center justify-between p-5 hover:bg-gray-50 transition-colors"
+        className={`w-full flex items-center justify-between p-6 transition-colors ${expanded ? 'bg-slate-50/50 dark:bg-slate-800/30' : 'hover:bg-slate-50 dark:hover:bg-slate-800/50'}`}
       >
-        <div className="flex items-center gap-3">
-          <FileText className="w-5 h-5 text-sky-500" />
-          <h3 className="font-bold text-gray-900">{sectionLabel}</h3>
+        <div className="flex items-center gap-4">
+          <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${expanded ? 'bg-teal-600 text-white shadow-lg shadow-teal-500/20' : 'bg-slate-100 dark:bg-slate-800 text-slate-500'}`}>
+            <FileText className="w-5 h-5" />
+          </div>
+          <h3 className={`font-bold text-lg ${expanded ? 'text-slate-900 dark:text-white' : 'text-slate-700 dark:text-slate-300'}`}>{sectionLabel}</h3>
         </div>
-        <span className={`text-gray-400 transition-transform ${expanded ? 'rotate-180' : ''}`}>▼</span>
+        <div className={`w-8 h-8 rounded-full flex items-center justify-center border border-slate-200 dark:border-slate-700 transition-all ${expanded ? 'rotate-180 bg-teal-50 dark:bg-teal-900/20 border-teal-200 dark:border-teal-800 text-teal-600' : 'text-slate-400'}`}>
+          <Plus className={`w-4 h-4 transition-transform duration-300 ${expanded ? 'rotate-45' : ''}`} />
+        </div>
       </button>
 
       {expanded && (
-        <div className="p-5 pt-0 space-y-4 border-t border-gray-100">
-          {fields.map(field => (
-            <FieldRenderer
-              key={field.key}
-              field={field}
-              value={data[field.key]}
-              onChange={(val) => updateField(field.key, val)}
-            />
-          ))}
+        <div className="p-8 pt-4 space-y-8 animate-in fade-in slide-in-from-top-2 duration-300">
+          <div className="space-y-6">
+            {fields.map(field => (
+              <FieldRenderer
+                key={field.key}
+                field={field}
+                value={data[field.key]}
+                onChange={(val) => updateField(field.key, val)}
+              />
+            ))}
+          </div>
 
-          <div className="pt-4 flex justify-end">
-            <Button onClick={() => save.mutate()} disabled={save.isPending} className="min-w-[120px]">
+          <div className="pt-8 flex justify-end border-t border-slate-50 dark:border-slate-800">
+            <Button onClick={() => save.mutate()} disabled={save.isPending} size="lg" className="min-w-[140px] shadow-lg shadow-teal-500/20">
               {save.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
-              {save.isPending ? 'Saving...' : 'Save'}
+              {save.isPending ? 'Saving...' : 'Save Section'}
             </Button>
           </div>
         </div>
@@ -307,73 +314,108 @@ function FieldRenderer({
     }
 
     return (
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <label className="text-sm font-medium text-gray-700">{field.label}</label>
-          <Button type="button" variant="outline" size="sm" onClick={addItem}>
-            <Plus className="w-3 h-3 mr-1" /> Add
+      <div className="space-y-4">
+        <div className="flex items-center justify-between pb-2 border-b border-slate-50 dark:border-slate-800">
+          <label className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">{field.label}</label>
+          <Button type="button" variant="outline" size="sm" onClick={addItem} className="h-8 px-3 text-[10px] font-bold uppercase tracking-wider">
+            <Plus className="w-3 h-3 mr-1.5" /> Add New
           </Button>
         </div>
-        {items.map((item, idx) => (
-          <div key={idx} className="bg-gray-50 rounded-lg p-4 space-y-3 relative border border-gray-200">
-            <button
-              type="button"
-              onClick={() => removeItem(idx)}
-              className="absolute top-2 right-2 text-red-400 hover:text-red-600 transition-colors"
-            >
-              <Trash2 className="w-4 h-4" />
-            </button>
-            <span className="text-xs font-bold text-gray-400 uppercase">#{idx + 1}</span>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {field.itemFields!.map(sub => (
-                <div key={sub.key} className={sub.type === 'textarea' ? 'sm:col-span-2' : ''}>
-                  <label className="text-xs font-medium text-gray-500 mb-1 block">{sub.label}</label>
-                  {sub.type === 'textarea' ? (
-                    <Textarea
-                      value={(item[sub.key] as string) || ''}
-                      onChange={(e) => updateItem(idx, sub.key, e.target.value)}
-                      rows={2}
-                      className="text-sm"
-                    />
-                  ) : (
-                    <Input
-                      type={sub.type === 'number' ? 'number' : 'text'}
-                      value={item[sub.key] as string || ''}
-                      onChange={(e) => updateItem(idx, sub.key, sub.type === 'number' ? Number(e.target.value) : e.target.value)}
-                      className="text-sm"
-                    />
-                  )}
-                </div>
-              ))}
+        <div className="grid gap-4">
+          {items.map((item, idx) => (
+            <div key={idx} className="bg-slate-50/50 dark:bg-slate-900/30 rounded-2xl p-6 space-y-4 relative border border-slate-100 dark:border-slate-800 group hover:border-teal-500/20 transition-all duration-300">
+              <button
+                type="button"
+                onClick={() => removeItem(idx)}
+                className="absolute top-4 right-4 h-8 w-8 flex items-center justify-center text-slate-300 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/10 rounded-full transition-all opacity-0 group-hover:opacity-100"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-[10px] font-bold text-teal-600 bg-teal-50 dark:bg-teal-900/20 px-2 py-0.5 rounded uppercase tracking-wider">Item #{idx + 1}</span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                {field.itemFields!.map(sub => (
+                  <div key={sub.key} className={sub.type === 'textarea' || sub.type === 'media' ? 'sm:col-span-2' : ''}>
+                    {sub.type === 'media' ? (
+                      <MediaUploadField
+                        value={(item[sub.key] as string) || ''}
+                        onChange={(val) => updateItem(idx, sub.key, val)}
+                        accept={sub.accept || 'any'}
+                        label={sub.label}
+                        onUpload={uploadMedia}
+                      />
+                    ) : (
+                      <div className="space-y-1.5">
+                        <label className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider ml-1">{sub.label}</label>
+                        {sub.type === 'textarea' ? (
+                          <Textarea
+                            value={(item[sub.key] as string) || ''}
+                            onChange={(e) => updateItem(idx, sub.key, e.target.value)}
+                            rows={3}
+                            className="text-sm bg-white dark:bg-slate-950 border-slate-100 dark:border-slate-800"
+                          />
+                        ) : (
+                          <Input
+                            type={sub.type === 'number' ? 'number' : 'text'}
+                            value={item[sub.key] as string || ''}
+                            onChange={(e) => updateItem(idx, sub.key, sub.type === 'number' ? Number(e.target.value) : e.target.value)}
+                            className="text-sm h-10 bg-white dark:bg-slate-950 border-slate-100 dark:border-slate-800"
+                          />
+                        )}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+          {items.length === 0 && (
+            <div className="py-12 border-2 border-dashed border-slate-100 dark:border-slate-800 rounded-2xl flex flex-col items-center justify-center text-slate-400">
+              <Plus className="w-8 h-8 mb-2 opacity-20" />
+              <p className="text-sm font-medium">No items added yet</p>
+              <button onClick={addItem} className="text-xs text-teal-500 font-bold uppercase tracking-wider mt-2 hover:underline">Add the first one</button>
+            </div>
+          )}
+        </div>
       </div>
     )
   }
 
   if (field.type === 'textarea') {
     return (
-      <div>
-        <label className="text-sm font-medium text-gray-700 mb-1 block">{field.label}</label>
+      <div className="space-y-1.5">
+        <label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1">{field.label}</label>
         <Textarea
           value={(value as string) || ''}
           onChange={(e) => onChange(e.target.value)}
-          rows={3}
-          className="text-sm"
+          rows={4}
+          className="text-sm border-slate-100 dark:border-slate-800"
         />
       </div>
     )
   }
 
+  if (field.type === 'media') {
+    return (
+      <MediaUploadField
+        value={(value as string) || ''}
+        onChange={onChange}
+        accept={field.accept || 'any'}
+        label={field.label}
+        onUpload={uploadMedia}
+      />
+    )
+  }
+
   return (
-    <div>
-      <label className="text-sm font-medium text-gray-700 mb-1 block">{field.label}</label>
+    <div className="space-y-1.5">
+      <label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1">{field.label}</label>
       <Input
         type={field.type === 'number' ? 'number' : 'text'}
         value={(value as string) || ''}
         onChange={(e) => onChange(field.type === 'number' ? Number(e.target.value) : e.target.value)}
-        className="text-sm"
+        className="text-sm h-11 border-slate-100 dark:border-slate-800"
       />
     </div>
   )

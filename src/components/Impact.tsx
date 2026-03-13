@@ -12,7 +12,7 @@ const ICON_MAP: Record<string, ReactNode> = {
     CheckCircle: <CheckCircle className="w-8 h-8" />,
 }
 
-const COLORS = ['bg-teal-500', 'bg-navy-800', 'bg-teal-500', 'bg-navy-800']
+const COLORS = ['bg-teal-600', 'bg-slate-900', 'bg-teal-500', 'bg-slate-800']
 
 interface ApiMetric { target: number; suffix: string; label: string; description: string; icon: string }
 interface ImpactContent { title?: string; subtitle?: string; description?: string; items?: ApiMetric[] }
@@ -56,7 +56,10 @@ export default function Impact() {
     }, [])
 
     return (
-        <section id="impact" ref={sectionRef} className="section-padding bg-gray-50">
+        <section id="impact" ref={sectionRef} className="relative section-padding overflow-hidden">
+            <div className="absolute inset-0 bg-slate-50 dark:bg-slate-900/50 -z-10" />
+            <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-800 to-transparent" />
+            
             <Container>
                 <SectionHeader
                     subtitle={content?.subtitle || "Our Impact"}
@@ -64,7 +67,7 @@ export default function Impact() {
                     description={content?.description || "Our numbers tell a story of commitment, craftsmanship, and community transformation."}
                 />
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     {metrics.map((metric, i) => (
                         <MetricCard key={metric.label} metric={metric} index={i} isVisible={isVisible} />
                     ))}

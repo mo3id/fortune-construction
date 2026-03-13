@@ -1,20 +1,29 @@
 import { Button } from '@fortune/shared-ui'
+import { Link } from 'react-router-dom'
 
 export function ImpactCTA() {
     return (
-        <div className="mt-16 bg-navy-800 rounded-sm p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8">
-            <div>
-                <p className="font-display text-2xl md:text-3xl font-bold text-white mb-2">
-                    Ready to build something remarkable?
-                </p>
-                <p className="text-white/60 text-base">Join hundreds of satisfied clients across Malawi.</p>
+        <div className="mt-24 bg-slate-900 dark:bg-black rounded-[2.5rem] p-10 md:p-16 flex flex-col lg:flex-row items-center justify-between gap-10 relative overflow-hidden group shadow-2xl">
+            <div className="absolute top-0 left-0 w-full h-full bg-[url('https://images.unsplash.com/photo-1541888086925-920a0f6707dd?q=80&w=2000&auto=format&fit=crop&fm=webp')] bg-cover bg-center opacity-5 mix-blend-overlay scale-110 group-hover:scale-100 transition-transform duration-1000" />
+            <div className="absolute inset-0 bg-gradient-to-r from-teal-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+            
+            <div className="relative z-10 text-center lg:text-left">
+                <h3 className="font-display text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">
+                    Ready to build something <span className="text-teal-500 underline decoration-teal-500/30 underline-offset-8">remarkable?</span>
+                </h3>
+                <p className="text-slate-400 text-lg md:text-xl font-light">Join Malawi's most prestigious organizations in defining the future of infrastructure.</p>
             </div>
-            <Button
-                onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
-                className="h-12 px-8 rounded-sm bg-teal-500 hover:bg-teal-600 text-white font-semibold whitespace-nowrap"
-            >
-                Discuss Your Project
-            </Button>
+            
+            <div className="relative z-10 flex flex-col sm:flex-row gap-4">
+                <Link to="/contact">
+                    <Button
+                        size="lg"
+                        className="h-16 px-10 bg-teal-600 hover:bg-teal-500 text-white font-bold uppercase tracking-widest text-sm shadow-xl shadow-teal-500/20 transition-all duration-500 transform hover:-translate-y-1"
+                    >
+                        Secure Consultation
+                    </Button>
+                </Link>
+            </div>
         </div>
     )
 }

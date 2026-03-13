@@ -47,20 +47,23 @@ const TIMELINE_EVENTS: TimelineEvent[] = [
 
 export default function Timeline() {
     return (
-        <section id="timeline" className="section-padding bg-gradient-to-b from-navy-800 to-navy-900">
+        <section id="timeline" className="relative section-padding overflow-hidden">
+            <div className="absolute inset-0 bg-slate-900 dark:bg-black -z-10" />
+            <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-slate-200/10 dark:via-slate-800 to-transparent" />
+            
             <Container className="max-w-5xl">
                 <SectionHeader
                     subtitle="Our Story"
-                    title="A Legacy Built Year by Year"
-                    description="From a humble beginning in 2004 to becoming Malawi's trusted construction leader — this is our journey."
+                    title="A Legacy of Engineering Mastery"
+                    description="From a visionary foundation in 2004 to becoming Malawi's trusted construction leader — this is our corporate journey."
                     dark
                 />
 
-                <div className="relative">
+                <div className="relative mt-24">
                     {/* Vertical line */}
-                    <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-[2px] bg-gradient-to-b from-teal-500/50 via-teal-500 to-teal-500/20 md:-translate-x-1/2" />
+                    <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-teal-500/30 to-transparent md:-translate-x-1/2" />
 
-                    <div className="space-y-12">
+                    <div className="space-y-24">
                         {TIMELINE_EVENTS.map((event, i) => (
                             <TimelineItem key={event.year} event={event} index={i} />
                         ))}

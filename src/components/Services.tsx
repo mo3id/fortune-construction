@@ -6,7 +6,7 @@ import { WhyUs } from './services/WhyUs'
 import { Service } from '@/types'
 import { apiFetch } from '@/lib/apiClient'
 
-const ACCENT_COLORS = ['border-teal-500', 'border-navy-800', 'border-teal-400']
+const ACCENT_COLORS = ['border-teal-600', 'border-slate-900', 'border-teal-500']
 const ICONS = [<Route className="w-10 h-10" />, <Building2 className="w-10 h-10" />, <Layers className="w-10 h-10" />]
 
 interface ApiService { _id: string; title: string; tagline: string; description: string; features: string[]; bgImage: string; order: number }
@@ -37,15 +37,17 @@ export default function Services() {
         : FALLBACK
 
     return (
-        <section id="services" className="section-padding bg-white">
+        <section id="services" className="relative section-padding bg-white dark:bg-slate-950 overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-800 to-transparent" />
+            
             <Container>
                 <SectionHeader
                     subtitle="What We Build"
-                    title="Comprehensive Construction Services"
-                    description="From groundbreaking to handover, Fortune Construction delivers full-scope construction across Malawi's most critical sectors."
+                    title="Engineering Solutions for National Progress"
+                    description="Fortune Construction delivers elite, full-scope construction services across Malawi's most critical infrastructure sectors."
                 />
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-24">
                     {services.map((service, i) => (
                         <ServiceCard key={service.title} service={service} index={i} />
                     ))}

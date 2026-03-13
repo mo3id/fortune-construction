@@ -9,7 +9,7 @@ import {
   DialogFooter,
 } from '../ui/dialog'
 import { Button } from '../ui/button'
-import { CheckCircle2, AlertTriangle, Info, Trash2 } from 'lucide-react'
+import { CheckCircle2, AlertTriangle, Info, Trash2, Loader2 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export type ModalType = 'success' | 'error' | 'info' | 'destructive' | 'custom'
@@ -44,15 +44,16 @@ export function GlobalModal({
   isLoading = false,
 }: GlobalModalProps) {
   const getIcon = () => {
+    const iconBaseClass = "w-12 h-12 mb-6"
     switch (type) {
       case 'success':
-        return <CheckCircle2 className="w-12 h-12 text-green-500 mb-4" />
+        return <div className="w-20 h-20 bg-green-50 dark:bg-green-900/20 rounded-[2rem] flex items-center justify-center text-green-500 mb-8"><CheckCircle2 className="w-10 h-10" /></div>
       case 'error':
-        return <AlertTriangle className="w-12 h-12 text-destructive mb-4" />
+        return <div className="w-20 h-20 bg-red-50 dark:bg-red-900/20 rounded-[2rem] flex items-center justify-center text-red-500 mb-8"><AlertTriangle className="w-10 h-10" /></div>
       case 'destructive':
-        return <Trash2 className="w-12 h-12 text-destructive mb-4" />
+        return <div className="w-20 h-20 bg-red-50 dark:bg-red-900/20 rounded-[2rem] flex items-center justify-center text-red-500 mb-8"><Trash2 className="w-10 h-10" /></div>
       case 'info':
-        return <Info className="w-12 h-12 text-blue-500 mb-4" />
+        return <div className="w-20 h-20 bg-blue-50 dark:bg-blue-900/20 rounded-[2rem] flex items-center justify-center text-blue-500 mb-8"><Info className="w-10 h-10" /></div>
       default:
         return null
     }
@@ -66,32 +67,41 @@ export function GlobalModal({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       {trigger && <DialogTrigger asChild>{trigger}</DialogTrigger>}
-      <DialogContent className="sm:max-w-[425px] flex flex-col items-center text-center">
+      <DialogContent className="sm:max-w-[480px] p-0 overflow-hidden border-none bg-transparent shadow-none">
         <AnimatePresence>
           {open && (
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.2 }}
-              className="flex flex-col items-center w-full"
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="bg-white dark:bg-slate-900 rounded-[2.5rem] p-10 md:p-12 shadow-2xl border border-slate-100 dark:border-slate-800 flex flex-col items-center text-center relative"
             >
+              <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-teal-500 to-teal-600" />
+              
               {getIcon()}
               
-              <DialogHeader>
-                <DialogTitle className="text-2xl text-center">{title}</DialogTitle>
+              <DialogHeader className="space-y-4">
+                <DialogTitle className="text-3xl font-display font-bold text-slate-900 dark:text-white leading-tight">
+                  {title}
+                </DialogTitle>
                 {description && (
-                  <DialogDescription className="text-center text-base mt-2">
+                  <DialogDescription className="text-slate-500 dark:text-slate-400 text-lg font-light leading-relaxed">
                     {description}
                   </DialogDescription>
                 )}
               </DialogHeader>
 
-              {children && <div className="w-full mt-6 text-left">{children}</div>}
+              {children && <div className="w-full mt-8 text-left">{children}</div>}
 
               {type !== 'custom' && (
-                <DialogFooter className="flex gap-3 w-full sm:justify-center mt-8">
-                  <Button variant="outline" onClick={handleCancel} disabled={isLoading} className="flex-1">
+                <DialogFooter className="flex flex-col sm:flex-row gap-4 w-full mt-10">
+                  <Button 
+                    variant="outline" 
+                    onClick={handleCancel} 
+                    disabled={isLoading} 
+                    className="flex-1 h-14 font-bold uppercase tracking-widest text-[10px]"
+                  >
                     {cancelText}
                   </Button>
                   {onAction && (
@@ -99,9 +109,14 @@ export function GlobalModal({
                       variant={type === 'destructive' || type === 'error' ? 'destructive' : 'default'}
                       onClick={onAction}
                       disabled={isLoading}
-                      className="flex-1"
+                      className="flex-1 h-14 font-bold uppercase tracking-widest text-[10px] shadow-xl shadow-teal-500/10"
                     >
-                      {isLoading ? 'Loading...' : actionText}
+                      {isLoading ? (
+                        <div className="flex items-center gap-2">
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          Processing...
+                        </div>
+                      ) : actionText}
                     </Button>
                   )}
                 </DialogFooter>

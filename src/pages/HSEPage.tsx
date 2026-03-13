@@ -61,9 +61,10 @@ export default function HSEPage() {
             />
 
             {/* Core Policies */}
-            <section className="section-padding bg-navy-50">
+            <section className="relative section-padding overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:to-slate-900 -z-10" />
                 <Container>
-                    <div className="grid md:grid-cols-3 gap-8 md:gap-12">
+                    <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
                         {policies.map((policy, idx) => (
                             <motion.div
                                 key={idx}
@@ -71,13 +72,13 @@ export default function HSEPage() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.5, delay: idx * 0.1 }}
-                                className="bg-white p-10 rounded-sm card-hover border border-navy-100 flex flex-col items-center text-center group"
+                                className="bg-white dark:bg-slate-900 p-10 rounded-2xl shadow-xl shadow-slate-200 dark:shadow-black/20 border border-slate-100 dark:border-slate-800 flex flex-col items-center text-center group hover:-translate-y-2 transition-all duration-500"
                             >
-                                <div className="w-20 h-20 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center mb-8 group-hover:bg-teal-500 group-hover:text-white transition-colors duration-300 shadow-sm">
+                                <div className="w-24 h-24 bg-teal-50 dark:bg-teal-900/20 text-teal-600 dark:text-teal-400 rounded-[2.5rem] flex items-center justify-center mb-10 group-hover:bg-teal-600 group-hover:text-white group-hover:rounded-2xl group-hover:rotate-6 transition-all duration-500 shadow-sm">
                                     {renderPolicyIcon(policy.icon)}
                                 </div>
-                                <h3 className="text-2xl font-display font-bold text-navy-800 mb-4">{policy.title}</h3>
-                                <p className="text-navy-600 leading-relaxed font-light">{policy.description}</p>
+                                <h3 className="text-2xl font-display font-bold text-slate-900 dark:text-white mb-6">{policy.title}</h3>
+                                <p className="text-slate-500 dark:text-slate-400 leading-relaxed font-light">{policy.description}</p>
                             </motion.div>
                         ))}
                     </div>
@@ -85,14 +86,23 @@ export default function HSEPage() {
             </section>
 
             {/* Safety Stats Banner */}
-            <section className="py-20 bg-navy-900 text-white relative overflow-hidden border-y border-teal-500/20">
-                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1541888086925-920a0f6707dd?q=80&w=2000&auto=format&fit=crop&fm=webp')] bg-cover bg-center opacity-5 mix-blend-overlay" />
+            <section className="py-24 bg-slate-900 dark:bg-black text-white relative overflow-hidden dark">
+                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1541888086925-920a0f6707dd?q=80&w=2000&auto=format&fit=crop&fm=webp')] bg-cover bg-center opacity-10 mix-blend-overlay scale-110" />
+                <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-transparent to-slate-900 opacity-60" />
+                
                 <Container className="relative z-10">
-                    <div className={`grid grid-cols-1 md:grid-cols-${stats.length} gap-12 md:gap-8 divide-y md:divide-y-0 md:divide-x divide-white/10 text-center`}>
+                    <div className={`grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 divide-y md:divide-y-0 md:divide-x divide-white/10 text-center`}>
                         {stats.map((stat, idx) => (
-                            <motion.div key={idx} initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: idx * 0.1 }} className="pt-8 md:pt-0">
-                                <div className="text-5xl md:text-6xl font-display font-bold text-teal-400 mb-3 drop-shadow-lg">{stat.value}</div>
-                                <div className="text-sm tracking-widest uppercase text-teal-50/70 font-semibold">{stat.label}</div>
+                            <motion.div 
+                                key={idx} 
+                                initial={{ opacity: 0, scale: 0.9 }} 
+                                whileInView={{ opacity: 1, scale: 1 }} 
+                                viewport={{ once: true }} 
+                                transition={{ duration: 0.6, delay: idx * 0.1 }} 
+                                className="pt-8 md:pt-0"
+                            >
+                                <div className="text-6xl md:text-7xl font-display font-black text-teal-400 mb-4 tracking-tighter drop-shadow-2xl">{stat.value}</div>
+                                <div className="text-[10px] tracking-[0.3em] uppercase text-teal-50/50 font-black">{stat.label}</div>
                             </motion.div>
                         ))}
                     </div>
@@ -100,28 +110,45 @@ export default function HSEPage() {
             </section>
 
             {/* Certifications */}
-            <section className="section-padding bg-white">
+            <section className="relative section-padding bg-white dark:bg-slate-950 overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-800 to-transparent" />
                 <Container>
-                    <SectionHeader
-                        subtitle={certs?.subtitle || "Recognized Excellence"}
-                        title={certs?.title || "Our Accreditations"}
-                        description={certs?.description || "We operate strictly according to international standards for quality management and occupational safety."}
-                    />
+                    <div className="max-w-4xl mx-auto text-center mb-24">
+                        <motion.span 
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            className="inline-block px-4 py-1.5 mb-6 text-[10px] font-black tracking-[0.2em] uppercase text-teal-600 bg-teal-50 dark:bg-teal-900/20 rounded-full"
+                        >
+                            {certs?.subtitle || "Recognized Excellence"}
+                        </motion.span>
+                        <h2 className="text-4xl md:text-5xl font-display font-bold text-slate-900 dark:text-white mb-8">{certs?.title || "Our Accreditations"}</h2>
+                        <p className="text-slate-500 dark:text-slate-400 text-lg font-light leading-relaxed">
+                            {certs?.description || "Fortune Construction operates strictly according to elite international standards for quality management, environmental sustainability, and occupational safety."}
+                        </p>
+                    </div>
                     
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-5xl mx-auto">
                         {certItems.map((cert, i) => (
                             <motion.div 
                                 key={i}
-                                whileHover={{ scale: 1.05 }}
-                                className="aspect-square bg-navy-50 border border-navy-100 rounded-sm flex items-center justify-center p-8 shadow-sm hover:shadow-xl hover:border-teal-500 transition-all cursor-pointer group"
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: i * 0.1 }}
+                                whileHover={{ y: -5 }}
+                                className="aspect-square bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800 rounded-2xl flex items-center justify-center p-10 shadow-sm hover:shadow-2xl hover:border-teal-500/30 transition-all duration-500 group relative overflow-hidden"
                             >
-                                <div className="text-center opacity-60 group-hover:opacity-100 group-hover:text-teal-600 transition-all">
-                                    {cert.image ? (
-                                        <img src={cert.image} alt={cert.title} className="w-16 h-16 mx-auto mb-4 object-contain" />
-                                    ) : (
-                                        <Award className="w-16 h-16 mx-auto mb-4" />
-                                    )}
-                                    <span className="font-bold text-sm uppercase tracking-wider">{cert.title}</span>
+                                <div className="absolute top-0 left-0 w-full h-1 bg-teal-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+                                <div className="text-center">
+                                    <div className="relative mb-6">
+                                        <div className="absolute inset-0 bg-teal-500/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                        {cert.image ? (
+                                            <img src={cert.image} alt={cert.title} className="w-16 h-16 mx-auto object-contain relative z-10" />
+                                        ) : (
+                                            <Award className="w-16 h-16 mx-auto text-slate-300 dark:text-slate-700 group-hover:text-teal-500 transition-colors duration-500 relative z-10" />
+                                        )}
+                                    </div>
+                                    <span className="font-bold text-[10px] text-slate-400 dark:text-slate-500 group-hover:text-slate-900 dark:group-hover:text-white uppercase tracking-[0.2em] transition-colors duration-500">{cert.title}</span>
                                 </div>
                             </motion.div>
                         ))}
@@ -133,15 +160,25 @@ export default function HSEPage() {
             <PartnersSection variant="detailed" />
 
             {/* Download Policy */}
-            <section className="py-24 px-6 bg-navy-50 text-center border-t border-navy-100">
-                <div className="max-w-3xl mx-auto">
-                    <h2 className="text-3xl md:text-4xl font-display font-bold text-navy-800 mb-6">Review Our Full HSE Policy</h2>
-                    <p className="text-navy-600 mb-10 text-lg font-light leading-relaxed">
-                        Transparency is key to our operations. Download our comprehensive Health, Safety, and Environmental policy document to understand our standards in detail.
+            <section className="relative py-32 px-6 overflow-hidden">
+                <div className="absolute inset-0 bg-slate-50 dark:bg-slate-900/50 -z-10" />
+                <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-800 to-transparent" />
+                
+                <div className="max-w-4xl mx-auto text-center relative">
+                    <div className="inline-flex items-center justify-center w-20 h-20 bg-white dark:bg-slate-800 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-700 mb-10 text-teal-500">
+                        <Download className="w-8 h-8" />
+                    </div>
+                    <h2 className="text-4xl md:text-5xl font-display font-bold text-slate-900 dark:text-white mb-8 tracking-tight">Review Our Full HSE Policy</h2>
+                    <p className="text-slate-500 dark:text-slate-400 mb-12 text-lg font-light leading-relaxed max-w-2xl mx-auto">
+                        Operational transparency is a pillar of our corporate identity. Download our comprehensive Health, Safety, and Environmental framework.
                     </p>
-                    <button className="btn-primary py-5 px-10 text-lg">
-                        <Download className="w-6 h-6 mr-3" /> Download Policy PDF
-                    </button>
+                    <motion.button 
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="inline-flex items-center justify-center h-16 px-10 bg-teal-600 hover:bg-teal-700 text-white font-bold uppercase tracking-widest text-sm rounded-full shadow-xl shadow-teal-500/20 transition-all"
+                    >
+                        <Download className="w-5 h-5 mr-3" /> Download Policy Framework (PDF)
+                    </motion.button>
                 </div>
             </section>
         </div>

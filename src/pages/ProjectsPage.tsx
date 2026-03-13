@@ -31,48 +31,55 @@ export default function ProjectsPage() {
             />
 
             {/* Projects Grid */}
-            <section className="section-padding bg-navy-50">
-                <div className="max-w-7xl mx-auto">
+            <section className="relative section-padding overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:to-slate-900 -z-10" />
+                <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-800 to-transparent" />
+                
+                <div className="max-w-7xl mx-auto px-6">
                     {isLoading && (
-                        <div className="flex justify-center py-20">
-                            <div className="w-10 h-10 border-2 border-teal-500 border-t-transparent rounded-full animate-spin" />
+                        <div className="flex justify-center py-32">
+                            <div className="w-12 h-12 border-2 border-teal-500 border-t-transparent rounded-full animate-spin shadow-lg shadow-teal-500/20" />
                         </div>
                     )}
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
                         {projects.map((project, index) => (
                             <motion.div 
                                 key={project._id}
                                 initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
                                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                                className="group bg-white rounded-sm overflow-hidden card-hover border border-navy-100 flex flex-col"
+                                className="group bg-white dark:bg-slate-900 rounded-2xl overflow-hidden shadow-lg shadow-slate-200 dark:shadow-black/20 border border-slate-100 dark:border-slate-800 flex flex-col hover:shadow-2xl hover:-translate-y-2 transition-all duration-500"
                             >
                                 <div className="aspect-[4/3] relative overflow-hidden">
                                     <Image 
                                         src={project.coverImage} 
                                         alt={project.title}
-                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                        className="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-110"
                                     />
-                                    <div className="absolute inset-0 bg-navy-900/10 group-hover:bg-transparent transition-colors duration-500" />
-                                    <div className="absolute top-4 left-4 bg-teal-500 text-white text-xs font-bold px-3 py-1.5 rounded-sm uppercase tracking-wider shadow-lg">
+                                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                    <div className="absolute top-5 left-5 bg-teal-500 text-white text-[10px] font-black px-4 py-2 rounded-full uppercase tracking-widest shadow-xl">
                                         {project.category}
                                     </div>
                                 </div>
-                                <div className="p-8 flex flex-col flex-grow">
-                                    <h3 className="text-2xl font-display font-bold text-navy-800 mb-3 group-hover:text-teal-600 transition-colors">
+                                <div className="p-8 flex flex-col flex-grow relative">
+                                    <div className="absolute top-0 left-8 w-12 h-1 bg-teal-500 -translate-y-full" />
+                                    <h3 className="text-2xl font-display font-bold text-slate-900 dark:text-white mb-4 group-hover:text-teal-600 transition-colors duration-300">
                                         {project.title}
                                     </h3>
-                                    <div className="flex items-center text-navy-500 mb-8 text-sm font-medium">
+                                    <div className="flex items-center text-slate-500 dark:text-slate-400 mb-10 text-sm font-medium">
                                         <MapPin className="w-4 h-4 mr-2 text-teal-500" />
                                         {project.location}
                                     </div>
-                                    <div className="mt-auto pt-4 border-t border-navy-50">
+                                    <div className="mt-auto pt-6 border-t border-slate-50 dark:border-slate-800 flex items-center justify-between">
                                         <Link 
                                             to={`/projects/${project._id}`}
-                                            className="inline-flex items-center text-teal-600 font-bold hover:text-navy-900 transition-colors uppercase tracking-wide text-sm"
+                                            className="inline-flex items-center text-teal-600 dark:text-teal-400 font-black uppercase tracking-widest text-[10px] group/link"
                                         >
-                                            View Case Study <ArrowRight className="w-4 h-4 ml-2" />
+                                            View Case Study 
+                                            <ArrowRight className="w-3.5 h-3.5 ml-2 transform group-hover/link:translate-x-1 transition-transform" />
                                         </Link>
+                                        <div className="w-2 h-2 rounded-full bg-slate-100 dark:bg-slate-800" />
                                     </div>
                                 </div>
                             </motion.div>

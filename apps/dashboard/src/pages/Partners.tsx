@@ -18,7 +18,7 @@ interface Partner extends PartnerFormData {
   _id: string;
 }
 
-const EMPTY_FORM: PartnerFormData = { name: '', logo: '', website: '', description: '', order: 0 }
+const EMPTY_FORM: PartnerFormData = { name: '', abbr: '', logo: '', website: '', description: '', order: 0 }
 
 export default function Partners() {
   const qc = useQueryClient()
@@ -76,6 +76,7 @@ export default function Partners() {
     setEditingId(p._id)
     form.reset({
       name: p.name,
+      abbr: p.abbr || '',
       logo: p.logo || '',
       website: p.website || '',
       description: p.description || '',
@@ -94,36 +95,42 @@ export default function Partners() {
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Partners</h1>
-          <p className="text-sm text-gray-500 mt-0.5">{partners.length} partners total</p>
+          <h1 className="text-2xl font-display font-bold text-slate-900 dark:text-white">Business Partners</h1>
+          <p className="text-sm text-slate-500 mt-1">Manage corporate partners and client logos displayed on the site.</p>
         </div>
-        <Button onClick={openAdd}>
+        <Button onClick={openAdd} className="shadow-lg shadow-teal-500/20">
           <Plus className="w-4 h-4 mr-2" /> Add Partner
         </Button>
       </div>
 
-      <div className="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
         {partners.map(p => (
-          <Card key={p._id} className="p-5 flex flex-col items-center text-center gap-3 hover:shadow-md transition-all duration-300">
-            {p.logo ? (
-              <img src={p.logo} alt={p.name} className="h-16 object-contain" />
-            ) : (
-              <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center text-slate-500 font-bold text-xl shadow-sm border border-slate-200">
-                {p.name.slice(0, 2).toUpperCase()}
-              </div>
-            )}
+          <Card key={p._id} className="p-6 flex flex-col items-center text-center gap-4 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 group">
+            <div className="relative w-full aspect-[3/2] flex items-center justify-center bg-slate-50 dark:bg-slate-800/50 rounded-xl overflow-hidden border border-slate-50 dark:border-slate-800 group-hover:border-teal-500/20 transition-colors">
+              {p.logo ? (
+                <img src={p.logo} alt={p.name} className="h-20 w-auto object-contain transition-transform duration-500 group-hover:scale-110" />
+              ) : (
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-teal-50 to-teal-100 dark:from-teal-900/20 dark:to-teal-900/40 flex items-center justify-center text-teal-600 dark:text-teal-400 font-bold text-2xl shadow-inner">
+                  {p.name.slice(0, 2).toUpperCase()}
+                </div>
+              )}
+            </div>
             
-            <div className="flex-1 mt-2">
-              <p className="font-bold text-gray-900 text-sm">{p.name}</p>
-              {p.website && <p className="text-xs text-sky-500 mt-1 line-clamp-1">{p.website}</p>}
+            <div className="flex-1 w-full">
+              <p className="font-bold text-slate-900 dark:text-white text-base line-clamp-1">{p.name}</p>
+              {p.website ? (
+                <a href={p.website} target="_blank" rel="noreferrer" className="text-xs font-semibold text-teal-600 dark:text-teal-400 mt-1.5 hover:underline block truncate uppercase tracking-wider">{p.website.replace(/^https?:\/\/(www\.)?/, '')}</a>
+              ) : (
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1.5">No Website Linked</p>
+              )}
             </div>
 
-            <div className="flex gap-2 w-full mt-3">
-              <Button variant="outline" onClick={() => openEdit(p)} className="flex-1 h-8 text-xs">
-                <Pencil className="w-3 h-3 mr-2" /> Edit
+            <div className="flex gap-2 w-full mt-2 pt-4 border-t border-slate-50 dark:border-slate-800">
+              <Button variant="outline" onClick={() => openEdit(p)} className="flex-1 h-9 text-[10px] font-bold uppercase tracking-wider">
+                <Pencil className="w-3.5 h-3.5 mr-1.5" /> Edit
               </Button>
-              <Button variant="destructive" onClick={() => setDeleteId(p._id)} className="h-8 px-3">
-                <Trash2 className="w-3 h-3" />
+              <Button variant="destructive" onClick={() => setDeleteId(p._id)} className="h-9 px-3">
+                <Trash2 className="w-3.5 h-3.5" />
               </Button>
             </div>
           </Card>
@@ -151,7 +158,10 @@ export default function Partners() {
       >
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 px-1">
-            <FormInput name="name" label="Partner Name *" placeholder="e.g. African Development Bank" />
+            <div className="grid grid-cols-2 gap-4">
+              <FormInput name="name" label="Partner Name *" placeholder="e.g. African Development Bank" />
+              <FormInput name="abbr" label="Abbreviation *" placeholder="e.g. AfDB" />
+            </div>
             <FormInput name="logo" label="Logo (URL or Upload)" placeholder="https://..." />
             <div className="flex items-end">
               <Button type="button" variant="outline" className="w-full relative overflow-hidden" disabled={uploading}>

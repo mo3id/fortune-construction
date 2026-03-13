@@ -82,7 +82,10 @@ export default function Projects() {
     const modalProject = PROJECTS.find((p) => p.id === modalProjectId)
 
     return (
-        <section id="projects" className="section-padding bg-gray-50">
+        <section id="projects" className="relative section-padding overflow-hidden">
+            <div className="absolute inset-0 bg-slate-50 dark:bg-slate-950 -z-10" />
+            <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-800 to-transparent" />
+            
             <Container>
                 <SectionHeader
                     subtitle="Our Portfolio"
@@ -96,7 +99,7 @@ export default function Projects() {
                     onCategoryChange={setActiveCategory}
                 />
 
-                <div className="masonry-grid">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
                     {filtered.map((project) => (
                         <ProjectCard
                             key={project.id}

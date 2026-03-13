@@ -87,6 +87,7 @@ export const teamSchema = z.object({
 
 export const partnerSchema = z.object({
   name: baseSchemas.requiredString('Name is required', 2),
+  abbr: baseSchemas.requiredString('Abbreviation is required', 2),
   logo: z.string().optional().or(z.literal('')),
   website: z.string().url('Must be a valid URL').optional().or(z.literal('')),
   description: z.string().optional(),
@@ -116,6 +117,10 @@ export const settingsSchema = z.object({
   socialTwitter: z.string().url('Must be a valid URL').optional().or(z.literal('')),
   socialLinkedin: z.string().url('Must be a valid URL').optional().or(z.literal('')),
   socialYoutube: z.string().url('Must be a valid URL').optional().or(z.literal('')),
+  workingDays: z.string().optional(),
+  workingHoursStart: z.string().optional(),
+  workingHoursEnd: z.string().optional(),
+  workingHoursDisplay: z.string().optional(),
 })
 
 export type ContactFormData = z.infer<typeof contactSchema>

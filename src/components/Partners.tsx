@@ -44,23 +44,31 @@ export default function Partners() {
         : FALLBACK_PARTNERS
 
     return (
-        <section id="partners" className="section-padding bg-white">
+        <section id="partners" className="relative section-padding bg-white dark:bg-slate-950 overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-800 to-transparent" />
+            
             <Container>
                 <SectionHeader
                     subtitle="Trusted Partners"
-                    title="Partnering with Institutions That Matter"
-                    description="We work alongside leading government agencies, development banks, and international organisations."
+                    title="Strategic Institutional Alliances"
+                    description="We collaborate with Malawi's most influential government bodies, development banks, and international organizations."
                 />
 
                 {/* Partners grid */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20">
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6 mb-32">
                     {partners.map((partner, i) => (
                         <PartnerLogo key={partner.name} partner={partner} index={i} />
                     ))}
                 </div>
 
+                {/* Testimonials Header */}
+                <div className="text-center mb-16">
+                    <span className="text-[10px] font-black tracking-[0.3em] uppercase text-teal-600 mb-4 block">Corporate Voice</span>
+                    <h3 className="text-3xl font-display font-bold text-slate-900 dark:text-white">Success Stories</h3>
+                </div>
+
                 {/* Testimonials */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                     {TESTIMONIALS.map((t) => (
                         <TestimonialCard key={t.author} testimonial={t} />
                     ))}

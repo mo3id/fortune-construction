@@ -1,4 +1,5 @@
 import { cn } from "../../lib/utils"
+import { motion } from "framer-motion"
 
 export interface SectionHeaderProps {
   subtitle?: string
@@ -20,40 +21,62 @@ export function SectionHeader({
   return (
     <div
       className={cn(
-        "mb-12 reveal",
+        "mb-20",
         centered ? "text-center" : "text-left",
         className
       )}
     >
       {subtitle && (
-        <p
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           className={cn(
-            "section-subtitle",
-            dark ? "text-teal-400" : "text-teal-500"
+            "inline-block px-4 py-1.5 mb-6 text-[10px] font-black tracking-[0.3em] uppercase rounded-full",
+            dark 
+              ? "text-teal-400 bg-teal-500/10 border border-teal-500/20" 
+              : "text-teal-600 bg-teal-50 dark:bg-teal-900/20 border border-teal-100 dark:border-teal-900/30"
           )}
         >
           {subtitle}
-        </p>
+        </motion.p>
       )}
-      <h2
+      <motion.h2
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ delay: 0.1 }}
         className={cn(
-          "section-title mx-auto",
-          centered && "max-w-2xl",
-          dark ? "text-white" : "text-navy-800"
+          "text-4xl md:text-5xl font-display font-bold leading-tight tracking-tight",
+          centered && "mx-auto max-w-3xl",
+          dark ? "text-white" : "text-slate-900 dark:text-white"
         )}
       >
         {title}
-      </h2>
+      </motion.h2>
       {description && (
-        <p
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
           className={cn(
-            "mt-4 mx-auto text-lg leading-relaxed",
-            centered && "max-w-xl",
-            dark ? "text-white/50" : "text-gray-500"
+            "mt-6 mx-auto text-lg leading-relaxed font-light",
+            centered && "max-w-2xl",
+            dark ? "text-slate-400" : "text-slate-500 dark:text-slate-400"
           )}
         >
           {description}
-        </p>
+        </motion.p>
+      )}
+      {centered && (
+        <motion.div 
+          initial={{ opacity: 0, scaleX: 0 }}
+          whileInView={{ opacity: 1, scaleX: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3, duration: 0.8 }}
+          className="w-12 h-1 bg-teal-500 rounded-full mx-auto mt-10" 
+        />
       )}
     </div>
   )

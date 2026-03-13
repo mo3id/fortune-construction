@@ -35,18 +35,23 @@ export default function PartnersSection({ variant = 'simple' }: PartnersSectionP
 
     if (variant === 'simple') {
         return (
-            <section className="py-12 bg-white overflow-hidden border-y border-navy-50">
+            <section className="py-16 bg-white dark:bg-slate-950 overflow-hidden border-y border-slate-100 dark:border-slate-800">
                 <Container>
-                    <div className="text-center mb-8 reveal">
-                        <p className="text-navy-400 font-bold text-sm tracking-widest uppercase">Trusted by industry leaders</p>
+                    <div className="text-center mb-12">
+                        <span className="text-[10px] font-black tracking-[0.3em] uppercase text-slate-400 dark:text-slate-500">Global Strategic Alliances</span>
                     </div>
                     {/* CSS Marquee animation */}
-                    <div className="flex space-x-12 animate-[marquee_20s_linear_infinite]">
-                        {[...partners, ...partners].map((partner, i) => (
-                            <div key={i} className="flex-shrink-0 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
-                                <Image src={partner.logo} alt={partner.name} className="h-16 w-16 rounded-full object-cover" />
-                            </div>
-                        ))}
+                    <div className="relative group">
+                        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white dark:from-slate-950 to-transparent z-10" />
+                        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white dark:from-slate-950 to-transparent z-10" />
+                        
+                        <div className="flex space-x-16 animate-[marquee_30s_linear_infinite] hover:[animation-play-state:paused]">
+                            {[...partners, ...partners].map((partner, i) => (
+                                <div key={i} className="flex-shrink-0 grayscale opacity-30 hover:grayscale-0 hover:opacity-100 transition-all duration-700 hover:scale-110">
+                                    <Image src={partner.logo} alt={partner.name} className="h-16 w-auto max-w-[120px] object-contain" />
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </Container>
             </section>
@@ -54,30 +59,36 @@ export default function PartnersSection({ variant = 'simple' }: PartnersSectionP
     }
 
     return (
-        <section className="section-padding bg-navy-50">
+        <section className="relative section-padding overflow-hidden">
+            <div className="absolute inset-0 bg-slate-50 dark:bg-slate-900/50 -z-10" />
+            <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-800 to-transparent" />
+            
             <Container>
                 <SectionHeader
                     subtitle="Our Network"
-                    title="Trusted Partnerships"
-                    description="We collaborate with government bodies, corporate entities, and international NGOs to deliver excellence across Malawi."
+                    title="Corporate Partnerships"
+                    description="We collaborate with premier government bodies, financial institutions, and global NGOs to deliver engineering excellence across Malawi."
                 />
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
                     {partners.map((partner, i) => (
                         <motion.div 
                             key={partner.name}
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            transition={{ delay: i * 0.1 }}
-                            className="bg-white p-6 rounded-sm shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center group"
+                            transition={{ delay: i * 0.05 }}
+                            className="bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 flex flex-col items-center text-center group"
                         >
-                            <Image 
-                                src={partner.logo} 
-                                alt={partner.name} 
-                                className="h-20 w-20 rounded-full object-cover mb-4 grayscale group-hover:grayscale-0 transition-all duration-500" 
-                            />
-                            <h4 className="font-bold text-navy-800 text-sm mb-1">{partner.name}</h4>
-                            <span className="text-xs text-teal-500 font-medium">{partner.type}</span>
+                            <div className="relative w-20 h-20 mb-6 group-hover:scale-110 transition-transform duration-500">
+                                <div className="absolute inset-0 bg-teal-500/10 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
+                                <Image 
+                                    src={partner.logo} 
+                                    alt={partner.name} 
+                                    className="h-full w-full object-contain grayscale group-hover:grayscale-0 transition-all duration-700 opacity-40 group-hover:opacity-100 relative z-10" 
+                                />
+                            </div>
+                            <h4 className="font-bold text-slate-900 dark:text-white text-xs mb-1 group-hover:text-teal-600 transition-colors">{partner.name}</h4>
+                            <span className="text-[10px] text-teal-600 dark:text-teal-500 font-black uppercase tracking-widest">{partner.type}</span>
                         </motion.div>
                     ))}
                 </div>

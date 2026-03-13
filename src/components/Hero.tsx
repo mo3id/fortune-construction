@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 import { ArrowDown, PlayCircle } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
-import { Button } from '@fortune/shared-ui'
+import { Button, Badge } from '@fortune/shared-ui'
 import { VideoBackground } from './hero/VideoBackground'
 import { HeroStats } from './hero/HeroStats'
 import { HERO_VIDEOS } from '@/lib/constants'
@@ -71,48 +73,76 @@ export default function Hero() {
             />
 
             {/* Content */}
-            <div className="relative z-20 max-w-5xl mx-auto px-6 text-center">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-400 text-xs font-bold uppercase tracking-[0.2em] mb-8 animate-fade-up">
-                    <span className="relative flex h-2 w-2">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-teal-500"></span>
-                    </span>
-                    {heroBadge}
-                </div>
+            <div className="relative z-20 max-w-6xl mx-auto px-6 text-center">
+                <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
+                    className="mb-10"
+                >
+                    <Badge variant="teal" className="gap-3 px-4 py-2 border-teal-500/20 shadow-none">
+                        <span className="relative flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-teal-500"></span>
+                        </span>
+                        {heroBadge}
+                    </Badge>
+                </motion.div>
 
-                <h1 className="font-display text-7xl md:text-9xl font-bold text-white leading-[0.85] mb-8 animate-fade-up tracking-tighter">
+                <motion.h1 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.2 }}
+                    className="font-display text-5xl md:text-7xl lg:text-[5.5rem] font-bold text-white leading-[1.1] mb-10 tracking-tight"
+                >
                     {visIdx >= 0 ? (
                         <>
                             {heroTitleRaw.slice(0, visIdx)}
-                            <span className="text-gradient">{heroTitleRaw.slice(visIdx, visIdx + 9)}</span>
+                            <span className="text-teal-500">{heroTitleRaw.slice(visIdx, visIdx + 9)}</span>
                             {heroTitleRaw.slice(visIdx + 9)}
                         </>
                     ) : heroTitleRaw}
-                </h1>
+                </motion.h1>
 
-                <p className="text-white/70 text-lg md:text-2xl max-w-2xl mx-auto mb-12 font-light leading-relaxed animate-fade-up [animation-delay:200ms]">
+                <motion.p 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.4 }}
+                    className="text-slate-300 text-lg md:text-xl max-w-3xl mx-auto mb-16 font-light leading-relaxed"
+                >
                     {heroSubtitle}
-                </p>
+                </motion.p>
 
-                <div className="flex flex-col sm:flex-row gap-5 justify-center items-center animate-fade-up [animation-delay:400ms]">
-                    <Button
-                        onClick={() => scrollTo('#contact')}
-                        className="h-14 px-10 rounded-sm bg-teal-500 hover:bg-teal-400 text-navy-900 font-bold text-lg shadow-[0_0_20px_rgba(0,195,182,0.3)] transition-all duration-300 transform hover:scale-105"
-                    >
-                        Get Started
-                    </Button>
-                    <Button
-                        variant="outline"
-                        onClick={() => scrollTo('#projects')}
-                        className={cn(
-                            "h-12 px-8 rounded-sm text-base font-semibold gap-2",
-                            "border-white/30 text-white bg-transparent hover:bg-white/10 hover:text-white"
-                        )}
-                    >
-                        <PlayCircle className="w-5 h-5" />
-                        View Our Work
-                    </Button>
-                </div>
+                <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.6 }}
+                    className="flex flex-col sm:flex-row gap-6 justify-center items-center"
+                >
+                    <Link to="/contact">
+                        <Button
+                            size="lg"
+                            className="h-16 px-12 bg-teal-600 hover:bg-teal-500 text-white font-bold text-base uppercase tracking-widest shadow-2xl shadow-teal-500/20 transition-all duration-500 transform hover:-translate-y-1"
+                        >
+                            Executive Consultation
+                        </Button>
+                    </Link>
+                    <Link to="/projects">
+                        <Button
+                            variant="outline"
+                            size="lg"
+                            className={cn(
+                                "h-16 px-10 text-base font-bold uppercase tracking-widest gap-3 transition-all duration-500 hover:-translate-y-1",
+                                "border-white/10 text-white bg-white/5 backdrop-blur-md hover:bg-white/10 hover:border-teal-500/30"
+                            )}
+                        >
+                            <PlayCircle className="w-5 h-5 text-teal-500" />
+                            View Portfolio
+                        </Button>
+                    </Link>
+                </motion.div>
+
+                <HeroStats />
             </div>
 
             {/* Scroll indicator */}

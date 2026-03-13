@@ -56,8 +56,8 @@ export function FormInput({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className="space-y-1.5 w-full">
-          <FormLabel className="text-sm font-medium text-slate-700 dark:text-slate-300">
+        <FormItem className="space-y-2 w-full">
+          <FormLabel className="text-[10px] font-black tracking-[0.2em] uppercase text-slate-400 dark:text-slate-500 ml-1">
             {label}
           </FormLabel>
           <FormControl>
@@ -66,20 +66,20 @@ export function FormInput({
                 placeholder={placeholder}
                 disabled={disabled}
                 rows={rows}
-                className="resize-none bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm transition-all focus:bg-white dark:focus:bg-slate-900"
+                className="resize-none bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 transition-all focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 rounded-2xl p-4 shadow-sm"
                 {...field}
                 value={field.value ?? ''}
               />
             ) : type === 'select' ? (
               <Select disabled={disabled} onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger className="bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm transition-all focus:bg-white dark:focus:bg-slate-900">
+                  <SelectTrigger className="bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 transition-all focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 rounded-2xl h-14 px-6 shadow-sm">
                     <SelectValue placeholder={placeholder} />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
                   {options.map((opt) => (
-                    <SelectItem key={opt.value} value={opt.value}>
+                    <SelectItem key={opt.value} value={opt.value} className="py-3 rounded-xl">
                       {opt.label}
                     </SelectItem>
                   ))}
@@ -99,7 +99,7 @@ export function FormInput({
                 onBlur={field.onBlur}
                 name={field.name}
                 ref={field.ref}
-                className="bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm transition-all file:bg-slate-100 file:text-slate-700 file:border-0 file:rounded-md file:px-4 file:py-1 hover:file:bg-slate-200 cursor-pointer"
+                className="bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 transition-all file:bg-slate-100 dark:file:bg-slate-800 file:text-slate-700 dark:file:text-slate-300 file:border-0 file:rounded-xl file:px-6 file:py-2 hover:file:bg-slate-200 dark:hover:file:bg-slate-700 cursor-pointer h-14 rounded-2xl shadow-sm"
               />
             ) : (
               <Input
@@ -108,7 +108,7 @@ export function FormInput({
                 disabled={disabled}
                 min={min}
                 max={max}
-                className="bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm transition-all focus:bg-white dark:focus:bg-slate-900"
+                className="bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 transition-all focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 h-14 px-6 rounded-2xl shadow-sm"
                 {...field}
                 value={field.value ?? ''}
                 onChange={(e) => {
@@ -116,10 +116,10 @@ export function FormInput({
                     // Coerce to number if typing
                     const val = e.target.value
                     if (val === '') {
-                        field.onChange('')
+                      field.onChange('')
                     } else {
-                        const num = Number(val)
-                        field.onChange(isNaN(num) ? val : num)
+                      const num = Number(val)
+                      field.onChange(isNaN(num) ? val : num)
                     }
                   } else {
                     field.onChange(e)
@@ -129,7 +129,7 @@ export function FormInput({
             )}
           </FormControl>
           
-          {description && <FormDescription>{description}</FormDescription>}
+          {description && <FormDescription className="text-[10px] font-medium text-slate-400 dark:text-slate-500 italic ml-1">{description}</FormDescription>}
           
           <AnimatePresence mode="wait">
             {error && (

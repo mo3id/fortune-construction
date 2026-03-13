@@ -2,22 +2,21 @@ import { Button, Input } from '@fortune/shared-ui'
 
 export function Newsletter() {
     return (
-        <div>
-            <p className="text-white font-semibold text-sm tracking-widest uppercase mb-5">Stay Updated</p>
-            <p className="text-white/40 text-sm mb-4 leading-relaxed">
-                Subscribe for project news and industry updates from our team.
+        <div className="md:col-span-1">
+            <p className="text-[10px] font-black tracking-[0.2em] uppercase text-teal-500 mb-8">Global Newsletter</p>
+            <p className="text-slate-400 text-sm mb-8 leading-relaxed font-light">
+                Receive exclusive updates on national infrastructure milestones and corporate insights.
             </p>
-            <div className="flex gap-2">
+            <div className="space-y-4">
                 <Input
                     type="email"
-                    placeholder="your@email.com"
-                    className="flex-1 bg-white/5 border-white/10 rounded-sm text-white placeholder:text-white/20 focus-visible:border-teal-500 focus-visible:ring-teal-500/20 dark:bg-white/5 h-10"
+                    placeholder="executive@corporate.com"
+                    className="w-full bg-white/5 border-white/10 rounded-xl text-white placeholder:text-slate-600 focus-visible:border-teal-500 focus-visible:ring-teal-500/10 h-14 px-6 transition-all duration-300"
                 />
                 <Button
-                    className="bg-teal-500 hover:bg-teal-600 text-white rounded-sm font-semibold shrink-0"
-                    size="sm"
+                    className="w-full bg-teal-600 hover:bg-teal-500 text-white font-bold uppercase tracking-widest text-[10px] h-14 shadow-lg shadow-teal-500/10 transition-all duration-500"
                 >
-                    Go
+                    Subscribe to Insights
                 </Button>
             </div>
         </div>
