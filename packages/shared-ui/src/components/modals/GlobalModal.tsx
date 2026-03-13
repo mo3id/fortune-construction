@@ -1,16 +1,8 @@
-import React from 'react'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogFooter,
-} from '../ui/dialog'
-import { Button } from '../ui/button'
-import { CheckCircle2, AlertTriangle, Info, Trash2, Loader2 } from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
+import { Button } from "../ui/button";
+import { CheckCircle2, AlertTriangle, Info, Trash2, Loader2 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { cn } from "../../lib/utils";
 
 export type ModalType = 'success' | 'error' | 'info' | 'destructive' | 'custom'
 
@@ -27,6 +19,7 @@ interface GlobalModalProps {
   onAction?: () => void
   onCancel?: () => void
   isLoading?: boolean
+  className?: string
 }
 
 export function GlobalModal({
@@ -42,6 +35,7 @@ export function GlobalModal({
   onAction,
   onCancel,
   isLoading = false,
+  className,
 }: GlobalModalProps) {
   const getIcon = () => {
     const iconBaseClass = "w-12 h-12 mb-6"
@@ -75,7 +69,10 @@ export function GlobalModal({
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="bg-white dark:bg-slate-900 rounded-[2.5rem] p-10 md:p-12 shadow-2xl border border-slate-100 dark:border-slate-800 flex flex-col items-center text-center relative"
+              className={cn(
+                "bg-white dark:bg-slate-900 rounded-[2.5rem] p-10 md:p-12 shadow-2xl border border-slate-100 dark:border-slate-800 flex flex-col items-center text-center relative",
+                className
+              )}
             >
               <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-teal-500 to-teal-600" />
               

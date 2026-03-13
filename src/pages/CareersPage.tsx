@@ -2,10 +2,28 @@ import { ReactNode } from 'react'
 import { motion } from 'framer-motion'
 import { useQuery } from '@tanstack/react-query'
 import { Container, PageHero, Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@fortune/shared-ui'
-import { Briefcase, Building2, HardHat, TrendingUp, MapPin, Clock } from 'lucide-react'
+import { ShieldCheck, HardHat, Leaf, Award, Download, Search, Type, Smile, Phone, Mail, MapPin, Clock, Share2, Globe, Settings, Users, Briefcase, Building2, Construction, CheckCircle2, AlertCircle, Info, ExternalLink, ChevronRight, Route, Home, CheckCircle, TrendingUp } from 'lucide-react'
 import ApplicationForm from '@/components/ApplicationForm'
 import { apiFetch } from '@/lib/apiClient'
 import { usePageContent } from '@/hooks/usePageContent'
+
+const ICON_MAP: Record<string, any> = {
+    ShieldCheck, HardHat, Leaf, Award, Download, Search, Type, Smile, Phone, Mail, MapPin, Clock, Share2, Globe, Settings, Users, Briefcase, Building2, Construction, CheckCircle2, AlertCircle, Info, ExternalLink, ChevronRight, Route, Home, CheckCircle, TrendingUp
+}
+
+function isImageUrl(str?: string) {
+    if (!str) return false
+    return str.startsWith('http') || str.startsWith('/') || str.startsWith('data:')
+}
+
+function renderBenefitIcon(icon?: string) {
+    if (!icon) return <Briefcase className="w-7 h-7" />
+    if (isImageUrl(icon)) return <img src={icon} alt="" className="w-7 h-7 object-contain" />
+    const IconComp = ICON_MAP[icon]
+    if (IconComp) return <IconComp className="w-7 h-7" />
+    return <Briefcase className="w-7 h-7" />
+}
+
 
 function EmptyState({ icon: Icon, title, description }: { icon?: any, title: string, description?: string }) {
   return (
@@ -25,25 +43,6 @@ interface ApiJob {
 interface CareersContent {
     benefits?: { title?: string; subtitle?: string; items?: { title: string; desc: string; icon?: string }[] }
 }
-
-const BENEFIT_ICON_MAP: Record<string, ReactNode> = {
-    TrendingUp: <TrendingUp />,
-    Building2: <Building2 />,
-    Briefcase: <Briefcase />,
-    HardHat: <HardHat />,
-}
-
-function isImageUrl(str?: string) {
-    if (!str) return false
-    return str.startsWith('http') || str.startsWith('/') || str.startsWith('data:')
-}
-
-function renderBenefitIcon(icon?: string) {
-    if (!icon) return <Briefcase />
-    if (isImageUrl(icon)) return <img src={icon} alt="" className="w-7 h-7 object-contain" />
-    return BENEFIT_ICON_MAP[icon] || <Briefcase />
-}
-
 
 export default function CareersPage() {
     const { data: apiJobs } = useQuery<ApiJob[]>({
@@ -133,7 +132,7 @@ export default function CareersPage() {
                             </div>
                             {jobs.length > 0 ? (
                                 <Accordion type="single" collapsible className="space-y-6">
-                                    {jobs.map((job) => (
+                                    {jobs.map((job: ApiJob) => (
                                         <AccordionItem key={job._id} value={job._id}>
                                             <AccordionTrigger className="hover:no-underline">
                                                 <div className="flex flex-col md:flex-row md:items-center justify-between w-full pr-4 gap-4">
@@ -155,7 +154,7 @@ export default function CareersPage() {
                                                             Candidate Requirements
                                                         </h4>
                                                         <div className="grid md:grid-cols-2 gap-3">
-                                                            {job.requirements.map((req, idx) => (
+                                                            {job.requirements.map((req: string, idx: number) => (
                                                                 <div key={idx} className="flex items-start bg-slate-50 dark:bg-slate-900/50 p-4 rounded-lg border border-slate-100 dark:border-slate-800">
                                                                     <div className="w-1 h-1 rounded-full bg-teal-500 mt-2.5 mr-3 flex-shrink-0" />
                                                                     <span className="text-sm font-medium text-slate-700 dark:text-slate-300 leading-tight">{req}</span>

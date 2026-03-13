@@ -1,15 +1,32 @@
-import { Route, Building2, Layers } from 'lucide-react'
+import { ShieldCheck, HardHat, Leaf, Award, Download, Search, Type, Smile, Phone, Mail, MapPin, Clock, Share2, Globe, Settings, Users, Briefcase, Building2, Construction, CheckCircle2, AlertCircle, Info, ExternalLink, ChevronRight, Route, Home, CheckCircle, Layers } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
 import { Container, SectionHeader } from '@fortune/shared-ui'
 import { ServiceCard } from './services/ServiceCard'
 import { WhyUs } from './services/WhyUs'
 import { Service } from '@/types'
 import { apiFetch } from '@/lib/apiClient'
+import { ReactNode } from 'react'
 
 const ACCENT_COLORS = ['border-teal-600', 'border-slate-900', 'border-teal-500']
-const ICONS = [<Route className="w-10 h-10" />, <Building2 className="w-10 h-10" />, <Layers className="w-10 h-10" />]
 
-interface ApiService { _id: string; title: string; tagline: string; description: string; features: string[]; bgImage: string; order: number }
+const ICON_MAP: Record<string, any> = {
+    ShieldCheck, HardHat, Leaf, Award, Download, Search, Type, Smile, Phone, Mail, MapPin, Clock, Share2, Globe, Settings, Users, Briefcase, Building2, Construction, CheckCircle2, AlertCircle, Info, ExternalLink, ChevronRight, Route, Home, CheckCircle, Layers
+}
+
+function isImageUrl(str?: string) {
+    if (!str) return false
+    return str.startsWith('http') || str.startsWith('/') || str.startsWith('data:')
+}
+
+function renderServiceIcon(icon?: string) {
+    if (!icon) return <Construction className="w-10 h-10" />
+    if (isImageUrl(icon)) return <img src={icon} alt="" className="w-10 h-10 object-contain" />
+    const IconComp = ICON_MAP[icon]
+    if (IconComp) return <IconComp className="w-10 h-10" />
+    return <Construction className="w-10 h-10" />
+}
+
+interface ApiService { _id: string; title: string; tagline: string; description: string; features: string[]; bgImage: string; order: number; icon?: string }
 
 const FALLBACK: Service[] = [
     { icon: <Route className="w-10 h-10" />, title: 'Roads & Infrastructure', tagline: 'Connecting Malawi, Mile by Mile', description: "From rural feeder roads to major national highways, we engineer and construct road infrastructure that withstands Malawi's diverse terrain.", features: ['Highway Construction', 'Drainage Systems', 'Bridges & Culverts', 'Road Rehabilitation'], accentColor: 'border-teal-500', bgImage: 'https://images.unsplash.com/photo-1545558014-8692077e9b5c?w=800&q=80' },
@@ -25,8 +42,8 @@ export default function Services() {
     })
 
     const services: Service[] = apiServices?.length
-        ? apiServices.map((s, i) => ({
-            icon: ICONS[i % ICONS.length],
+        ? apiServices.map((s: ApiService, i: number) => ({
+            icon: renderServiceIcon(s.icon),
             title: s.title,
             tagline: s.tagline,
             description: s.description,

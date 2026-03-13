@@ -2,7 +2,7 @@ import { ReactNode } from 'react'
 import { motion } from 'framer-motion'
 import { Container, SectionHeader, PageHero } from '@fortune/shared-ui'
 import PartnersSection from '@/components/PartnersSection'
-import { ShieldCheck, HardHat, Leaf, Award, Download } from 'lucide-react'
+import { ShieldCheck, HardHat, Leaf, Award, Download, Search, Type, Smile, Phone, Mail, MapPin, Clock, Share2, Globe, Settings, Users, Briefcase, Building2, Construction, CheckCircle2, AlertCircle, Info, ExternalLink, ChevronRight } from 'lucide-react'
 import { usePageContent } from '@/hooks/usePageContent'
 
 interface HSEContent {
@@ -11,10 +11,8 @@ interface HSEContent {
     certifications?: { title?: string; subtitle?: string; description?: string; items?: { title: string; image?: string }[] }
 }
 
-const POLICY_ICON_MAP: Record<string, ReactNode> = {
-    ShieldCheck: <ShieldCheck className="w-10 h-10" />,
-    HardHat: <HardHat className="w-10 h-10" />,
-    Leaf: <Leaf className="w-10 h-10" />,
+const POLICY_ICON_MAP: Record<string, any> = {
+    ShieldCheck, HardHat, Leaf, Award, Download, Search, Type, Smile, Phone, Mail, MapPin, Clock, Share2, Globe, Settings, Users, Briefcase, Building2, Construction, CheckCircle2, AlertCircle, Info, ExternalLink, ChevronRight
 }
 
 function isImageUrl(str?: string) {
@@ -25,7 +23,9 @@ function isImageUrl(str?: string) {
 function renderPolicyIcon(icon?: string) {
     if (!icon) return <ShieldCheck className="w-10 h-10" />
     if (isImageUrl(icon)) return <img src={icon} alt="" className="w-10 h-10 object-contain" />
-    return POLICY_ICON_MAP[icon] || <ShieldCheck className="w-10 h-10" />
+    const IconComp = POLICY_ICON_MAP[icon]
+    if (IconComp) return <IconComp className="w-10 h-10" />
+    return <ShieldCheck className="w-10 h-10" />
 }
 
 export default function HSEPage() {
@@ -65,7 +65,7 @@ export default function HSEPage() {
                 <div className="absolute inset-0 bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:to-slate-900 -z-10" />
                 <Container>
                     <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
-                        {policies.map((policy, idx) => (
+                        {policies.map((policy: any, idx: number) => (
                             <motion.div
                                 key={idx}
                                 initial={{ opacity: 0, y: 20 }}
@@ -92,7 +92,7 @@ export default function HSEPage() {
                 
                 <Container className="relative z-10">
                     <div className={`grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 divide-y md:divide-y-0 md:divide-x divide-white/10 text-center`}>
-                        {stats.map((stat, idx) => (
+                        {stats.map((stat: any, idx: number) => (
                             <motion.div 
                                 key={idx} 
                                 initial={{ opacity: 0, scale: 0.9 }} 
@@ -128,7 +128,7 @@ export default function HSEPage() {
                     </div>
                     
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-5xl mx-auto">
-                        {certItems.map((cert, i) => (
+                        {certItems.map((cert: any, i: number) => (
                             <motion.div 
                                 key={i}
                                 initial={{ opacity: 0, y: 20 }}
@@ -142,8 +142,12 @@ export default function HSEPage() {
                                 <div className="text-center">
                                     <div className="relative mb-6">
                                         <div className="absolute inset-0 bg-teal-500/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                                        {cert.image ? (
+                                        {cert.image && isImageUrl(cert.image) ? (
                                             <img src={cert.image} alt={cert.title} className="w-16 h-16 mx-auto object-contain relative z-10" />
+                                        ) : cert.image ? (
+                                            <div className="w-16 h-16 mx-auto flex items-center justify-center relative z-10 text-slate-300 group-hover:text-teal-500 transition-colors duration-500">
+                                                {renderPolicyIcon(cert.image)}
+                                            </div>
                                         ) : (
                                             <Award className="w-16 h-16 mx-auto text-slate-300 dark:text-slate-700 group-hover:text-teal-500 transition-colors duration-500 relative z-10" />
                                         )}

@@ -1,6 +1,6 @@
 import { Image, PageHero } from '@fortune/shared-ui'
 import { motion } from 'framer-motion'
-import { CheckCircle, Shield, Target, Users, HardHat } from 'lucide-react'
+import { ShieldCheck, HardHat, Leaf, Award, Download, Search, Type, Smile, Phone, Mail, MapPin, Clock, Share2, Globe, Settings, Users, Briefcase, Building2, Construction, CheckCircle2, AlertCircle, Info, ExternalLink, ChevronRight, Route, Home, CheckCircle, Shield, Target } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
 import { apiFetch } from '@/lib/apiClient'
 import { usePageContent } from '@/hooks/usePageContent'
@@ -25,10 +25,8 @@ interface AboutContent {
     coreValues?: { title?: string; subtitle?: string; items?: { title: string; desc: string; icon?: string }[] }
 }
 
-const VALUE_ICON_MAP: Record<string, ReactNode> = {
-    Shield: <Shield />,
-    CheckCircle: <CheckCircle />,
-    Users: <Users />,
+const ICON_MAP: Record<string, any> = {
+    ShieldCheck, HardHat, Leaf, Award, Download, Search, Type, Smile, Phone, Mail, MapPin, Clock, Share2, Globe, Settings, Users, Briefcase, Building2, Construction, CheckCircle2, AlertCircle, Info, ExternalLink, ChevronRight, Route, Home, CheckCircle, Shield, Target
 }
 
 function isImageUrl(str?: string) {
@@ -39,7 +37,9 @@ function isImageUrl(str?: string) {
 function renderIcon(icon?: string, fallback: ReactNode = <Shield />) {
     if (!icon) return fallback
     if (isImageUrl(icon)) return <img src={icon} alt="" className="w-8 h-8 object-contain" />
-    return VALUE_ICON_MAP[icon] || fallback
+    const IconComp = ICON_MAP[icon]
+    if (IconComp) return <IconComp className="w-8 h-8" />
+    return fallback
 }
 
 
@@ -52,7 +52,7 @@ export default function AboutPage() {
 
     const { data: aboutContent } = usePageContent<AboutContent>('about')
 
-    const leaders = apiTeam?.map(m => ({ name: m.name, role: m.role, img: m.photo || '' })) || []
+    const leaders = apiTeam?.map((m: ApiTeamMember) => ({ name: m.name, role: m.role, img: m.photo || '' })) || []
 
     const vision = aboutContent?.vision
     const mission = aboutContent?.mission
@@ -151,7 +151,7 @@ export default function AboutPage() {
                         {/* Central Line */}
                         <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-teal-500/30 to-transparent transform md:-translate-x-1/2" />
 
-                        {timelineItems.map((item, index) => (
+                        {timelineItems.map((item: any, index: number) => (
                             <motion.div 
                                 key={item.year}
                                 initial={{ opacity: 0, y: 30 }}
@@ -210,7 +210,7 @@ export default function AboutPage() {
                     </div>
 
                     <div className="grid md:grid-cols-3 gap-8">
-                        {valueItems.map((value, idx) => (
+                        {valueItems.map((value: any, idx: number) => (
                             <motion.div 
                                 key={idx}
                                 initial={{ opacity: 0, y: 20 }}
@@ -242,7 +242,7 @@ export default function AboutPage() {
                     </div>
                     {leaders.length > 0 ? (
                         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10">
-                            {leaders.map((leader, idx) => (
+                            {leaders.map((leader: any, idx: number) => (
                                 <motion.div 
                                     key={idx}
                                     initial={{ opacity: 0, y: 20 }}

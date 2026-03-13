@@ -11,7 +11,8 @@ import {
   Form, 
   Button,
   GlobalModal,
-  Card
+  Card,
+  MediaUploadField
 } from '@fortune/shared-ui'
 
 interface Service extends ServiceFormData {
@@ -122,31 +123,45 @@ export default function Services() {
         onOpenChange={setModalOpen}
         title="Edit Service"
         type="custom"
+        className="max-w-2xl"
       >
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 max-h-[70vh] overflow-y-auto px-1">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 px-1 max-h-[80vh] overflow-y-auto custom-scrollbar">
             <FormInput name="title" label="Service Title *" placeholder="e.g. Civil Engineering" />
+            
+            <MediaUploadField
+              label="Service Icon"
+              value={form.watch('icon')}
+              onChange={(val) => form.setValue('icon', val)}
+              onUpload={async (file) => {
+                const { uploadImage } = await import('../lib/api')
+                return uploadImage(file)
+              }}
+              accept="any"
+              helperText="Choose a preset icon or upload a custom image (PNG/SVG preferred)"
+            />
+
             <FormInput name="description" label="Description *" type="textarea" rows={4} placeholder="Detailed description..." />
             
-            <div>
-              <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5 block">Features</label>
-              <div className="flex gap-2 mb-2">
+            <div className="space-y-4">
+              <label className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500 ml-1">Key Features</label>
+              <div className="flex gap-2">
                 <input 
-                  className="flex h-10 w-full rounded-md border border-input bg-white/50 px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" 
+                  className="flex h-12 w-full rounded-xl border border-slate-100 dark:border-slate-800 bg-white/50 dark:bg-slate-950 px-4 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500/20 disabled:cursor-not-allowed disabled:opacity-50 transition-all" 
                   value={featInput} 
                   onChange={e => setFeatInput(e.target.value)} 
-                  placeholder="Add feature..." 
+                  placeholder="Add a core feature..." 
                   onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), addFeat())} 
                 />
-                <Button type="button" variant="secondary" onClick={addFeat} className="px-3">
-                  <Plus className="w-4 h-4" />
+                <Button type="button" variant="secondary" onClick={addFeat} className="h-12 w-12 p-0 rounded-xl">
+                  <Plus className="w-5 h-5" />
                 </Button>
               </div>
               <div className="flex flex-wrap gap-2">
                 {form.watch('features')?.map((feat, i) => (
-                  <span key={i} className="flex items-center gap-1 text-xs bg-sky-50 text-sky-700 border border-sky-100 rounded-md px-2 py-1">
+                  <span key={i} className="group flex items-center gap-2 text-xs font-bold bg-teal-50 dark:bg-teal-900/20 text-teal-700 dark:text-teal-400 border border-teal-100/50 dark:border-teal-900/30 rounded-full pl-4 pr-2 py-1.5 transition-all hover:border-teal-500/30">
                     {feat}
-                    <button type="button" onClick={() => removeFeat(i)} className="hover:text-red-500 ml-1">
+                    <button type="button" onClick={() => removeFeat(i)} className="w-5 h-5 rounded-full flex items-center justify-center bg-teal-100 dark:bg-teal-800 text-teal-600 dark:text-teal-300 hover:bg-rose-500 hover:text-white transition-colors">
                       <X className="w-3 h-3" />
                     </button>
                   </span>
@@ -154,11 +169,11 @@ export default function Services() {
               </div>
             </div>
 
-            <div className="flex gap-3 pt-4 pb-2 sticky bottom-0 bg-white">
-              <Button type="button" variant="outline" onClick={() => setModalOpen(false)} className="flex-1">
+            <div className="flex gap-4 pt-6 sticky bottom-0 bg-white dark:bg-slate-900 pb-2">
+              <Button type="button" variant="outline" onClick={() => setModalOpen(false)} className="flex-1 h-12 rounded-full font-bold uppercase tracking-widest text-xs">
                 Cancel
               </Button>
-              <Button type="submit" className="flex-1" disabled={save.isPending}>
+              <Button type="submit" className="flex-1 h-12 rounded-full font-bold uppercase tracking-widest text-xs shadow-lg shadow-teal-500/20" disabled={save.isPending}>
                 {save.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
                 {save.isPending ? 'Saving...' : 'Save Changes'}
               </Button>

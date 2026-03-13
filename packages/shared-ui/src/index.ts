@@ -11,6 +11,7 @@ export * from './components/ui/table'
 export * from './components/ui/container'
 export * from './components/ui/section-header'
 export * from './components/ui/image'
+export * from './components/ui/BusinessHoursPicker'
 
 export * from './components/ui/badge'
 export * from './components/ui/accordion'

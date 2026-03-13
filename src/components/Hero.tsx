@@ -5,7 +5,7 @@ import { ArrowDown, PlayCircle } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
 import { Button, Badge } from '@fortune/shared-ui'
 import { VideoBackground } from './hero/VideoBackground'
-import { HeroStats } from './hero/HeroStats'
+// import { HeroStats } from './hero/HeroStats'
 import { HERO_VIDEOS } from '@/lib/constants'
 import { cn } from '@/lib/utils'
 import { apiFetch } from '@/lib/apiClient'
@@ -142,7 +142,7 @@ export default function Hero() {
                     </Link>
                 </motion.div>
 
-                <HeroStats />
+                {/* <HeroStats /> */}
             </div>
 
             {/* Scroll indicator */}

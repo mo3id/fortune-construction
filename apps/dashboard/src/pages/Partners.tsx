@@ -11,7 +11,8 @@ import {
   Form, 
   Button,
   GlobalModal,
-  Card
+  Card,
+  MediaUploadField
 } from '@fortune/shared-ui'
 
 interface Partner extends PartnerFormData {
@@ -25,7 +26,6 @@ export default function Partners() {
   const [modalOpen, setModalOpen] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [deleteId, setDeleteId] = useState<string | null>(null)
-  const [uploading, setUploading] = useState(false)
 
   const form = useFormSchema({
     schema: partnerSchema,
@@ -55,16 +55,6 @@ export default function Partners() {
       toast.success('Partner deleted') 
     },
   })
-
-  const handleLogoUpload = async (file: File | null) => {
-    if (!file) return
-    setUploading(true)
-    try {
-      const url = await uploadImage(file)
-      form.setValue('logo', url)
-    } catch { toast.error('Upload failed') }
-    finally { setUploading(false) }
-  }
 
   const openAdd = () => { 
     setEditingId(null)
@@ -155,35 +145,36 @@ export default function Partners() {
         onOpenChange={setModalOpen}
         title={editingId ? 'Edit Partner' : 'Add Partner'}
         type="custom"
+        className="max-w-2xl"
       >
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 px-1">
-            <div className="grid grid-cols-2 gap-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 px-1 max-h-[80vh] overflow-y-auto custom-scrollbar">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <FormInput name="name" label="Partner Name *" placeholder="e.g. African Development Bank" />
               <FormInput name="abbr" label="Abbreviation *" placeholder="e.g. AfDB" />
             </div>
-            <FormInput name="logo" label="Logo (URL or Upload)" placeholder="https://..." />
-            <div className="flex items-end">
-              <Button type="button" variant="outline" className="w-full relative overflow-hidden" disabled={uploading}>
-                <input type="file" accept="image/*" className="absolute inset-0 opacity-0 cursor-pointer" onChange={(e) => handleLogoUpload(e.target.files?.[0] || null)} />
-                {uploading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <ImagePlus className="w-4 h-4 mr-2" />}
-                {uploading ? 'Uploading...' : 'Upload Logo'}
-              </Button>
-            </div>
-            {form.watch('logo') && (
-              <div className="flex justify-center">
-                <img src={form.watch('logo')} alt="Logo preview" className="h-16 object-contain rounded border border-slate-200 p-1" />
-              </div>
-            )}
+
+            <MediaUploadField
+              label="Partner Logo"
+              value={form.watch('logo')}
+              onChange={(val) => form.setValue('logo', val)}
+              onUpload={uploadImage}
+              accept="image"
+              helperText="Upload a high-quality logo (PNG or SVG preferred)"
+            />
+
             <FormInput name="website" label="Website URL" placeholder="https://..." />
-            <FormInput name="description" label="Short Description" type="textarea" rows={2} />
-            <FormInput name="order" label="Display Order" type="number" />
             
-            <div className="flex gap-3 pt-4 pb-2">
-              <Button type="button" variant="outline" onClick={() => setModalOpen(false)} className="flex-1">
+            <div className="grid grid-cols-1 gap-6">
+              <FormInput name="description" label="Short Description" type="textarea" rows={3} />
+              <FormInput name="order" label="Display Order" type="number" />
+            </div>
+            
+            <div className="flex gap-4 pt-6 sticky bottom-0 bg-white dark:bg-slate-900 pb-2">
+              <Button type="button" variant="outline" onClick={() => setModalOpen(false)} className="flex-1 h-12 rounded-full font-bold uppercase tracking-widest text-xs">
                 Cancel
               </Button>
-              <Button type="submit" className="flex-1" disabled={save.isPending}>
+              <Button type="submit" className="flex-1 h-12 rounded-full font-bold uppercase tracking-widest text-xs shadow-lg shadow-teal-500/20" disabled={save.isPending}>
                 {save.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
                 {save.isPending ? 'Saving...' : 'Save Partner'}
               </Button>

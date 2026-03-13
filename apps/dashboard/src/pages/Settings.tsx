@@ -10,7 +10,8 @@ import {
   FormInput, 
   Form, 
   Button,
-  Card
+  Card,
+  BusinessHoursPicker
 } from '@fortune/shared-ui'
 
 export default function Settings() {
@@ -136,14 +137,17 @@ export default function Settings() {
               </div>
               Business Hours
             </h2>
-            <div className="grid md:grid-cols-3 gap-x-8 gap-y-6">
-              <FormInput name="workingDays" label="Working Days" placeholder="e.g. Mon – Fri" />
-              <FormInput name="workingHoursStart" label="Opens At" placeholder="08:00" />
-              <FormInput name="workingHoursEnd" label="Closes At" placeholder="17:00" />
-              <div className="md:col-span-3">
-                <FormInput name="workingHoursDisplay" label="Public Display Format" placeholder="e.g. Mon – Fri: 8:00am – 5:00pm" />
-              </div>
-            </div>
+            <BusinessHoursPicker 
+              workingDays={form.watch('workingDays')}
+              workingHoursStart={form.watch('workingHoursStart')}
+              workingHoursEnd={form.watch('workingHoursEnd')}
+              onChange={(values) => {
+                form.setValue('workingDays', values.workingDays)
+                form.setValue('workingHoursStart', values.workingHoursStart)
+                form.setValue('workingHoursEnd', values.workingHoursEnd)
+                form.setValue('workingHoursDisplay', values.workingHoursDisplay)
+              }}
+            />
           </Card>
 
           {/* Social Media */}

@@ -39,7 +39,7 @@ const SECTION_CONFIG: Record<string, { label: string; fields: FieldConfig[] }[]>
           { key: 'suffix', label: 'Suffix (e.g. +)', type: 'text' },
           { key: 'label', label: 'Label', type: 'text' },
           { key: 'description', label: 'Description', type: 'text' },
-          { key: 'icon', label: 'Icon (name or image URL)', type: 'text' },
+          { key: 'icon', label: 'Icon (preset or image)', type: 'media', accept: 'any' },
         ]},
       ],
     },
@@ -79,7 +79,7 @@ const SECTION_CONFIG: Record<string, { label: string; fields: FieldConfig[] }[]>
         { key: 'items', label: 'Values', type: 'array', itemFields: [
           { key: 'title', label: 'Title', type: 'text' },
           { key: 'desc', label: 'Description', type: 'text' },
-          { key: 'icon', label: 'Icon (name or image URL)', type: 'text' },
+          { key: 'icon', label: 'Icon (preset or image)', type: 'media', accept: 'any' },
         ]},
       ],
     },
@@ -91,7 +91,7 @@ const SECTION_CONFIG: Record<string, { label: string; fields: FieldConfig[] }[]>
         { key: 'items', label: 'Policy Cards', type: 'array', itemFields: [
           { key: 'title', label: 'Title', type: 'text' },
           { key: 'description', label: 'Description', type: 'textarea' },
-          { key: 'icon', label: 'Icon Name', type: 'text' },
+          { key: 'icon', label: 'Icon (preset or image)', type: 'media', accept: 'any' },
         ]},
       ],
     },
@@ -112,7 +112,7 @@ const SECTION_CONFIG: Record<string, { label: string; fields: FieldConfig[] }[]>
         { key: 'description', label: 'Description', type: 'textarea' },
         { key: 'items', label: 'Certifications', type: 'array', itemFields: [
           { key: 'title', label: 'Certificate Name', type: 'text' },
-          { key: 'image', label: 'Certificate Image (URL or link)', type: 'text' },
+          { key: 'image', label: 'Certificate Image (preset or image)', type: 'media', accept: 'any' },
         ]},
       ],
     },
@@ -126,7 +126,7 @@ const SECTION_CONFIG: Record<string, { label: string; fields: FieldConfig[] }[]>
         { key: 'items', label: 'Benefits', type: 'array', itemFields: [
           { key: 'title', label: 'Title', type: 'text' },
           { key: 'desc', label: 'Description', type: 'text' },
-          { key: 'icon', label: 'Icon (name or image URL)', type: 'text' },
+          { key: 'icon', label: 'Icon (preset or image)', type: 'media', accept: 'any' },
         ]},
       ],
     },
