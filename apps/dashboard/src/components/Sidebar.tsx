@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
   LayoutDashboard, FolderKanban, Briefcase, MessageSquare,
-  Users, Handshake, Settings, Wrench, HardHat, ChevronRight, FileText,
+  Users, Handshake, Settings, Wrench, HardHat, ChevronRight, FileText, Trophy,
 } from 'lucide-react'
 import { cn } from '@fortune/shared-ui'
 
@@ -15,6 +15,7 @@ const NAV = [
   { label: 'Job Positions', icon: HardHat, to: '/jobs' },
   { label: 'Applications', icon: Briefcase, to: '/applications' },
   { label: 'Messages', icon: MessageSquare, to: '/messages' },
+  { label: 'Success Stories', icon: Trophy, to: '/success-stories' },
   { label: 'Page Content', icon: FileText, to: '/content' },
   { label: 'Settings', icon: Settings, to: '/settings' },
 ]

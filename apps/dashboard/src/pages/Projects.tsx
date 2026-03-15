@@ -19,8 +19,8 @@ interface Project extends ProjectFormData {
 }
 
 const EMPTY_FORM: ProjectFormData = {
-  title: '', category: 'Infrastructure', location: '', duration: '', budget: '',
-  coverImage: '', completionDate: '', challenge: '', solution: '', result: '', galleryImages: [],
+  title: '', category: 'Infrastructure', location: '', budget: '',
+  coverImage: '', challenge: '', solution: '', result: '', galleryImages: [],
 }
 
 export default function Projects() {
@@ -141,8 +141,13 @@ export default function Projects() {
               <h3 className="font-bold text-slate-900 dark:text-white text-lg mb-4 line-clamp-1 group-hover:text-teal-600 transition-colors">{p.title}</h3>
               <div className="space-y-3 mb-6">
                 <div className="flex items-center gap-2.5 text-xs font-medium text-slate-500 dark:text-slate-400"><MapPin className="w-4 h-4 text-teal-500" />{p.location}</div>
-                <div className="flex items-center gap-2.5 text-xs font-medium text-slate-500 dark:text-slate-400"><DollarSign className="w-4 h-4 text-teal-500" />{p.budget}</div>
-                <div className="flex items-center gap-2.5 text-xs font-medium text-slate-500 dark:text-slate-400"><Clock className="w-4 h-4 text-teal-500" />{p.duration}</div>
+                <div className="flex items-center gap-2.5 text-xs font-medium text-slate-500 dark:text-slate-400"><DollarSign className="w-4 h-4 text-teal-500" />${p.budget}</div>
+                {(p.startDate || p.endDate) && (
+                  <div className="flex items-center gap-2.5 text-xs font-medium text-slate-500 dark:text-slate-400">
+                    <Clock className="w-4 h-4 text-teal-500" />
+                    {p.startDate ? new Date(p.startDate).toLocaleDateString() : 'N/A'} - {p.endDate ? new Date(p.endDate).toLocaleDateString() : 'Present'}
+                  </div>
+                )}
               </div>
             <div className="flex gap-3 pt-5 border-t border-slate-50 dark:border-slate-800">
                 <Button variant="outline" onClick={() => openEdit(p)} className="flex-1 h-9 text-xs font-bold uppercase tracking-wider">
@@ -196,7 +201,6 @@ export default function Projects() {
               <FormInput name="startDate" label="Start Date" type="date" />
               <FormInput name="endDate" label="End Date" type="date" />
               <FormInput name="budget" label="Budget" type="number" min="0" placeholder="15000000" />
-              <FormInput name="completionDate" label="Completion Date (Text)" placeholder="October 2024" />
               <FormInput name="coverImage" label="Cover Image URL or Upload" placeholder="https://..." />
             </div>
 

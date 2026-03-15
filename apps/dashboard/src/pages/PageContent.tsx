@@ -8,8 +8,10 @@ import { Button, Card, Input, Textarea, MediaUploadField } from '@fortune/shared
 const PAGES = [
   { key: 'home', label: 'Home' },
   { key: 'about', label: 'About' },
+  { key: 'projects', label: 'Projects' },
   { key: 'hse', label: 'HSE & Quality' },
   { key: 'careers', label: 'Careers' },
+  { key: 'contact', label: 'Contact' },
 ] as const
 
 type PageKey = typeof PAGES[number]['key']
@@ -45,6 +47,14 @@ const SECTION_CONFIG: Record<string, { label: string; fields: FieldConfig[] }[]>
     },
   ],
   about: [
+    {
+      label: 'Hero',
+      fields: [
+        { key: 'title', label: 'Hero Title', type: 'text' },
+        { key: 'description', label: 'Hero Description', type: 'textarea' },
+        { key: 'image', label: 'Background Image', type: 'media', accept: 'image' },
+      ]
+    },
     {
       label: 'Vision',
       fields: [
@@ -86,6 +96,14 @@ const SECTION_CONFIG: Record<string, { label: string; fields: FieldConfig[] }[]>
   ],
   hse: [
     {
+      label: 'Hero',
+      fields: [
+        { key: 'title', label: 'Hero Title', type: 'text' },
+        { key: 'description', label: 'Hero Description', type: 'textarea' },
+        { key: 'image', label: 'Background Image', type: 'media', accept: 'image' },
+      ]
+    },
+    {
       label: 'Policies',
       fields: [
         { key: 'items', label: 'Policy Cards', type: 'array', itemFields: [
@@ -119,6 +137,14 @@ const SECTION_CONFIG: Record<string, { label: string; fields: FieldConfig[] }[]>
   ],
   careers: [
     {
+      label: 'Hero',
+      fields: [
+        { key: 'title', label: 'Hero Title', type: 'text' },
+        { key: 'description', label: 'Hero Description', type: 'textarea' },
+        { key: 'image', label: 'Background Image', type: 'media', accept: 'image' },
+      ]
+    },
+    {
       label: 'Benefits',
       fields: [
         { key: 'title', label: 'Section Title', type: 'text' },
@@ -131,6 +157,26 @@ const SECTION_CONFIG: Record<string, { label: string; fields: FieldConfig[] }[]>
       ],
     },
   ],
+  contact: [
+    {
+      label: 'Hero',
+      fields: [
+        { key: 'title', label: 'Hero Title', type: 'text' },
+        { key: 'description', label: 'Hero Description', type: 'textarea' },
+        { key: 'image', label: 'Background Image', type: 'media', accept: 'image' },
+      ]
+    }
+  ],
+  projects: [
+    {
+      label: 'Hero',
+      fields: [
+        { key: 'title', label: 'Hero Title', type: 'text' },
+        { key: 'description', label: 'Hero Description', type: 'textarea' },
+        { key: 'image', label: 'Background Image', type: 'media', accept: 'image' },
+      ]
+    }
+  ]
 }
 
 interface FieldConfig {

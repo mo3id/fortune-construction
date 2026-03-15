@@ -6,6 +6,7 @@ import TeamMember from './models/TeamMember';
 import JobPosition from './models/JobPosition';
 import SiteSettings from './models/SiteSettings';
 import PageContent from './models/PageContent';
+import SuccessStory from './models/SuccessStory';
 
 export async function autoSeed(): Promise<void> {
   console.log('🌱 Auto-seeding in-memory database...');
@@ -83,6 +84,30 @@ export async function autoSeed(): Promise<void> {
     workingDays: 'Mon – Fri', workingHoursStart: '07:30', workingHoursEnd: '17:00',
     workingHoursDisplay: 'Mon – Fri: 7:30am – 5:00pm',
   });
+
+  await SuccessStory.insertMany([
+    {
+      quote: 'Fortune Construction delivered our road rehabilitation project on time and to the highest standard. Their professionalism and technical capability is unmatched in Malawi.',
+      author: 'Principal Secretary',
+      org: 'Ministry of Transport, Malawi',
+      initials: 'PS',
+      order: 1,
+    },
+    {
+      quote: "The bridge project was complex, but Fortune's engineering team navigated every challenge with expertise. We've worked with them on three major contracts and they consistently exceed expectations.",
+      author: 'Regional Director',
+      org: 'Roads Authority, Malawi',
+      initials: 'RD',
+      order: 2,
+    },
+    {
+      quote: 'Their commitment to safety and quality is remarkable. Fortune Construction has set the benchmark for infrastructure development in the region.',
+      author: 'Country Representative',
+      org: 'World Bank Group, Malawi',
+      initials: 'CR',
+      order: 3,
+    },
+  ]);
 
   // --- Page Content ---
   await PageContent.insertMany([

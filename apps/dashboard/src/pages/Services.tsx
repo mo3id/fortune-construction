@@ -30,7 +30,7 @@ export default function Services() {
 
   const form = useFormSchema({
     schema: serviceSchema,
-    defaultValues: { title: '', description: '', features: [] }
+    defaultValues: { title: '', description: '', features: [], tagline: '', bgImage: '', icon: '' }
   })
 
   const { data: services = [], isLoading } = useQuery<Service[]>({
@@ -39,14 +39,30 @@ export default function Services() {
   })
 
   const save = useMutation({
-    mutationFn: (data: ServiceFormData) => api.put(`/services/${editingId}`, data),
+    mutationFn: (data: ServiceFormData) => 
+      editingId ? api.put(`/services/${editingId}`, data) : api.post('/services', data),
     onSuccess: () => { 
       qc.invalidateQueries({ queryKey: ['services'] })
-      toast.success('Service updated successfully!')
+      toast.success(editingId ? 'Service updated successfully!' : 'Service created successfully!')
       setModalOpen(false)
     },
     onError: () => toast.error('Failed to save service'),
   })
+
+  const remove = useMutation({
+    mutationFn: (id: string) => api.delete(`/services/${id}`),
+    onSuccess: () => { 
+      qc.invalidateQueries({ queryKey: ['services'] })
+      toast.success('Service deleted successfully!')
+    },
+  })
+
+  const openAdd = () => {
+    setEditingId(null)
+    form.reset({ title: '', description: '', features: [], tagline: '', bgImage: '', icon: '' })
+    setFeatInput('')
+    setModalOpen(true)
+  }
 
   const openEdit = (s: Service) => { 
     setEditingId(s._id)
@@ -54,7 +70,9 @@ export default function Services() {
       title: s.title, 
       description: s.description, 
       features: [...s.features],
-      icon: s.icon || ''
+      icon: s.icon || '',
+      tagline: s.tagline || '',
+      bgImage: s.bgImage || ''
     })
     setFeatInput('')
     setModalOpen(true)
@@ -81,9 +99,14 @@ export default function Services() {
 
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div>
-        <h1 className="text-2xl font-display font-bold text-slate-900 dark:text-white">Our Services</h1>
-        <p className="text-sm text-slate-500 mt-1">Manage the core service offerings and expertise displayed on the website.</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-display font-bold text-slate-900 dark:text-white">Our Services</h1>
+          <p className="text-sm text-slate-500 mt-1">Manage the core service offerings and expertise displayed on the website.</p>
+        </div>
+        <Button onClick={openAdd} className="shadow-lg shadow-teal-500/20">
+          <Plus className="w-4 h-4 mr-2" /> Add Service
+        </Button>
       </div>
 
       <div className="grid gap-6">
@@ -110,9 +133,14 @@ export default function Services() {
                   ))}
                 </div>
               </div>
-              <Button variant="outline" onClick={() => openEdit(s)} className="flex-shrink-0 h-10 px-5 text-xs font-bold uppercase tracking-wider">
-                <Pencil className="w-4 h-4 mr-2" /> Edit Service
-              </Button>
+              <div className="flex flex-col gap-2 flex-shrink-0">
+                <Button variant="outline" onClick={() => openEdit(s)} className="h-10 px-5 text-xs font-bold uppercase tracking-wider w-full">
+                  <Pencil className="w-4 h-4 mr-2" /> Edit
+                </Button>
+                <Button variant="destructive" onClick={() => remove.mutate(s._id)} className="h-10 px-5 text-xs font-bold uppercase tracking-wider w-full">
+                  <X className="w-4 h-4 mr-2" /> Delete
+                </Button>
+              </div>
             </div>
           </Card>
         ))}
@@ -121,13 +149,14 @@ export default function Services() {
       <GlobalModal
         open={modalOpen}
         onOpenChange={setModalOpen}
-        title="Edit Service"
+        title={editingId ? "Edit Service" : "Add Service"}
         type="custom"
         className="max-w-2xl"
       >
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 px-1 max-h-[80vh] overflow-y-auto custom-scrollbar">
             <FormInput name="title" label="Service Title *" placeholder="e.g. Civil Engineering" />
+            <FormInput name="tagline" label="Tagline" placeholder="e.g. Connecting Malawi, Mile by Mile" />
             
             <MediaUploadField
               label="Service Icon"
@@ -139,6 +168,18 @@ export default function Services() {
               }}
               accept="any"
               helperText="Choose a preset icon or upload a custom image (PNG/SVG preferred)"
+            />
+
+            <MediaUploadField
+              label="Background Image"
+              value={form.watch('bgImage')}
+              onChange={(val) => form.setValue('bgImage', val)}
+              onUpload={async (file) => {
+                const { uploadImage } = await import('../lib/api')
+                return uploadImage(file)
+              }}
+              accept="image"
+              helperText="Upload a cover image for the service card"
             />
 
             <FormInput name="description" label="Description *" type="textarea" rows={4} placeholder="Detailed description..." />

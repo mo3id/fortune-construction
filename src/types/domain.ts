@@ -5,11 +5,18 @@ export interface Project {
     id: string
     title: string
     location: string
-    year: string
+    startDate?: string
+    endDate?: string
     category: Exclude<ProjectCategory, 'All'>
-    image: string
-    size: 'normal' | 'tall' | 'wide'
-    description: string
+    image?: string
+    size?: 'normal' | 'tall' | 'wide'
+    description?: string
+    budget?: string
+    challenge?: string
+    solution?: string
+    result?: string
+    coverImage?: string
+    galleryImages?: string[]
 }
 
 export interface Service {
@@ -51,4 +58,5 @@ export interface Testimonial {
     author: string
     org: string
     initials: string
+    image?: string
 }

@@ -41,6 +41,7 @@ interface ApiJob {
 }
 
 interface CareersContent {
+    hero?: { title?: string; description?: string; image?: string }
     benefits?: { title?: string; subtitle?: string; items?: { title: string; desc: string; icon?: string }[] }
 }
 
@@ -63,13 +64,15 @@ export default function CareersPage() {
         { title: 'Safety First Culture', desc: 'A work environment where your health and wellbeing are the top priority.', icon: 'HardHat' },
     ]
 
+    const hero = careersContent?.hero
+
     return (
         <div className="flex flex-col w-full bg-background min-h-screen">
             <PageHero 
-                title={<>Build Your Future with <span className="text-teal-500">Fortune</span></>}
-                description="Join a team of driven professionals dedicated to engineering excellence. We don't just build infrastructure; we build careers."
-                imageSrc="https://images.unsplash.com/photo-1541888086925-920a0f6707dd?q=80&w=2000&auto=format&fit=crop&fm=webp"
-                imageAlt="Engineers working together"
+                title={hero?.title || <>Build Your Future with <span className="text-teal-500">Fortune</span></>}
+                description={hero?.description || "Join a team of driven professionals dedicated to engineering excellence. We don't just build infrastructure; we build careers."}
+                imageSrc={hero?.image || "https://images.unsplash.com/photo-1541888086925-920a0f6707dd?q=80&w=2000&auto=format&fit=crop&fm=webp"}
+                imageAlt={hero?.title || "Engineers working together"}
             />
 
             {/* Benefits */}

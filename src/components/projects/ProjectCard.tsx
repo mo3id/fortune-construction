@@ -43,7 +43,10 @@ export function ProjectCard({
                 <h3 className="font-display text-2xl font-bold text-white mb-3 tracking-tight">{project.title}</h3>
                 <div className="flex items-center gap-5 text-white/60 text-[10px] font-black uppercase tracking-widest mb-4">
                     <span className="flex items-center gap-2"><MapPin className="w-3.5 h-3.5 text-teal-500" />{project.location}</span>
-                    <span className="flex items-center gap-2"><Calendar className="w-3.5 h-3.5 text-teal-500" />{project.year}</span>
+                    <span className="flex items-center gap-2">
+                        <Calendar className="w-3.5 h-3.5 text-teal-500" />
+                        {project.startDate && new Date(project.startDate).getFullYear()}
+                    </span>
                 </div>
                 <p className="text-slate-300 text-sm leading-relaxed font-light line-clamp-3 mb-6">{project.description}</p>
                 
@@ -56,8 +59,8 @@ export function ProjectCard({
             <div
                 className={cn(
                     'absolute top-6 left-6 z-20 px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest shadow-xl transition-all duration-500',
-                    project.category === 'Roads' ? 'bg-teal-500 text-white' :
-                        project.category === 'Bridges' ? 'bg-slate-800 text-white' :
+                    project.category === 'Infrastructure' ? 'bg-teal-500 text-white' :
+                        project.category === 'Commercial' ? 'bg-slate-800 text-white' :
                             'bg-slate-900 text-white',
                     isHovered ? 'opacity-0 scale-90 -translate-y-2' : 'opacity-100 scale-100 translate-y-0'
                 )}

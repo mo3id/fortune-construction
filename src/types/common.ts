@@ -1,1 +1,1 @@
-export type ProjectCategory = 'All' | 'Roads' | 'Buildings' | 'Bridges'
+export type ProjectCategory = 'All' | 'Infrastructure' | 'Commercial' | 'Residential' | 'Industrial'

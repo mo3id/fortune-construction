@@ -57,10 +57,8 @@ export const projectSchema = z.object({
   location: baseSchemas.requiredString('Location is required'),
   startDate: z.coerce.date().optional(),
   endDate: z.coerce.date().optional(),
-  duration: z.string().optional(),
   budget: z.coerce.number({ invalid_type_error: 'Budget must be a number' }).positive('Budget must be positive').optional().or(z.literal('')),
   coverImage: z.string().optional().or(z.literal('')),
-  completionDate: z.string().optional(),
   challenge: z.string().optional(),
   solution: z.string().optional(),
   result: z.string().optional(),
@@ -70,6 +68,8 @@ export const projectSchema = z.object({
 export const serviceSchema = z.object({
   title: baseSchemas.requiredString('Title is required', 2),
   description: baseSchemas.requiredString('Description is required', 10),
+  tagline: z.string().optional(),
+  bgImage: z.string().optional(),
   icon: z.string().optional(),
   features: z.array(z.string()).optional().default([]),
 })
@@ -103,6 +103,15 @@ export const jobSchema = z.object({
   isActive: z.boolean().default(true),
 })
 
+export const successStorySchema = z.object({
+  quote: baseSchemas.requiredString('Quote is required', 10),
+  author: baseSchemas.requiredString('Author name is required', 2),
+  org: baseSchemas.requiredString('Organization is required', 2),
+  initials: baseSchemas.requiredString('Initials are required', 1),
+  image: z.string().optional().or(z.literal('')),
+  order: z.coerce.number().optional().default(0),
+})
+
 export const settingsSchema = z.object({
   companyName: baseSchemas.requiredString('Company name is required'),
   tagline: z.string().optional(),
@@ -132,3 +141,4 @@ export type TeamFormData = z.infer<typeof teamSchema>
 export type PartnerFormData = z.infer<typeof partnerSchema>
 export type JobFormData = z.infer<typeof jobSchema>
 export type SettingsFormData = z.infer<typeof settingsSchema>
+export type SuccessStoryFormData = z.infer<typeof successStorySchema>

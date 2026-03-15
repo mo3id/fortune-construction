@@ -82,10 +82,12 @@ export function GlobalModal({
                 <DialogTitle className="text-3xl font-display font-bold text-slate-900 dark:text-white leading-tight">
                   {title}
                 </DialogTitle>
-                {description && (
+                {description ? (
                   <DialogDescription className="text-slate-500 dark:text-slate-400 text-lg font-light leading-relaxed">
                     {description}
                   </DialogDescription>
+                ) : (
+                  <DialogDescription className="sr-only">{title}</DialogDescription>
                 )}
               </DialogHeader>
 

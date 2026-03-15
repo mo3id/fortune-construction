@@ -19,6 +19,7 @@ function EmptyState({ icon: Icon, title, description }: { icon?: any, title: str
 interface ApiTeamMember { _id: string; name: string; role: string; photo?: string; bio?: string; order: number }
 
 interface AboutContent {
+    hero?: { title?: string; description?: string; image?: string }
     vision?: { title?: string; description?: string }
     mission?: { title?: string; description?: string }
     timeline?: { title?: string; subtitle?: string; items?: { year: string; title: string; desc: string }[] }
@@ -72,13 +73,15 @@ export default function AboutPage() {
         { icon: 'Users', title: 'Community Impact', desc: 'Building sustainably and empowering local talent to foster long-term national development.' }
     ]
 
+    const hero = aboutContent?.hero
+
     return (
         <div className="flex flex-col w-full">
             <PageHero 
-                title={<>Two Decades of Building <span className="text-teal-500">Malawi's Future</span></>}
-                description="Since 2006, Fortune Construction has been a cornerstone of infrastructure development, delivering excellence through engineering precision and unwavering commitment to safety."
-                imageSrc="https://images.unsplash.com/photo-1541888086925-920a0f6707dd?q=80&w=2000&auto=format&fit=crop&fm=webp"
-                imageAlt="Construction in Malawi"
+                title={hero?.title || <>Two Decades of Building <span className="text-teal-500">Malawi's Future</span></>}
+                description={hero?.description || "Since 2006, Fortune Construction has been a cornerstone of infrastructure development, delivering excellence through engineering precision and unwavering commitment to safety."}
+                imageSrc={hero?.image || "https://images.unsplash.com/photo-1541888086925-920a0f6707dd?q=80&w=2000&auto=format&fit=crop&fm=webp"}
+                imageAlt={hero?.title || "Construction in Malawi"}
             />
 
             {/* Vision & Mission */}

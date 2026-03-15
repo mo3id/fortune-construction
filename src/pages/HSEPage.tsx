@@ -6,6 +6,7 @@ import { ShieldCheck, HardHat, Leaf, Award, Download, Search, Type, Smile, Phone
 import { usePageContent } from '@/hooks/usePageContent'
 
 interface HSEContent {
+    hero?: { title?: string; description?: string; image?: string }
     policies?: { items?: { title: string; description: string; icon?: string }[] }
     safetyStats?: { items?: { value: string; label: string }[] }
     certifications?: { title?: string; subtitle?: string; description?: string; items?: { title: string; image?: string }[] }
@@ -51,13 +52,15 @@ export default function HSEPage() {
         { title: 'NEBOSH Certified' },
     ]
 
+    const hero = hseContent?.hero
+
     return (
         <div className="flex flex-col w-full bg-background min-h-screen">
             <PageHero 
-                title={<>Uncompromising Commitment to <span className="text-teal-500">Safety & Quality</span></>}
-                description="At Fortune Construction, excellence is not just about what we build, but how we build it. Protecting our people, our communities, and our environment is our highest priority."
-                imageSrc="https://images.unsplash.com/photo-1504307651254-35680f356f27?q=80&w=2000&auto=format&fit=crop&fm=webp"
-                imageAlt="Safety First at Fortune Construction"
+                title={hero?.title || <>Zero Compromise on <span className="text-teal-500">Safety & Quality</span></>}
+                description={hero?.description || "Our commitment to Health, Safety, and Environment (HSE) and rigorous Quality Assurance is the foundation of every project we undertake."}
+                imageSrc={hero?.image || "https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2000&auto=format&fit=crop&fm=webp"}
+                imageAlt={hero?.title || "Safety on construction site"}
             />
 
             {/* Core Policies */}

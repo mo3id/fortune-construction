@@ -17,9 +17,9 @@ export default function ProjectsPage() {
         staleTime: 60_000,
     })
 
-    const projects: ApiProject[] = apiProjects?.length
+    const projects = apiProjects?.length
         ? apiProjects
-        : projectsData.map(p => ({ _id: p.id, title: p.title, category: p.category, location: p.location, coverImage: p.coverImage }))
+        : projectsData.map(p => ({ _id: p.id, title: p.title, category: p.category, location: p.location, coverImage: p.coverImage || '' }))
 
     return (
         <div className="flex flex-col w-full bg-background min-h-screen">

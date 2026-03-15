@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { useFormContext } from 'react-hook-form'
 import { motion, AnimatePresence } from 'framer-motion'
 import { AlertCircle } from 'lucide-react'
+import { DatePicker } from '../ui/DatePicker'
 
 interface SelectOption {
   label: string
@@ -85,6 +86,12 @@ export function FormInput({
                   ))}
                 </SelectContent>
               </Select>
+            ) : type === 'date' ? (
+              <DatePicker
+                value={field.value}
+                onChange={field.onChange}
+                placeholder={placeholder || "Select a date"}
+              />
             ) : type === 'file' ? (
               <Input
                 type="file"

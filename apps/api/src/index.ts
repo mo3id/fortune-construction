@@ -18,6 +18,7 @@ import settingsRoutes from './routes/settings';
 import uploadRoutes from './routes/upload';
 import statsRoutes from './routes/stats';
 import pageContentRoutes from './routes/pageContent';
+import successStoryRoutes from './routes/successStories';
 
 dotenv.config();
 
@@ -57,6 +58,7 @@ async function startServer() {
   app.use('/api/upload', uploadRoutes);
   app.use('/api/stats', statsRoutes);
   app.use('/api/content', pageContentRoutes);
+  app.use('/api/success-stories', successStoryRoutes);
 
   app.get('/health', (_req, res) => res.json({ status: 'ok', timestamp: new Date() }));
 

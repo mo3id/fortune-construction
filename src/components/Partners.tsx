@@ -1,10 +1,14 @@
+import { useState, useEffect, useCallback } from 'react'
 import { useQuery } from '@tanstack/react-query'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Container, SectionHeader } from '@fortune/shared-ui'
 import { PartnerLogo } from './partners/PartnerLogo'
-import { TestimonialCard } from './partners/TestimonialCard'
 import { apiFetch } from '@/lib/apiClient'
+import { Quote, ChevronLeft, ChevronRight } from 'lucide-react'
+import type { Testimonial } from '@/types'
 
 interface ApiPartner { _id: string; name: string; abbr: string; logo?: string; order: number }
+interface ApiStory { _id: string; quote: string; author: string; org: string; initials: string; image?: string; order: number }
 
 const FALLBACK_PARTNERS = [
     { name: 'Ministry of Public Works', abbr: 'MPW', color: '#1e3a5f' },
@@ -17,7 +21,7 @@ const FALLBACK_PARTNERS = [
 
 const COLORS = ['#1e3a5f', '#c9a227']
 
-const TESTIMONIALS = [
+const FALLBACK_STORIES: Testimonial[] = [
     {
         quote: 'Fortune Construction delivered our road rehabilitation project on time and to the highest standard. Their professionalism and technical capability is unmatched in Malawi.',
         author: 'Principal Secretary',
@@ -32,6 +36,146 @@ const TESTIMONIALS = [
     },
 ]
 
+function SuccessStoriesSlider({ stories }: { stories: Testimonial[] }) {
+    const [current, setCurrent] = useState(0)
+    const [direction, setDirection] = useState(0)
+    const [isPaused, setIsPaused] = useState(false)
+
+    const goTo = useCallback((index: number) => {
+        setDirection(index > current ? 1 : -1)
+        setCurrent(index)
+    }, [current])
+
+    const next = useCallback(() => {
+        setDirection(1)
+        setCurrent((prev) => (prev + 1) % stories.length)
+    }, [stories.length])
+
+    const prev = useCallback(() => {
+        setDirection(-1)
+        setCurrent((prev) => (prev - 1 + stories.length) % stories.length)
+    }, [stories.length])
+
+    useEffect(() => {
+        if (isPaused || stories.length <= 1) return
+        const timer = setInterval(next, 6000)
+        return () => clearInterval(timer)
+    }, [isPaused, next, stories.length])
+
+    const slideVariants = {
+        enter: (dir: number) => ({ x: dir > 0 ? 300 : -300, opacity: 0, scale: 0.95 }),
+        center: { x: 0, opacity: 1, scale: 1 },
+        exit: (dir: number) => ({ x: dir > 0 ? -300 : 300, opacity: 0, scale: 0.95 }),
+    }
+
+    const story = stories[current]
+
+    return (
+        <div 
+            className="relative"
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+        >
+            {/* Decorative background elements */}
+            <div className="absolute -top-20 -right-20 w-72 h-72 bg-teal-500/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-20 -left-20 w-72 h-72 bg-teal-600/5 rounded-full blur-3xl pointer-events-none" />
+
+            <div className="relative max-w-4xl mx-auto">
+                {/* Main slider card */}
+                <div className="relative overflow-hidden rounded-[3rem] bg-gradient-to-br from-white via-white to-teal-50/30 dark:from-slate-900 dark:via-slate-900 dark:to-teal-950/20 border border-slate-100 dark:border-slate-800 shadow-2xl shadow-slate-200/50 dark:shadow-black/30 min-h-[320px]">
+                    {/* Large decorative quote */}
+                    <div className="absolute top-8 left-10 opacity-[0.04] pointer-events-none">
+                        <Quote className="w-40 h-40 fill-current text-teal-500" />
+                    </div>
+
+                    <AnimatePresence mode="wait" custom={direction}>
+                        <motion.div
+                            key={current}
+                            custom={direction}
+                            variants={slideVariants}
+                            initial="enter"
+                            animate="center"
+                            exit="exit"
+                            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                            className="p-10 md:p-16"
+                        >
+                            {/* Quote icon */}
+                            <div className="flex justify-center mb-8">
+                                <div className="w-14 h-14 bg-teal-500 rounded-2xl flex items-center justify-center shadow-lg shadow-teal-500/30 rotate-3">
+                                    <Quote className="w-6 h-6 text-white fill-current" />
+                                </div>
+                            </div>
+
+                            {/* Quote text */}
+                            <p className="text-slate-700 dark:text-slate-200 text-lg md:text-2xl leading-relaxed text-center font-light italic mb-12 max-w-3xl mx-auto">
+                                "{story.quote}"
+                            </p>
+
+                            {/* Author info */}
+                            <div className="flex flex-col items-center gap-4">
+                                {story.image ? (
+                                    <img 
+                                        src={story.image} 
+                                        alt={story.author}
+                                        className="w-16 h-16 rounded-full object-cover ring-4 ring-teal-500/20 shadow-lg"
+                                    />
+                                ) : (
+                                    <div className="w-16 h-16 bg-gradient-to-br from-slate-800 to-slate-900 dark:from-teal-600 dark:to-teal-700 rounded-full flex items-center justify-center text-white font-display font-black text-lg shadow-lg ring-4 ring-teal-500/20">
+                                        {story.initials}
+                                    </div>
+                                )}
+                                <div className="text-center">
+                                    <p className="font-bold text-slate-900 dark:text-white text-lg">{story.author}</p>
+                                    <p className="text-teal-600 dark:text-teal-400 text-[11px] font-black uppercase tracking-[0.25em] mt-1">{story.org}</p>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </AnimatePresence>
+                </div>
+
+                {/* Navigation controls */}
+                {stories.length > 1 && (
+                    <div className="flex items-center justify-center gap-6 mt-10">
+                        {/* Previous button */}
+                        <button
+                            onClick={prev}
+                            className="w-12 h-12 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-500 hover:text-teal-600 hover:border-teal-500/30 hover:shadow-lg hover:shadow-teal-500/10 transition-all duration-300 group"
+                            aria-label="Previous story"
+                        >
+                            <ChevronLeft className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform" />
+                        </button>
+
+                        {/* Dots */}
+                        <div className="flex items-center gap-2">
+                            {stories.map((_, i) => (
+                                <button
+                                    key={i}
+                                    onClick={() => goTo(i)}
+                                    aria-label={`Go to story ${i + 1}`}
+                                    className={`transition-all duration-500 rounded-full ${
+                                        i === current
+                                            ? 'w-10 h-3 bg-teal-500 shadow-md shadow-teal-500/30'
+                                            : 'w-3 h-3 bg-slate-200 dark:bg-slate-700 hover:bg-teal-300 dark:hover:bg-teal-600'
+                                    }`}
+                                />
+                            ))}
+                        </div>
+
+                        {/* Next button */}
+                        <button
+                            onClick={next}
+                            className="w-12 h-12 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-500 hover:text-teal-600 hover:border-teal-500/30 hover:shadow-lg hover:shadow-teal-500/10 transition-all duration-300 group"
+                            aria-label="Next story"
+                        >
+                            <ChevronRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
+                        </button>
+                    </div>
+                )}
+            </div>
+        </div>
+    )
+}
+
 export default function Partners() {
     const { data: apiPartners } = useQuery<ApiPartner[]>({
         queryKey: ['partners'],
@@ -39,9 +183,19 @@ export default function Partners() {
         staleTime: 60_000,
     })
 
+    const { data: apiStories } = useQuery<ApiStory[]>({
+        queryKey: ['success-stories'],
+        queryFn: () => apiFetch<ApiStory[]>('/success-stories'),
+        staleTime: 60_000,
+    })
+
     const partners = apiPartners?.length
         ? apiPartners.map((p, i) => ({ name: p.name, abbr: p.abbr, color: COLORS[i % COLORS.length], logo: p.logo }))
         : FALLBACK_PARTNERS
+
+    const stories: Testimonial[] = apiStories?.length
+        ? apiStories.map(s => ({ quote: s.quote, author: s.author, org: s.org, initials: s.initials, image: s.image }))
+        : FALLBACK_STORIES
 
     return (
         <section id="partners" className="relative section-padding bg-white dark:bg-slate-950 overflow-hidden">
@@ -61,18 +215,20 @@ export default function Partners() {
                     ))}
                 </div>
 
-                {/* Testimonials Header */}
-                <div className="text-center mb-16">
+                {/* Success Stories Header */}
+                <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="text-center mb-16"
+                >
                     <span className="text-[10px] font-black tracking-[0.3em] uppercase text-teal-600 mb-4 block">Corporate Voice</span>
-                    <h3 className="text-3xl font-display font-bold text-slate-900 dark:text-white">Success Stories</h3>
-                </div>
+                    <h3 className="text-3xl md:text-4xl font-display font-bold text-slate-900 dark:text-white">Success Stories</h3>
+                    <p className="text-slate-500 dark:text-slate-400 text-base mt-4 max-w-2xl mx-auto">Hear what our clients and partners have to say about working with Fortune Construction.</p>
+                </motion.div>
 
-                {/* Testimonials */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                    {TESTIMONIALS.map((t) => (
-                        <TestimonialCard key={t.author} testimonial={t} />
-                    ))}
-                </div>
+                {/* Success Stories Slider */}
+                <SuccessStoriesSlider stories={stories} />
             </Container>
         </section>
     )

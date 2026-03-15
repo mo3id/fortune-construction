@@ -58,7 +58,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                                     </span>
                                     <span className="flex items-center gap-2">
                                         <Calendar className="w-4 h-4 text-teal-500" />
-                                        {project.year}
+                                        {project.startDate && new Date(project.startDate).getFullYear()}
                                     </span>
                                 </div>
 

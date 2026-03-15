@@ -1,12 +1,18 @@
 import { Image, Container, PageHero } from '@fortune/shared-ui'
 import { motion } from 'framer-motion'
 import { Mail, Phone, MapPin, Clock } from 'lucide-react'
-import { ContactForm } from '@/components/contact/ContactForm'
 import { useQuery } from '@tanstack/react-query'
 import { apiFetch } from '@/lib/apiClient'
+import { ContactForm } from '@/components/contact/ContactForm'
+
+import { usePageContent } from '@/hooks/usePageContent'
 
 interface SiteSettings {
     companyName: string; tagline: string; phone: string; email: string; address: string;
+}
+
+interface ContactContent {
+    hero?: { title?: string; description?: string; image?: string }
 }
 
 export default function ContactPage() {
@@ -16,6 +22,9 @@ export default function ContactPage() {
         staleTime: 60_000,
     })
 
+    const { data: contactContent } = usePageContent<ContactContent>('contact')
+    const hero = contactContent?.hero
+
     const address = settings?.address || 'Area 4, Lilongwe, Malawi'
     const phone = settings?.phone || '+265 1 75X XXX'
     const email = settings?.email || 'info@fortuneconstruction.mw'
@@ -23,10 +32,10 @@ export default function ContactPage() {
     return (
         <div className="flex flex-col w-full bg-background min-h-screen">
             <PageHero 
-                title="Contact Us"
-                description="Have a project in mind or need expert engineering consultation? Our team is ready to assist you."
-                imageSrc="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2000&auto=format&fit=crop&fm=webp"
-                imageAlt="Construction Site Office"
+                title={hero?.title || "Let's Build Something Together"}
+                description={hero?.description || "Ready to start your next infrastructure project? Get in touch with our team of experts today."}
+                imageSrc={hero?.image || "https://images.unsplash.com/photo-1545558014-8ab6aa17e307?q=80&w=2000&auto=format&fit=crop&fm=webp"}
+                imageAlt={hero?.title || "Construction site planning"}
             />
 
             {/* Main Content */}
