@@ -3,12 +3,18 @@ import { useQuery } from '@tanstack/react-query'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Container, SectionHeader } from '@fortune/shared-ui'
 import { PartnerLogo } from './partners/PartnerLogo'
-import { apiFetch } from '@/lib/apiClient'
 import { Quote, ChevronLeft, ChevronRight } from 'lucide-react'
+import { apiFetch } from '@/lib/apiClient'
 import type { Testimonial } from '@/types'
+import { usePageContent } from '@/hooks/usePageContent'
 
 interface ApiPartner { _id: string; name: string; abbr: string; logo?: string; order: number }
-interface ApiStory { _id: string; quote: string; author: string; org: string; initials: string; image?: string; order: number }
+interface SuccessStoriesContent {
+    title?: string;
+    subtitle?: string;
+    description?: string;
+    items?: Testimonial[];
+}
 
 const FALLBACK_PARTNERS = [
     { name: 'Ministry of Public Works', abbr: 'MPW', color: '#1e3a5f' },
@@ -183,18 +189,15 @@ export default function Partners() {
         staleTime: 60_000,
     })
 
-    const { data: apiStories } = useQuery<ApiStory[]>({
-        queryKey: ['success-stories'],
-        queryFn: () => apiFetch<ApiStory[]>('/success-stories'),
-        staleTime: 60_000,
-    })
+    const { data: homeContent } = usePageContent<{ successStories?: SuccessStoriesContent }>('home')
+    const content = homeContent?.successStories
 
     const partners = apiPartners?.length
         ? apiPartners.map((p, i) => ({ name: p.name, abbr: p.abbr, color: COLORS[i % COLORS.length], logo: p.logo }))
         : FALLBACK_PARTNERS
 
-    const stories: Testimonial[] = apiStories?.length
-        ? apiStories.map(s => ({ quote: s.quote, author: s.author, org: s.org, initials: s.initials, image: s.image }))
+    const stories: Testimonial[] = content?.items?.length
+        ? content.items
         : FALLBACK_STORIES
 
     return (
@@ -222,9 +225,15 @@ export default function Partners() {
                     viewport={{ once: true }}
                     className="text-center mb-16"
                 >
-                    <span className="text-[10px] font-black tracking-[0.3em] uppercase text-teal-600 mb-4 block">Corporate Voice</span>
-                    <h3 className="text-3xl md:text-4xl font-display font-bold text-slate-900 dark:text-white">Success Stories</h3>
-                    <p className="text-slate-500 dark:text-slate-400 text-base mt-4 max-w-2xl mx-auto">Hear what our clients and partners have to say about working with Fortune Construction.</p>
+                    <span className="text-[10px] font-black tracking-[0.3em] uppercase text-teal-600 mb-4 block">
+                        {content?.subtitle || "Corporate Voice"}
+                    </span>
+                    <h3 className="text-3xl md:text-4xl font-display font-bold text-slate-900 dark:text-white">
+                        {content?.title || "Success Stories"}
+                    </h3>
+                    <p className="text-slate-500 dark:text-slate-400 text-base mt-4 max-w-2xl mx-auto">
+                        {content?.description || "Hear what our clients and partners have to say about working with Fortune Construction."}
+                    </p>
                 </motion.div>
 
                 {/* Success Stories Slider */}

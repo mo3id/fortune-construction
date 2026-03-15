@@ -45,6 +45,22 @@ const SECTION_CONFIG: Record<string, { label: string; fields: FieldConfig[] }[]>
         ]},
       ],
     },
+    {
+      label: 'Success Stories',
+      fields: [
+        { key: 'title', label: 'Section Title', type: 'text' },
+        { key: 'subtitle', label: 'Subtitle', type: 'text' },
+        { key: 'description', label: 'Description', type: 'textarea' },
+        { key: 'items', label: 'Stories', type: 'array', itemFields: [
+          { key: 'quote', label: 'Quote', type: 'textarea' },
+          { key: 'author', label: 'Author', type: 'text' },
+          { key: 'org', label: 'Organization', type: 'text' },
+          { key: 'initials', label: 'Initials', type: 'text' },
+          { key: 'image', label: 'Author Photo', type: 'media', accept: 'image' },
+          { key: 'order', label: 'Order', type: 'number' },
+        ]},
+      ],
+    },
   ],
   about: [
     {
@@ -200,6 +216,7 @@ function sectionKey(label: string): string {
     'Safety Stats': 'safetyStats',
     'Certifications': 'certifications',
     'Benefits': 'benefits',
+    'Success Stories': 'successStories',
   }
   return map[label] || label.toLowerCase().replace(/\s+/g, '')
 }

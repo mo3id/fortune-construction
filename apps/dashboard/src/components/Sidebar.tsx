@@ -15,7 +15,6 @@ const NAV = [
   { label: 'Job Positions', icon: HardHat, to: '/jobs' },
   { label: 'Applications', icon: Briefcase, to: '/applications' },
   { label: 'Messages', icon: MessageSquare, to: '/messages' },
-  { label: 'Success Stories', icon: Trophy, to: '/success-stories' },
   { label: 'Page Content', icon: FileText, to: '/content' },
   { label: 'Settings', icon: Settings, to: '/settings' },
 ]
