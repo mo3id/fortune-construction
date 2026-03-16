@@ -51,21 +51,26 @@ const ALL_TIMES = HOURS.flatMap(h => {
 })
 
 export function BusinessHoursPicker({
-  workingDays = 'Mon - Fri',
-  workingHoursStart = '08:00',
-  workingHoursEnd = '17:00',
+  workingDays: workingDaysProp,
+  workingHoursStart: workingHoursStartProp,
+  workingHoursEnd: workingHoursEndProp,
   onChange,
   className
 }: BusinessHoursPickerProps) {
+  const workingDays = workingDaysProp || 'Mon - Fri'
+  const workingHoursStart = workingHoursStartProp || '08:00'
+  const workingHoursEnd = workingHoursEndProp || '17:00'
+
   const [startDay, endDay] = workingDays.includes(' - ') 
     ? workingDays.split(' - ') 
     : [workingDays, workingDays]
 
   const formatTime = (time24: string) => {
+    if (!time24) return '—'
     const [hours, minutes] = time24.split(':').map(Number)
     const ampm = hours >= 12 ? 'pm' : 'am'
     const hours12 = hours % 12 || 12
-    return `${hours12}:${minutes.toString().padStart(2, '0')}${ampm}`
+    return `${hours12}:${(minutes ?? 0).toString().padStart(2, '0')}${ampm}`
   }
 
   const generateDisplay = (sDay: string, eDay: string, sTime: string, eTime: string) => {
