@@ -28,7 +28,7 @@ const PORT = process.env.PORT || 3001;
 async function startServer() {
   const isInMemory = await connectDB();
   if (isInMemory) {
-    const { autoSeed } = await import('./autoSeed');
+    const { autoSeed } = await import('./autoSeed.js');
     await autoSeed();
   }
 
