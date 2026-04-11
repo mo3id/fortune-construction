@@ -12,11 +12,11 @@ Repository:
 
 Primary domain:
 
-- `fortuneconstruction.com`
+- `www.fortuneconstruction.new`
 
 Recommended service domains:
 
-- Website: `fortuneconstruction.com`
+- Website: `www.fortuneconstruction.new`
 - Dashboard: `admin.fortuneconstruction.com`
 - API: `api.fortuneconstruction.com`
 
@@ -28,10 +28,10 @@ Create one MongoDB resource and three applications from the same GitHub reposito
 
 Point these records to the Contabo server IP `144.91.86.207`:
 
-1. `A fortuneconstruction.com -> 144.91.86.207`
+1. `A www.fortuneconstruction.new -> 144.91.86.207`
 2. `A admin.fortuneconstruction.com -> 144.91.86.207`
 3. `A api.fortuneconstruction.com -> 144.91.86.207`
-4. Optional: `A www.fortuneconstruction.com -> 144.91.86.207`
+4. Optional: `A fortuneconstruction.new -> 144.91.86.207`
 
 If Cloudflare is used, start with DNS only mode until everything is working.
 
@@ -56,8 +56,8 @@ Then use the internal connection string from Coolify as `MONGODB_URI` for the AP
 - Build pack: Dockerfile
 - Dockerfile location: `Dockerfile.website`
 - Port: `80`
-- Domain: `fortuneconstruction.com`
-- Optional extra domain: `www.fortuneconstruction.com`
+- Domain: `www.fortuneconstruction.new`
+- Optional extra domain: `fortuneconstruction.new`
 
 Required build argument:
 
@@ -107,7 +107,7 @@ Recommended persistent storage for the API:
 
 ## Quick Verification After Deploy
 
-1. Open `https://fortuneconstruction.com` and verify page refresh works on nested routes.
+1. Open `https://www.fortuneconstruction.new` and verify page refresh works on nested routes.
 2. Open `https://admin.fortuneconstruction.com` and verify login loads without a 404 on refresh.
 3. Open `https://api.fortuneconstruction.com/health` and confirm it returns a JSON status.
 4. Verify image and CV uploads still exist after restarting the API container.
