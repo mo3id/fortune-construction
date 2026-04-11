@@ -364,9 +364,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--environment-name", default="production")
     parser.add_argument("--repo", default="https://github.com/AbdelrahmanYosry2022/fortune-construction.git")
     parser.add_argument("--branch", default="main")
-    parser.add_argument("--site-domain", default="https://www.fortuneconstruction.new")
-    parser.add_argument("--dashboard-domain", default="https://admin.fortuneconstruction.com")
-    parser.add_argument("--api-domain", default="https://api.fortuneconstruction.com")
+    parser.add_argument("--site-domain", default="https://www.fortuneconstruction.net")
+    parser.add_argument("--dashboard-domain", default="https://admin.fortuneconstruction.net")
+    parser.add_argument("--api-domain", default="https://api.fortuneconstruction.net")
     parser.add_argument("--mongodb-name", default="fortune-mongodb")
     parser.add_argument("--mongodb-user", default="fortuneadmin")
     parser.add_argument("--mongodb-password", default=random_secret(32))
@@ -384,7 +384,7 @@ def main() -> int:
     args.repo = normalize_repository(args.repo)
     client = CoolifyClient(args.base_url, args.token)
 
-    project = ensure_project(client, args.project_name, "Production deployment for fortuneconstruction.com")
+    project = ensure_project(client, args.project_name, "Production deployment for fortuneconstruction.net")
     args.project_uuid = project["uuid"]
 
     environment = ensure_environment(client, project["uuid"], args.environment_name)

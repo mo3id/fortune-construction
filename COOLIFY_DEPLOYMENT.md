@@ -12,13 +12,13 @@ Repository:
 
 Primary domain:
 
-- `www.fortuneconstruction.new`
+- `www.fortuneconstruction.net`
 
 Recommended service domains:
 
-- Website: `www.fortuneconstruction.new`
-- Dashboard: `admin.fortuneconstruction.com`
-- API: `api.fortuneconstruction.com`
+- Website: `www.fortuneconstruction.net`
+- Dashboard: `admin.fortuneconstruction.net`
+- API: `api.fortuneconstruction.net`
 
 ## Recommended Coolify Setup
 
@@ -28,10 +28,10 @@ Create one MongoDB resource and three applications from the same GitHub reposito
 
 Point these records to the Contabo server IP `144.91.86.207`:
 
-1. `A www.fortuneconstruction.new -> 144.91.86.207`
-2. `A admin.fortuneconstruction.com -> 144.91.86.207`
-3. `A api.fortuneconstruction.com -> 144.91.86.207`
-4. Optional: `A fortuneconstruction.new -> 144.91.86.207`
+1. `A www.fortuneconstruction.net -> 144.91.86.207`
+2. `A admin.fortuneconstruction.net -> 144.91.86.207`
+3. `A api.fortuneconstruction.net -> 144.91.86.207`
+4. Optional: `A fortuneconstruction.net -> 144.91.86.207`
 
 If Cloudflare is used, start with DNS only mode until everything is working.
 
@@ -56,12 +56,12 @@ Then use the internal connection string from Coolify as `MONGODB_URI` for the AP
 - Build pack: Dockerfile
 - Dockerfile location: `Dockerfile.website`
 - Port: `80`
-- Domain: `www.fortuneconstruction.new`
-- Optional extra domain: `fortuneconstruction.new`
+- Domain: `www.fortuneconstruction.net`
+- Optional extra domain: `fortuneconstruction.net`
 
 Required build argument:
 
-- `VITE_API_URL=https://api.fortuneconstruction.com`
+- `VITE_API_URL=https://api.fortuneconstruction.net`
 
 ## Coolify App 2: Dashboard
 
@@ -71,11 +71,11 @@ Required build argument:
 - Build pack: Dockerfile
 - Dockerfile location: `Dockerfile.dashboard`
 - Port: `80`
-- Domain: `admin.fortuneconstruction.com`
+- Domain: `admin.fortuneconstruction.net`
 
 Required build argument:
 
-- `VITE_API_URL=https://api.fortuneconstruction.com`
+- `VITE_API_URL=https://api.fortuneconstruction.net`
 
 ## Coolify App 3: API
 
@@ -85,7 +85,7 @@ Required build argument:
 - Build pack: Dockerfile
 - Dockerfile location: `Dockerfile.api`
 - Port: `3001`
-- Domain: `api.fortuneconstruction.com`
+- Domain: `api.fortuneconstruction.net`
 
 Required environment variables for the API:
 
@@ -107,7 +107,7 @@ Recommended persistent storage for the API:
 
 ## Quick Verification After Deploy
 
-1. Open `https://www.fortuneconstruction.new` and verify page refresh works on nested routes.
-2. Open `https://admin.fortuneconstruction.com` and verify login loads without a 404 on refresh.
-3. Open `https://api.fortuneconstruction.com/health` and confirm it returns a JSON status.
+1. Open `https://www.fortuneconstruction.net` and verify page refresh works on nested routes.
+2. Open `https://admin.fortuneconstruction.net` and verify login loads without a 404 on refresh.
+3. Open `https://api.fortuneconstruction.net/health` and confirm it returns a JSON status.
 4. Verify image and CV uploads still exist after restarting the API container.
