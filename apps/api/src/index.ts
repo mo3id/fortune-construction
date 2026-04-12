@@ -5,6 +5,7 @@ import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import path from 'path';
 import { connectDB } from './config/db';
+import Admin from './models/Admin';
 
 import authRoutes from './routes/auth';
 import projectRoutes from './routes/projects';
@@ -26,7 +27,6 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 async function ensureAdmin() {
-  const Admin = (await import('./models/Admin.js')).default;
   const count = await Admin.countDocuments();
   if (count === 0) {
     await Admin.create({ username: 'admin', password: 'admin123' });
