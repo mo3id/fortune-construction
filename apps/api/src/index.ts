@@ -43,7 +43,9 @@ async function startServer() {
   await ensureAdmin();
 
   app.use(helmet({
-    crossOriginResourcePolicy: { policy: "cross-origin" }
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+    crossOriginOpenerPolicy: false,
+    contentSecurityPolicy: false,
   }));
   app.use(cors({
     origin: (origin, cb) => cb(null, true),
