@@ -25,12 +25,22 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+async function ensureAdmin() {
+  const Admin = (await import('./models/Admin.js')).default;
+  const count = await Admin.countDocuments();
+  if (count === 0) {
+    await Admin.create({ username: 'admin', password: 'admin123' });
+    console.log('✅ Default admin created: admin / admin123');
+  }
+}
+
 async function startServer() {
   const isInMemory = await connectDB();
   if (isInMemory) {
     const { autoSeed } = await import('./autoSeed.js');
     await autoSeed();
   }
+  await ensureAdmin();
 
   app.use(helmet({
     crossOriginResourcePolicy: { policy: "cross-origin" }

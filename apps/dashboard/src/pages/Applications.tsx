@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { api } from '../lib/api'
+import { api, BASE_URL } from '../lib/api'
 import { Trash2, ChevronDown, Search, FileText } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { GlobalModal } from '@fortune/shared-ui'
@@ -126,7 +126,7 @@ export default function Applications() {
                       <div className="flex items-center gap-2 justify-end">
                         {a.cvFile && (
                           <a 
-                            href={`http://localhost:3001${a.cvFile}`} 
+                            href={`${BASE_URL}${a.cvFile}`} 
                             target="_blank" 
                             rel="noreferrer" 
                             className="h-8 px-3 flex items-center gap-2 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-full text-xs font-bold uppercase tracking-wider transition-all"
