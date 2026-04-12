@@ -1,4 +1,5 @@
-import express from 'express';
+import 'express-async-errors';
+import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
@@ -42,14 +43,14 @@ async function startServer() {
   }
   await ensureAdmin();
 
+  app.use(cors({
+    origin: (origin, cb) => cb(null, true),
+    credentials: true,
+  }));
   app.use(helmet({
     crossOriginResourcePolicy: { policy: "cross-origin" },
     crossOriginOpenerPolicy: false,
     contentSecurityPolicy: false,
-  }));
-  app.use(cors({
-    origin: (origin, cb) => cb(null, true),
-    credentials: true,
   }));
 
   const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 200 });
@@ -73,6 +74,16 @@ async function startServer() {
   app.use('/api/success-stories', successStoryRoutes);
 
   app.get('/health', (_req, res) => res.json({ status: 'ok', timestamp: new Date() }));
+
+  // Global error handler - catches all unhandled errors and returns JSON with CORS headers
+  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+    console.error('Unhandled error:', err.message || err);
+    const status = err.status || err.statusCode || 500;
+    res.status(status).json({
+      message: err.message || 'Internal server error',
+      ...(process.env.NODE_ENV !== 'production' && { stack: err.stack }),
+    });
+  });
 
   app.listen(PORT, () => {
     console.log(`✅ Fortune API running on http://localhost:${PORT}`);
