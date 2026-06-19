@@ -5,6 +5,7 @@ import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import path from 'path';
 import { connectDB } from './config/db';
+import { validateJwtConfig } from './config/jwt';
 
 import authRoutes from './routes/auth';
 import projectRoutes from './routes/projects';
@@ -26,6 +27,8 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 async function startServer() {
+  validateJwtConfig();
+
   const isInMemory = await connectDB();
   if (isInMemory) {
     const { autoSeed } = await import('./autoSeed');

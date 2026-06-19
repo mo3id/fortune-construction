@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
 import Admin from '../models/Admin';
 import { protect, AuthRequest } from '../middleware/auth';
+import { createAuthToken } from '../config/jwt';
 
 const router = Router();
 
@@ -16,9 +16,7 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
     res.status(401).json({ message: 'Invalid credentials' });
     return;
   }
-  const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET || 'secret', {
-    expiresIn: process.env.JWT_EXPIRES_IN || '24h',
-  } as jwt.SignOptions);
+  const token = createAuthToken(admin._id.toString());
   res.json({ token, username: admin.username });
 });
 
