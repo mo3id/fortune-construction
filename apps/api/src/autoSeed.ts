@@ -7,23 +7,11 @@ import JobPosition from './models/JobPosition';
 import SiteSettings from './models/SiteSettings';
 import PageContent from './models/PageContent';
 import SuccessStory from './models/SuccessStory';
-import { getSeedAdminCredentials } from './config/adminCredentials';
 
 export async function autoSeed(): Promise<void> {
   console.log('🌱 Auto-seeding in-memory database...');
 
-  const adminCredentials = getSeedAdminCredentials('autoSeed');
-  await Admin.create({
-    username: adminCredentials.username,
-    password: adminCredentials.password,
-  });
-
-  if (adminCredentials.generatedPassword) {
-    console.log(`✅ Admin created for local development: ${adminCredentials.username}`);
-    console.log(`   Temporary password: ${adminCredentials.password}`);
-  } else {
-    console.log(`✅ Admin created: ${adminCredentials.username}`);
-  }
+  await Admin.create({ username: 'admin', password: 'admin123' });
 
   await Project.insertMany([
     {
@@ -243,5 +231,5 @@ export async function autoSeed(): Promise<void> {
     },
   ]);
 
-  console.log('✅ Auto-seed complete');
+  console.log('✅ Auto-seed complete — login: admin / admin123');
 }

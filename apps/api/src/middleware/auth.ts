@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { verifyAuthToken } from '../config/jwt';
+import jwt from 'jsonwebtoken';
 
 export interface AuthRequest extends Request {
   adminId?: string;
@@ -7,14 +7,13 @@ export interface AuthRequest extends Request {
 
 export function protect(req: AuthRequest, res: Response, next: NextFunction): void {
   const header = req.headers.authorization;
-  const match = typeof header === 'string' ? header.match(/^Bearer\s+(\S+)$/i) : null;
-  if (!match) {
+  if (!header || !header.startsWith('Bearer ')) {
     res.status(401).json({ message: 'No token provided' });
     return;
   }
-
+  const token = header.split(' ')[1];
   try {
-    const decoded = verifyAuthToken(match[1]);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secret') as { id: string };
     req.adminId = decoded.id;
     next();
   } catch {
