@@ -8,21 +8,13 @@ import Partner from './models/Partner';
 import TeamMember from './models/TeamMember';
 import JobPosition from './models/JobPosition';
 import SiteSettings from './models/SiteSettings';
-import { getSeedAdminCredentials } from './config/adminCredentials';
 
 async function seed() {
   await connectDB();
 
   await Admin.deleteMany({});
-  const adminCredentials = getSeedAdminCredentials('seed');
-  await Admin.create({
-    username: adminCredentials.username,
-    password: adminCredentials.password,
-  });
-  console.log(`✅ Admin created: ${adminCredentials.username}`);
-  if (adminCredentials.generatedPassword) {
-    console.log(`   Temporary password: ${adminCredentials.password}`);
-  }
+  await Admin.create({ username: 'admin', password: 'admin123' });
+  console.log('✅ Admin created: admin / admin123');
 
   await Project.deleteMany({});
   await Project.insertMany([
@@ -126,12 +118,7 @@ async function seed() {
   console.log('✅ Site settings seeded');
 
   console.log('\n🎉 Database seeded successfully!');
-  console.log(`   Admin username: ${adminCredentials.username}`);
-  if (adminCredentials.generatedPassword) {
-    console.log('   Use the temporary password printed above for this local seed run.');
-  } else {
-    console.log('   Admin password loaded from ADMIN_PASSWORD.');
-  }
+  console.log('   Login: admin / admin123');
   process.exit(0);
 }
 

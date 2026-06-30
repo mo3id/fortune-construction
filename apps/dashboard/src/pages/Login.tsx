@@ -95,6 +95,13 @@ export default function Login() {
             </div>
           </div>
         </div>
+
+        {/* Credentials Tip */}
+        <div className="mt-8 text-center animate-in fade-in slide-in-from-top-4 delay-500 duration-1000 fill-mode-both">
+          <p className="text-xs text-slate-600 font-medium">
+            Demo Credentials: <span className="text-slate-400 mx-1 underline decoration-teal-500/30 underline-offset-4 cursor-help" title="Username: admin / Password: admin123">Hover to reveal</span>
+          </p>
+        </div>
       </div>
     </div>
   )
