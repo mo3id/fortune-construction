@@ -5,7 +5,7 @@ import { useParams, Link } from 'react-router-dom'
 import {
     ArrowLeft,
     ArrowRight,
-    BriefcaseBusiness,
+    Briefcase,
     Calendar,
     CheckCircle2,
     CircleDollarSign,
@@ -133,7 +133,7 @@ export default function ProjectDetailsPage() {
             <section className="relative -mt-16 z-20 px-6">
                 <div className="mx-auto grid max-w-7xl grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">
                     <FactTile icon={MapPin} label="Location" value={project.location} />
-                    <FactTile icon={BriefcaseBusiness} label="Client" value={project.clientName} />
+                    <FactTile icon={Briefcase} label="Client" value={project.clientName} />
                     <FactTile icon={Calendar} label="Year" value={project.yearCompleted} />
                     <FactTile icon={CircleDollarSign} label="Value" value={project.projectValue} />
                     <FactTile icon={Clock3} label="Duration" value={project.duration} />

@@ -28,6 +28,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
+      '@fortune/shared-ui': fileURLToPath(new URL('./src/lib/frontendSharedUi.tsx', import.meta.url)),
       '@': fileURLToPath(new URL('./src', import.meta.url)),
       'react-style-singleton': resolvePkgEntry('react-style-singleton', [
         'dist/es5/index.js',
@@ -48,4 +49,3 @@ export default defineConfig({
     },
   },
 })
-
