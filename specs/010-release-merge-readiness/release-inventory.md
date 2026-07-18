@@ -1,11 +1,11 @@
 # Release Inventory: Release Readiness Gate
 
 **Captured**: 2026-07-18  
-**Scope executed**: T001-T057 reviewed; T054 commit and T057 push were not executed because separate commit/push approval was not provided and push/PR/merge were explicitly out of scope  
+**Scope executed**: T001-T057 reviewed; T054 commit executed after explicit owner approval; T057 push was not executed because push/PR/merge were explicitly out of scope  
 **Branch**: `009-interactive-project-map`  
 **Target remote**: `newrepo` (`mo3id/new-fortune-construction`)  
 **Target merge branch**: `main`  
-**Staging/commit/push status**: Release candidate files are staged intentionally for review. No commit/push/PR/merge was performed.
+**Staging/commit/push status**: Release candidate commit completed. No push/PR/merge was performed.
 
 ## T001-T005 Setup Evidence
 
@@ -234,9 +234,13 @@ T052 proposed commit message:
 Prepare Fortune Construction for production release
 ```
 
-T053 commit approval status: not approved in this request. The user confirmed token revoke/rotate and asked for the proposed commit list/message, but did not provide separate explicit approval to run `git commit`.
+T053 commit approval status: approved in the follow-up request to complete commit only from Safe Publish.
 
-T054 commit status: not run.
+T054 commit status: completed.
+
+- Commit message: `Prepare release-ready Fortune Construction updates`
+- Commit hash: `751d148c6406747e674ccb04e2f2ff52facaf153`
+- Short hash: `751d148`
 
 T055 remote check: `newrepo` points to `https://github.com/mo3id/new-fortune-construction.git` for fetch and push.
 
@@ -256,4 +260,4 @@ T057 push status: not run.
 
 **Status**: `staged-for-review`
 
-Reason: verification builds/tests pass, denied files are staged only as repository removals, token revoke/rotate is confirmed by the owner, and the remaining Vite high audit finding is accepted as a documented deferred risk for this gate. Commit, push, PR, and merge still require separate explicit approval.
+Reason: verification builds/tests pass, denied files were committed as repository removals, token revoke/rotate is confirmed by the owner, and the remaining Vite high audit finding is accepted as a documented deferred risk for this gate. Push, PR, and merge still require separate explicit approval.

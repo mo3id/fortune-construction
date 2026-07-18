@@ -81,7 +81,7 @@ vite.config.ts.timestamp-*
 After all checks pass and staged files are reviewed:
 
 ```bash
-git commit -m "Prepare Fortune Construction for production release"
+git commit -m "Prepare release-ready Fortune Construction updates"
 git push newrepo 009-interactive-project-map
 ```
 
@@ -107,7 +107,7 @@ After this cleanup, the no-stage denylist check showed denied files are staged o
 
 ## 8. Safe Publish Staging Review
 
-Safe Publish T046-T057 was reviewed without commit, push, PR, or merge.
+Safe Publish T046-T057 was reviewed. Commit completed; push, PR, and merge were not executed.
 
 - Release candidate is staged with explicit pathspecs only; `git add .` was not used.
 - Staged summary: 314 paths total, with 189 added, 43 modified, and 82 deletion-only cleanup paths.
@@ -118,10 +118,13 @@ Safe Publish T046-T057 was reviewed without commit, push, PR, or merge.
 - The previously exposed token is treated as resolved because the owner confirmed revoke/rotate.
 - The remaining Vite high audit finding is treated as a deferred known risk documented in `specs/011-audit-vulnerability-fix`.
 
-Prepared commit message:
+Commit completed:
 
 ```bash
-git commit -m "Prepare Fortune Construction for production release"
+git commit -m "Prepare release-ready Fortune Construction updates"
 ```
 
-Do not run the commit until the owner gives separate explicit approval. Push/PR/merge remain separate steps and were not executed.
+- Commit hash: `751d148c6406747e674ccb04e2f2ff52facaf153`
+- Short hash: `751d148`
+
+Push/PR/merge remain separate steps and were not executed.

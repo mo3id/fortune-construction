@@ -113,12 +113,12 @@
 
 - [x] T052 [US2] Prepare the commit message `Prepare Fortune Construction for production release` in `specs/010-release-merge-readiness/quickstart.md`
 - [x] T053 [US2] Request separate owner approval for `git commit` and record approval status in `specs/010-release-merge-readiness/release-inventory.md`
-- [ ] T054 [US2] After separate approval only, run `git commit` and record the resulting commit hash in `specs/010-release-merge-readiness/release-inventory.md`
+- [x] T054 [US2] After separate approval only, run `git commit` and record the resulting commit hash in `specs/010-release-merge-readiness/release-inventory.md`
 - [x] T055 [US2] Verify `newrepo` still points to `mo3id/new-fortune-construction` and record the remote check in `specs/010-release-merge-readiness/release-inventory.md`
 - [x] T056 [US2] Request separate owner approval for `git push newrepo 009-interactive-project-map` and record approval status in `specs/010-release-merge-readiness/release-inventory.md`
 - [ ] T057 [US2] After separate approval only, push `009-interactive-project-map` to `newrepo` and record the push result in `specs/010-release-merge-readiness/release-inventory.md`
 
-> Safe Publish review completed: T054 and T057 remain intentionally unchecked because separate commit/push approval was not provided and push/PR/merge were explicitly out of scope.
+> Safe Publish commit completed after explicit owner approval: `751d148c6406747e674ccb04e2f2ff52facaf153`. T057 remains intentionally unchecked because push/PR/merge were explicitly out of scope.
 
 **Checkpoint**: User Story 2 is complete when the approved release commit is pushed to `newrepo` or the push blocker is documented.
 
