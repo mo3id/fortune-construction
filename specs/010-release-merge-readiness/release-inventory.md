@@ -1,11 +1,11 @@
 # Release Inventory: Release Readiness Gate
 
 **Captured**: 2026-07-18  
-**Scope executed**: T001-T057 reviewed; T054 commit executed after explicit owner approval; T057 push was not executed because push/PR/merge were explicitly out of scope  
+**Scope executed**: T001-T072 reviewed; T054 commit executed after explicit owner approval; T057 push is owner-confirmed successful; PR/merge handoff prepared without direct merge  
 **Branch**: `009-interactive-project-map`  
 **Target remote**: `newrepo` (`mo3id/new-fortune-construction`)  
 **Target merge branch**: `main`  
-**Staging/commit/push status**: Release candidate commit completed. No push/PR/merge was performed.
+**Staging/commit/push status**: Release candidate commit and documentation status commit completed locally. Owner confirmed `009-interactive-project-map` was pushed to `newrepo`. PR handoff is prepared; no direct merge was performed.
 
 ## T001-T005 Setup Evidence
 
@@ -241,12 +241,66 @@ T054 commit status: completed.
 - Commit message: `Prepare release-ready Fortune Construction updates`
 - Commit hash: `751d148c6406747e674ccb04e2f2ff52facaf153`
 - Short hash: `751d148`
+- Documentation status commit: `f767fb8b96f1a59c336ae9a2182db760e3613c5e`
 
 T055 remote check: `newrepo` points to `https://github.com/mo3id/new-fortune-construction.git` for fetch and push.
 
-T056 push approval status: not approved; push is explicitly out of scope for this request.
+T056 push approval status: approved in the push-only request.
 
-T057 push status: not run.
+T057 push status: owner-confirmed successful.
+
+- Command: `git push newrepo 009-interactive-project-map`
+- Local direct verification attempt was blocked by GitHub HTTPS authentication (`could not read Username for 'https://github.com'`), but owner confirmed the push completed outside this workspace.
+- Commits intended for push: `f767fb8b96f1a59c336ae9a2182db760e3613c5e` and `751d148c6406747e674ccb04e2f2ff52facaf153`.
+- No PR or merge completed from this workspace.
+
+## PR/Merge Handoff Evidence: T058-T066
+
+T058 pushed branch status:
+
+- Branch: `009-interactive-project-map`
+- Remote: `newrepo` / `mo3id/new-fortune-construction`
+- Status: owner-confirmed pushed successfully.
+- Workspace remote verification: blocked by local GitHub HTTPS authentication.
+
+T059 target merge branch: `main`.
+
+T060 release blocker review:
+
+- Env/runtime/generated artifacts: removed from committed release content or left ignored/untracked.
+- Staged secrets: no staged PAT found before commit; no secret values are documented here.
+- Verification: typecheck/build/API build/API tests passed as recorded above.
+- Token revocation: owner-confirmed resolved.
+- Remaining production caveats: external production setup and Vite high deferred known risk are documented and must be considered during PR review.
+
+T061 suggested PR title:
+
+```text
+Prepare Fortune Construction for release readiness
+```
+
+T062 verification summary is recorded in `quickstart.md` and in the verification table above.
+
+T063 deferred follow-ups:
+
+- Configure production env vars, CORS origins, JWT secret, MongoDB, durable upload storage, Vercel/build settings, DNS/domain `fortuneconstruction.mw`, and production base URLs outside the repo.
+- Resolve the remaining Vite/esbuild high finding in a separate toolchain-major-upgrade package.
+- Decide whether to version `design-concepts/**`, screenshot-heavy PNG evidence, duplicate spec copies, or `src/components/projects/MalawiProjectMap 2.tsx`.
+
+T064 PR/merge approval status:
+
+- PR handoff preparation: approved by owner request.
+- Direct merge: not approved; merge must wait until PR review.
+
+T065 PR handoff:
+
+- Manual PR URL: `https://github.com/mo3id/new-fortune-construction/compare/main...009-interactive-project-map?expand=1`
+- PR body is drafted in `quickstart.md`.
+
+T066 merge status:
+
+- No direct merge was performed.
+- Final merge method: PR review first, then merge to `main` only after approval.
 
 ## Current Blockers
 
@@ -260,4 +314,13 @@ T057 push status: not run.
 
 **Status**: `staged-for-review`
 
-Reason: verification builds/tests pass, denied files were committed as repository removals, token revoke/rotate is confirmed by the owner, and the remaining Vite high audit finding is accepted as a documented deferred risk for this gate. Push, PR, and merge still require separate explicit approval.
+Reason: verification builds/tests pass, denied files were committed as repository removals, token revoke/rotate is confirmed by the owner, push is owner-confirmed successful, and PR handoff is ready. The remaining Vite high audit finding and external production setup are documented deferred/external follow-ups. Direct merge still requires PR review approval.
+
+## Final Phase Evidence: T067-T072
+
+- T067: Completed tasks in `tasks.md` are matched to evidence in this file and `quickstart.md`; T066 records no direct merge.
+- T068: `quickstart.md` does not instruct `git add .`, force push, destructive reset, or secret disclosure.
+- T069: This inventory reports only paths, hashes, statuses, and non-sensitive categories; no secret values are included.
+- T070: `contracts/release-readiness-contract.md` remains aligned with staged-only review and non-sensitive reporting.
+- T071 final merge readiness status: `ready-for-pr-review`.
+- T072 owner report: PR handoff is prepared; next action is to open/review the PR and merge only after approval.

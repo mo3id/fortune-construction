@@ -107,7 +107,7 @@ After this cleanup, the no-stage denylist check showed denied files are staged o
 
 ## 8. Safe Publish Staging Review
 
-Safe Publish T046-T057 was reviewed. Commit completed; push, PR, and merge were not executed.
+Safe Publish T046-T057 was reviewed. Commit completed; push was attempted and blocked by GitHub HTTPS authentication; PR and merge were not executed.
 
 - Release candidate is staged with explicit pathspecs only; `git add .` was not used.
 - Staged summary: 314 paths total, with 189 added, 43 modified, and 82 deletion-only cleanup paths.
@@ -127,4 +127,66 @@ git commit -m "Prepare release-ready Fortune Construction updates"
 - Commit hash: `751d148c6406747e674ccb04e2f2ff52facaf153`
 - Short hash: `751d148`
 
-Push/PR/merge remain separate steps and were not executed.
+Push attempt:
+
+```bash
+git push newrepo 009-interactive-project-map
+```
+
+- Result: blocked by local GitHub HTTPS authentication (`could not read Username for 'https://github.com'`).
+- No push, PR, or merge completed.
+
+To continue, authenticate Git locally for `https://github.com/mo3id/new-fortune-construction.git` using a fresh authorized credential, then rerun the push-only step.
+
+## 9. PR/Merge Handoff
+
+Owner confirmed the branch `009-interactive-project-map` was pushed successfully to `newrepo`. Direct remote verification from this workspace was blocked by local GitHub HTTPS authentication, so the pushed-branch status is recorded as owner-confirmed.
+
+PR target:
+
+- Repository: `mo3id/new-fortune-construction`
+- Source branch: `009-interactive-project-map`
+- Target branch: `main`
+- Direct merge: not approved; review the PR first.
+
+Suggested PR title:
+
+```text
+Prepare Fortune Construction for release readiness
+```
+
+Suggested PR summary:
+
+```markdown
+## Summary
+- Stabilizes API runtime/security readiness, upload validation, route validation, and async error handling.
+- Repairs API/public/dashboard integration gaps, including project categories while preserving `Project.category` as a string contract.
+- Improves public/dashboard UI responsiveness, SEO metadata/social/sitemap/robots/structured data, performance splitting/lazy loading, production readiness guards, error pages, and the interactive project map.
+- Removes tracked env/runtime/generated artifacts from the repository and documents release safety gates.
+- Applies targeted npm audit remediation; remaining Vite high finding is documented as a deferred known risk because the safe fix requires a major toolchain upgrade.
+
+## Verification
+- `npm run typecheck`: passed.
+- `npm run build`: passed with known public Vite chunk warning.
+- `npm run build --workspace=apps/dashboard`: passed.
+- `npm run build --workspace=apps/api`: passed.
+- `npm run test --workspace=apps/api`: passed after approved loopback-capable rerun.
+- `npm audit`: improved to 8 total, 0 critical, 1 high, 6 moderate, 1 low; remaining high is the deferred Vite/esbuild item.
+
+## Excluded From Release
+- `.env`, `apps/api/.env`, `apps/dashboard/.env`, `.vercel/**`.
+- `apps/api/uploads/**`, `*.tsbuildinfo`, `tmp/**`, `output/**`, `frontend-prod.zip`, timestamped Vite files.
+- `design-concepts/**`, screenshot-heavy PNG evidence, duplicate spec copies, and `src/components/projects/MalawiProjectMap 2.tsx` remain review-needed/untracked.
+
+## Deferred / External Setup
+- Configure production env vars, CORS origins, JWT secret, MongoDB, durable upload storage, Vercel/build settings, DNS/domain `fortuneconstruction.mw`, and API/dashboard production URLs outside the repo.
+- Revisit Vite major upgrade in a separate package to resolve the remaining high audit finding.
+```
+
+Manual PR URL:
+
+```text
+https://github.com/mo3id/new-fortune-construction/compare/main...009-interactive-project-map?expand=1
+```
+
+Next action: open/review the PR, confirm CI/deployment settings, then merge to `main` only after PR review approval.

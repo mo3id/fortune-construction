@@ -116,9 +116,9 @@
 - [x] T054 [US2] After separate approval only, run `git commit` and record the resulting commit hash in `specs/010-release-merge-readiness/release-inventory.md`
 - [x] T055 [US2] Verify `newrepo` still points to `mo3id/new-fortune-construction` and record the remote check in `specs/010-release-merge-readiness/release-inventory.md`
 - [x] T056 [US2] Request separate owner approval for `git push newrepo 009-interactive-project-map` and record approval status in `specs/010-release-merge-readiness/release-inventory.md`
-- [ ] T057 [US2] After separate approval only, push `009-interactive-project-map` to `newrepo` and record the push result in `specs/010-release-merge-readiness/release-inventory.md`
+- [x] T057 [US2] After separate approval only, push `009-interactive-project-map` to `newrepo` and record the push result in `specs/010-release-merge-readiness/release-inventory.md`
 
-> Safe Publish commit completed after explicit owner approval: `751d148c6406747e674ccb04e2f2ff52facaf153`. T057 remains intentionally unchecked because push/PR/merge were explicitly out of scope.
+> Safe Publish commit completed after explicit owner approval: `751d148c6406747e674ccb04e2f2ff52facaf153`; documentation status commit completed as `f767fb8b96f1a59c336ae9a2182db760e3613c5e`. T057 is owner-confirmed successful after the branch was pushed to `newrepo`; local direct verification remains blocked by GitHub HTTPS authentication. No PR or merge was executed from this workspace.
 
 **Checkpoint**: User Story 2 is complete when the approved release commit is pushed to `newrepo` or the push blocker is documented.
 
@@ -132,18 +132,20 @@
 
 ### Verification Tasks for User Story 3
 
-- [ ] T058 [US3] Verify the pushed branch exists on `newrepo` and record the non-sensitive result in `specs/010-release-merge-readiness/release-inventory.md`
-- [ ] T059 [US3] Confirm target merge branch is `main` for `mo3id/new-fortune-construction` and record the result in `specs/010-release-merge-readiness/release-inventory.md`
-- [ ] T060 [US3] Verify no release blocker remains for env files, generated artifacts, staged secrets, failed verification, or token revocation in `specs/010-release-merge-readiness/release-inventory.md`
+- [x] T058 [US3] Verify the pushed branch exists on `newrepo` and record the non-sensitive result in `specs/010-release-merge-readiness/release-inventory.md`
+- [x] T059 [US3] Confirm target merge branch is `main` for `mo3id/new-fortune-construction` and record the result in `specs/010-release-merge-readiness/release-inventory.md`
+- [x] T060 [US3] Verify no release blocker remains for env files, generated artifacts, staged secrets, failed verification, or token revocation in `specs/010-release-merge-readiness/release-inventory.md`
 
 ### Implementation Tasks for User Story 3
 
-- [ ] T061 [US3] Draft a PR title and summary covering packages `001` through `010` in `specs/010-release-merge-readiness/quickstart.md`
-- [ ] T062 [US3] Draft a verification summary covering typecheck, builds, API tests, audit status, and known warnings in `specs/010-release-merge-readiness/quickstart.md`
-- [ ] T063 [US3] Draft deferred follow-ups for external production setup, durable upload storage, npm audit/network status, and any accepted warnings in `specs/010-release-merge-readiness/quickstart.md`
-- [ ] T064 [US3] Request separate owner approval to open a PR or perform a merge to `main`, and record approval status in `specs/010-release-merge-readiness/release-inventory.md`
-- [ ] T065 [US3] After separate approval only, open a PR from `009-interactive-project-map` to `main` or record manual PR instructions in `specs/010-release-merge-readiness/quickstart.md`
-- [ ] T066 [US3] If merge is approved and safe, record the merge method and final merge status in `specs/010-release-merge-readiness/release-inventory.md`
+- [x] T061 [US3] Draft a PR title and summary covering packages `001` through `010` in `specs/010-release-merge-readiness/quickstart.md`
+- [x] T062 [US3] Draft a verification summary covering typecheck, builds, API tests, audit status, and known warnings in `specs/010-release-merge-readiness/quickstart.md`
+- [x] T063 [US3] Draft deferred follow-ups for external production setup, durable upload storage, npm audit/network status, and any accepted warnings in `specs/010-release-merge-readiness/quickstart.md`
+- [x] T064 [US3] Request separate owner approval to open a PR or perform a merge to `main`, and record approval status in `specs/010-release-merge-readiness/release-inventory.md`
+- [x] T065 [US3] After separate approval only, open a PR from `009-interactive-project-map` to `main` or record manual PR instructions in `specs/010-release-merge-readiness/quickstart.md`
+- [x] T066 [US3] If merge is approved and safe, record the merge method and final merge status in `specs/010-release-merge-readiness/release-inventory.md`
+
+> PR handoff prepared without direct merge. Manual PR URL and PR body are recorded in `quickstart.md`; merge is pending PR review approval.
 
 **Checkpoint**: User Story 3 is complete when the owner has a PR/merge handoff or the remaining blocker is documented.
 
@@ -153,12 +155,12 @@
 
 **Purpose**: Final consistency checks after selected release phases.
 
-- [ ] T067 Confirm all tasks completed in `specs/010-release-merge-readiness/tasks.md` match recorded evidence in `specs/010-release-merge-readiness/release-inventory.md`
-- [ ] T068 Confirm `specs/010-release-merge-readiness/quickstart.md` includes final safe commands and does not instruct `git add .`, force push, destructive reset, or secret disclosure
-- [ ] T069 Confirm `specs/010-release-merge-readiness/release-inventory.md` contains no secret values, tokens, DB URIs, or env values
-- [ ] T070 Confirm `specs/010-release-merge-readiness/contracts/release-readiness-contract.md` matches the final staged-only review process
-- [ ] T071 Produce the final merge readiness status as `ready`, `blocked`, or `deferred` in `specs/010-release-merge-readiness/release-inventory.md`
-- [ ] T072 Report final status to the owner with included files, excluded files, verification results, blockers, and next action from `specs/010-release-merge-readiness/release-inventory.md`
+- [x] T067 Confirm all tasks completed in `specs/010-release-merge-readiness/tasks.md` match recorded evidence in `specs/010-release-merge-readiness/release-inventory.md`
+- [x] T068 Confirm `specs/010-release-merge-readiness/quickstart.md` includes final safe commands and does not instruct `git add .`, force push, destructive reset, or secret disclosure
+- [x] T069 Confirm `specs/010-release-merge-readiness/release-inventory.md` contains no secret values, tokens, DB URIs, or env values
+- [x] T070 Confirm `specs/010-release-merge-readiness/contracts/release-readiness-contract.md` matches the final staged-only review process
+- [x] T071 Produce the final merge readiness status as `ready`, `blocked`, or `deferred` in `specs/010-release-merge-readiness/release-inventory.md`
+- [x] T072 Report final status to the owner with included files, excluded files, verification results, blockers, and next action from `specs/010-release-merge-readiness/release-inventory.md`
 
 ---
 
