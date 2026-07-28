@@ -1,12 +1,14 @@
-import 'express-async-errors';
-import express, { Request, Response, NextFunction } from 'express';
+import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import path from 'path';
-import { connectDB } from './config/db';
-import Admin from './models/Admin';
+import { connectDB, DatabaseStatus } from './config/db';
+import { loadRuntimeConfig, RuntimeConfig } from './config/runtime';
+import { createCorsOptions } from './config/cors';
+import { errorHandler } from './middleware/errors';
+import { safeLogger } from './utils/safeLogger';
 
 import authRoutes from './routes/auth';
 import projectRoutes from './routes/projects';
@@ -21,37 +23,33 @@ import uploadRoutes from './routes/upload';
 import statsRoutes from './routes/stats';
 import pageContentRoutes from './routes/pageContent';
 import successStoryRoutes from './routes/successStories';
+import projectCategoryRoutes from './routes/projectCategories';
 
 dotenv.config();
 
-const app = express();
-const PORT = process.env.PORT || 3001;
+const defaultDatabaseStatus: DatabaseStatus = {
+  mode: 'unavailable',
+  ready: false,
+  isNewDatabase: false,
+};
 
-async function ensureAdmin() {
-  const count = await Admin.countDocuments();
-  if (count === 0) {
-    await Admin.create({ username: 'admin', password: 'admin123' });
-    console.log('✅ Default admin created: admin / admin123');
-  }
-}
-
-async function startServer() {
-  const isInMemory = await connectDB();
-  if (isInMemory) {
-    const { autoSeed } = await import('./autoSeed.js');
-    await autoSeed();
-  }
-  await ensureAdmin();
-
-  app.use(cors({
-    origin: (origin, cb) => cb(null, true),
-    credentials: true,
-  }));
+export function createApp(
+  databaseStatus: DatabaseStatus = defaultDatabaseStatus,
+  runtimeConfig: RuntimeConfig = loadRuntimeConfig()
+) {
+  const app = express();
   app.use(helmet({
-    crossOriginResourcePolicy: { policy: "cross-origin" },
-    crossOriginOpenerPolicy: false,
-    contentSecurityPolicy: false,
+    crossOriginResourcePolicy: { policy: "cross-origin" }
   }));
+  app.use(cors(createCorsOptions(runtimeConfig)));
+  app.use((req, res, next) => {
+    const origin = req.headers.origin;
+    if (origin && !runtimeConfig.allowedOrigins.includes(origin)) {
+      res.status(403).json({ message: 'Origin not allowed', code: 'CORS_ORIGIN_DENIED' });
+      return;
+    }
+    next();
+  });
 
   const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 200 });
   app.use(limiter);
@@ -72,24 +70,54 @@ async function startServer() {
   app.use('/api/stats', statsRoutes);
   app.use('/api/content', pageContentRoutes);
   app.use('/api/success-stories', successStoryRoutes);
+  app.use('/api/project-categories', projectCategoryRoutes);
 
-  app.get('/health', (_req, res) => res.json({ status: 'ok', timestamp: new Date() }));
-
-  // Global error handler - catches all unhandled errors and returns JSON with CORS headers
-  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-    console.error('Unhandled error:', err.message || err);
-    const status = err.status || err.statusCode || 500;
-    res.status(status).json({
-      message: err.message || 'Internal server error',
-      ...(process.env.NODE_ENV !== 'production' && { stack: err.stack }),
+  app.get('/health', (_req, res) => {
+    const status = databaseStatus.ready ? 'ok' : 'degraded';
+    res.json({
+      status,
+      timestamp: new Date().toISOString(),
+      services: {
+        api: 'ok',
+        database: databaseStatus.ready ? 'ok' : 'unavailable',
+      },
+      mode: runtimeConfig.nodeEnv,
+      database: {
+        mode: databaseStatus.mode,
+      },
     });
   });
 
-  app.listen(PORT, () => {
-    console.log(`✅ Fortune API running on http://localhost:${PORT}`);
+  app.use(errorHandler);
+
+  return app;
+}
+
+export async function startServer() {
+  const runtimeConfig = loadRuntimeConfig();
+  const databaseStatus = await connectDB();
+  if (databaseStatus.ready && databaseStatus.mode === 'memory' && databaseStatus.isNewDatabase) {
+    const { autoSeed } = await import('./autoSeed');
+    await autoSeed();
+  }
+
+  const app = createApp(databaseStatus, runtimeConfig);
+
+  app.listen(runtimeConfig.port, () => {
+    if (runtimeConfig.nodeEnv === 'production') {
+      safeLogger.info(`Fortune API running in production on port ${runtimeConfig.port}.`);
+      return;
+    }
+
+    safeLogger.info(`Fortune API running on http://localhost:${runtimeConfig.port}`);
   });
 }
 
-startServer();
+if (require.main === module) {
+  void startServer().catch((error) => {
+    safeLogger.error('API startup failed.', error);
+    process.exit(1);
+  });
+}
 
-export default app;
+export default createApp;

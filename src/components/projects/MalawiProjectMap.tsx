@@ -1,101 +1,172 @@
-import { Image } from '@fortune/shared-ui'
-import { ArrowRight, MapPin } from 'lucide-react'
+import { useMemo, useState } from 'react'
+import { ExternalLink, MapPin, Navigation, Satellite, AlertTriangle } from 'lucide-react'
+import L from 'leaflet'
 import { Link } from 'react-router-dom'
+import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import type { ProjectRecord } from '@/lib/projectPresentation'
+import {
+    MALAWI_MAP_CENTER,
+    resolveMapProjects,
+    type ResolvedMapProject,
+} from '@/lib/projectMapLocations'
 
 interface MalawiProjectMapProps {
-    onSelect: (id: string) => void
     projects: ProjectRecord[]
-    selectedId?: string
 }
 
-function getMarkerPosition(project: ProjectRecord) {
-    const lat = project.coordinates?.lat ?? -13.5
-    const lng = project.coordinates?.lng ?? 34
-    const x = ((lng - 32.6) / (35.9 - 32.6)) * 100
-    const y = ((-9.3 - lat) / (-9.3 + 17.2)) * 100
+const projectMarkerIcon = L.divIcon({
+    className: 'fortune-project-marker',
+    html: '<span aria-hidden="true"></span>',
+    iconSize: [28, 28],
+    iconAnchor: [14, 28],
+    popupAnchor: [0, -24],
+})
 
-    return {
-        x: Math.min(92, Math.max(8, x)),
-        y: Math.min(92, Math.max(8, y)),
-    }
-}
-
-export function MalawiProjectMap({ projects, selectedId, onSelect }: MalawiProjectMapProps) {
-    const selected = projects.find((project) => project._id === selectedId) || projects[0]
-    const locatedProjects = projects.filter((project) => project.coordinates)
+function MapFallback({
+    title,
+    description,
+    tone = 'empty',
+}: {
+    title: string
+    description: string
+    tone?: 'empty' | 'error'
+}) {
+    const Icon = tone === 'error' ? AlertTriangle : Satellite
 
     return (
-        <section className="relative overflow-hidden bg-slate-950 text-white">
-            <div className="mx-auto grid max-w-7xl lg:grid-cols-[1fr_430px]">
-                <div className="relative min-h-[590px] overflow-hidden p-6 md:p-10">
-                    <div className="absolute inset-0 opacity-20 [background-image:linear-gradient(rgba(255,255,255,.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.08)_1px,transparent_1px)] [background-size:48px_48px]" />
-                    <div className="relative z-10 mb-8 max-w-2xl">
-                        <span className="text-[10px] font-black uppercase tracking-[0.28em] text-teal-300">Interactive Project Map</span>
-                        <h2 className="mt-4 text-3xl font-display font-bold tracking-tight md:text-5xl">Project Footprint Across Malawi</h2>
-                        <p className="mt-5 text-base leading-8 text-slate-300">
-                            Explore regional delivery activity and open a matching case study from each project location.
-                        </p>
+        <div className="flex min-h-[420px] flex-col items-center justify-center rounded-lg border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center dark:border-slate-700 dark:bg-slate-900/70">
+            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white text-teal-700 shadow-sm dark:bg-slate-950 dark:text-teal-300">
+                <Icon className="h-6 w-6" />
+            </div>
+            <h3 className="mt-5 text-lg font-display font-bold text-slate-950 dark:text-white">{title}</h3>
+            <p className="mt-3 max-w-sm text-sm font-medium leading-6 text-slate-500 dark:text-slate-400">{description}</p>
+        </div>
+    )
+}
+
+function ProjectPopup({ item }: { item: ResolvedMapProject }) {
+    const { project, source, fallbackCity } = item
+
+    return (
+        <div className="w-[220px] space-y-3 text-slate-700">
+            <div>
+                <div className="text-[10px] font-black uppercase tracking-[0.18em] text-teal-700">{project.category}</div>
+                <h3 className="mt-1 text-base font-display font-bold leading-snug text-slate-950">{project.title}</h3>
+            </div>
+            <p className="text-sm font-semibold leading-5 text-slate-600">{project.location} • {project.status}</p>
+            {source === 'city-fallback' && fallbackCity && (
+                <p className="rounded bg-teal-50 px-2 py-1 text-[11px] font-bold text-teal-800">
+                    Approximate city location: {fallbackCity}
+                </p>
+            )}
+            <Link
+                to={`/projects/${project._id}`}
+                className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-wider text-teal-700 transition-colors hover:text-teal-900"
+            >
+                View Case Study <ExternalLink className="h-3.5 w-3.5" />
+            </Link>
+        </div>
+    )
+}
+
+export function MalawiProjectMap({ projects }: MalawiProjectMapProps) {
+    const devMapState = import.meta.env.DEV ? new URLSearchParams(window.location.search).get('mapState') : null
+    const locatedProjects = useMemo(
+        () => (devMapState === 'empty' ? [] : resolveMapProjects(projects)),
+        [devMapState, projects],
+    )
+    const [mapUnavailable, setMapUnavailable] = useState(devMapState === 'fail')
+
+    const completedCount = locatedProjects.filter(({ project }) => project.status === 'Completed').length
+    const ongoingCount = locatedProjects.filter(({ project }) => project.status === 'Ongoing').length
+
+    return (
+        <aside className="sticky top-24 self-start rounded-lg border border-slate-200 bg-white p-5 shadow-[0_18px_60px_rgba(15,23,42,0.06)] dark:border-slate-800 dark:bg-slate-950 md:p-7">
+            <div>
+                <div className="flex items-start justify-between gap-4">
+                    <div>
+                        <span className="text-[10px] font-black uppercase tracking-[0.22em] text-teal-700 dark:text-teal-300">Map view</span>
+                        <h2 className="mt-2 text-2xl font-display font-bold text-slate-950 dark:text-white">Projects Across Malawi</h2>
                     </div>
-
-                    <div className="relative mx-auto h-[400px] max-w-[370px]">
-                        <svg viewBox="0 0 220 390" className="h-full w-full drop-shadow-2xl" role="img" aria-label="Stylized map of Malawi">
-                            <path
-                                d="M119 7 C144 33 151 57 139 86 C129 111 151 141 139 169 C129 193 103 202 114 232 C123 258 151 276 144 305 C139 329 112 344 109 383 C93 356 75 333 79 303 C83 274 102 258 89 231 C75 202 89 181 98 160 C109 134 91 114 100 88 C108 63 100 35 119 7 Z"
-                                fill="#0f766e"
-                                stroke="#5eead4"
-                                strokeWidth="2"
-                            />
-                            <path
-                                d="M116 38 C128 73 115 112 126 145 C137 180 103 207 119 245 C130 273 117 309 103 344"
-                                fill="none"
-                                stroke="#ccfbf1"
-                                strokeOpacity=".55"
-                                strokeWidth="3"
-                            />
-                        </svg>
-
-                        {locatedProjects.map((project) => {
-                            const point = getMarkerPosition(project)
-                            const active = project._id === selected?._id
-
-                            return (
-                                <button
-                                    type="button"
-                                    key={project._id}
-                                    onClick={() => onSelect(project._id)}
-                                    className="absolute flex h-8 w-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/60 bg-white text-slate-950 shadow-xl transition-transform hover:scale-110"
-                                    style={{ left: `${point.x}%`, top: `${point.y}%` }}
-                                    aria-label={`Select ${project.title}`}
-                                >
-                                    <span className={`h-3 w-3 rounded-full ${active ? 'bg-teal-500' : 'bg-slate-950'}`} />
-                                </button>
-                            )
-                        })}
+                    <span className="rounded bg-teal-50 px-3 py-2 text-xs font-black text-teal-700 dark:bg-teal-500/10 dark:text-teal-300">
+                        {projects.length}
+                    </span>
+                </div>
+                <div className="mt-5 flex items-start gap-3">
+                    <MapPin className="mt-1 h-5 w-5 fill-teal-700 text-teal-700" />
+                    <div>
+                        <div className="text-base font-black text-slate-900 dark:text-white">Active & Completed Projects</div>
+                        <div className="mt-1 text-sm font-semibold text-slate-500 dark:text-slate-400">
+                            Showing the project list provided to this map
+                        </div>
                     </div>
                 </div>
 
-                {selected && (
-                    <aside className="border-t border-white/10 bg-white p-6 text-slate-950 dark:bg-slate-900 dark:text-white lg:border-l lg:border-t-0 lg:border-white/10">
-                        <div className="relative mb-6 aspect-[4/3] overflow-hidden bg-slate-200">
-                            <Image src={selected.coverImage} alt={selected.title} className="h-full w-full object-cover" />
-                            <span className="absolute left-4 top-4 bg-teal-500 px-3 py-2 text-[10px] font-black uppercase tracking-[0.18em] text-white">
-                                {selected.status}
-                            </span>
+                <div className="mt-8 overflow-hidden rounded-lg border border-slate-200 bg-slate-100 dark:border-slate-800 dark:bg-slate-900">
+                    {mapUnavailable ? (
+                        <MapFallback
+                            tone="error"
+                            title="Project map unavailable"
+                            description="We could not load the interactive map right now. The project list remains available on this page."
+                        />
+                    ) : locatedProjects.length === 0 ? (
+                        <MapFallback
+                            title="No mapped project locations"
+                            description="No projects currently include usable coordinates or a supported Malawi city fallback for the map."
+                        />
+                    ) : (
+                        <div className="h-[420px] w-full md:h-[500px]" data-testid="interactive-project-map">
+                            <MapContainer
+                                center={[MALAWI_MAP_CENTER.lat, MALAWI_MAP_CENTER.lng]}
+                                zoom={6}
+                                minZoom={5}
+                                maxZoom={13}
+                                scrollWheelZoom={false}
+                                className="h-full w-full"
+                                aria-label="Interactive project locations across Malawi"
+                            >
+                                <TileLayer
+                                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                    eventHandlers={{
+                                        tileerror: () => setMapUnavailable(true),
+                                    }}
+                                />
+                                {locatedProjects.map((item) => (
+                                    <Marker
+                                        key={item.project._id}
+                                        icon={projectMarkerIcon}
+                                        position={[item.position.lat, item.position.lng]}
+                                    >
+                                        <Popup>
+                                            <ProjectPopup item={item} />
+                                        </Popup>
+                                    </Marker>
+                                ))}
+                            </MapContainer>
                         </div>
-                        <div className="text-[10px] font-black uppercase tracking-[0.22em] text-teal-700 dark:text-teal-300">{selected.category}</div>
-                        <h3 className="mt-3 text-2xl font-display font-bold leading-tight">{selected.title}</h3>
-                        <div className="mt-4 flex items-center text-sm font-semibold text-slate-500 dark:text-slate-300">
-                            <MapPin className="mr-2 h-4 w-4 text-teal-600" />
-                            {selected.location}
-                        </div>
-                        <p className="mt-5 text-sm leading-7 text-slate-600 dark:text-slate-300">{selected.overview}</p>
-                        <Link to={`/projects/${selected._id}`} className="mt-8 inline-flex items-center text-[11px] font-black uppercase tracking-[0.18em] text-teal-700 dark:text-teal-300">
-                            Open Case Study <ArrowRight className="ml-3 h-4 w-4" />
-                        </Link>
-                    </aside>
-                )}
+                    )}
+                </div>
+
+                <div className="mt-5 grid grid-cols-2 gap-3 text-sm font-semibold text-slate-500">
+                    <div className="flex items-center gap-3 rounded border border-slate-200 px-3 py-3 dark:border-slate-800">
+                        <MapPin className="h-5 w-5 fill-teal-700 text-teal-700" />
+                        <span>{completedCount} completed</span>
+                    </div>
+                    <div className="flex items-center gap-3 rounded border border-slate-200 px-3 py-3 dark:border-slate-800">
+                        <Navigation className="h-5 w-5 text-slate-400" />
+                        <span>{ongoingCount} ongoing</span>
+                    </div>
+                </div>
+
+                <Link
+                    to="/projects"
+                    className="mt-5 flex h-14 w-full items-center justify-center gap-3 rounded border border-teal-700 bg-white px-6 text-sm font-black text-slate-700 transition-colors hover:bg-teal-50 dark:bg-slate-950 dark:text-slate-100"
+                >
+                    View Project Map
+                    <ExternalLink className="h-5 w-5" />
+                </Link>
             </div>
-        </section>
+        </aside>
     )
 }
